@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@wkpcamer/ui": ["libs/ui/src/index.ts"]
+      "@wkpcamer/ui": ["libs/ui/src/index.ts"],
+      "@wkpcamer/users": ["libs/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

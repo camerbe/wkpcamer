@@ -1,3 +1,3 @@
 # ui
 
-This library was generated with [Nx](https://nx.dev).
+This library contains the UI components for the WKPCamer application.
