@@ -1,29 +1,29 @@
 {
-  "name": "camerangular",
+  "name": "ngcamer",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "apps/camerangular/src",
+  "sourceRoot": "apps/ngcamer/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/camerangular",
-        "browser": "apps/camerangular/src/main.ts",
+        "outputPath": "dist/apps/ngcamer",
+        "browser": "apps/ngcamer/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/camerangular/tsconfig.app.json",
+        "tsConfig": "apps/ngcamer/tsconfig.app.json",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/camerangular/public"
+            "input": "apps/ngcamer/public"
           }
         ],
-        "styles": ["apps/camerangular/src/styles.css"],
-        "server": "apps/camerangular/src/main.server.ts",
+        "styles": ["apps/ngcamer/src/styles.css"],
+        "server": "apps/ngcamer/src/main.server.ts",
         "ssr": {
-          "entry": "apps/camerangular/src/server.ts"
+          "entry": "apps/ngcamer/src/server.ts"
         },
         "outputMode": "server"
       },
@@ -56,10 +56,10 @@
       "executor": "@angular/build:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "camerangular:build:production"
+          "buildTarget": "ngcamer:build:production"
         },
         "development": {
-          "buildTarget": "camerangular:build:development"
+          "buildTarget": "ngcamer:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -67,7 +67,7 @@
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",
       "options": {
-        "buildTarget": "camerangular:build"
+        "buildTarget": "ngcamer:build"
       }
     },
     "lint": {
@@ -77,8 +77,8 @@
       "continuous": true,
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "camerangular:build",
-        "staticFilePath": "dist/apps/camerangular/browser",
+        "buildTarget": "ngcamer:build",
+        "staticFilePath": "dist/apps/ngcamer/browser",
         "spa": true
       }
     }
