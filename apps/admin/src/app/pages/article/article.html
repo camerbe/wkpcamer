@@ -1,0 +1,26 @@
+
+  <p-card header="Articles" subheader="Liste des articles" [style]="{width: '100%'}">
+    <div class="p-grid">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start>
+
+          </ng-template>
+          <ng-template #center>
+            <p-iconfield iconPosition="left">
+                <p-inputicon class="pi pi-search" />
+                <input type="text" pInputText placeholder="Recherche" />
+            </p-iconfield>
+        </ng-template>
+          <ng-template #end>
+              <button pButton type="button"  icon="pi pi-plus" class="p-button-success">Nouveau</button>
+          </ng-template>
+
+
+        </p-toolbar>
+
+      </div>
+    </div>
+  </p-card>
+
+

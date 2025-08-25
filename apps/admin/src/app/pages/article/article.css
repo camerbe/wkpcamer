@@ -1,0 +1,8 @@
+:host ::ng-deep .full-width-card {
+    width: 100%;
+    box-sizing: border-box;
+}
+.card-container {
+    width: 100%;
+    margin: 0 auto;
+}

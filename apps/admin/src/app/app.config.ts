@@ -7,13 +7,15 @@ import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 // Import Aura preset from PrimeNG theme presets
 import Aura from '@primeuix/themes/aura';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config'; // Import providePrimeNG from PrimeNG
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(appRoutes),
     provideAnimationsAsync(),
+    provideRouter(appRoutes),
     providePrimeNG({
       theme: {
         preset: Aura
@@ -21,11 +23,7 @@ export const appConfig: ApplicationConfig = {
     })
   ],
 };
-function provideAnimationsAsync(): import("@angular/core").Provider | import("@angular/core").EnvironmentProviders {
-  throw new Error('Function not implemented.');
-}
 
-function providePrimeNG(arg0: { theme: { preset: any; }; }): import("@angular/core").Provider | import("@angular/core").EnvironmentProviders {
-  throw new Error('Function not implemented.');
-}
+
+
 
