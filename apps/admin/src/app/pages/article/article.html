@@ -13,7 +13,7 @@
             </p-iconfield>
         </ng-template>
           <ng-template #end>
-              <button pButton type="button"  icon="pi pi-plus" class="p-button-success">Nouveau</button>
+              <button (click)="onCreate()" pButton type="button"  icon="pi pi-plus" class="p-button-success capitalize">Nouvel article</button>
           </ng-template>
 
 
@@ -21,6 +21,43 @@
 
       </div>
     </div>
+    <div class="p-grid p-mt-2">
+      <div class="p-col-12">
+        <p-table [value]="articles" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
+        stripedRows
+        >
+          <ng-template #header>
+              <tr class="p-text-center capitalize">
+                  <th>#</th>
+                  <th>Titre</th>
+                  <th>Rubrique</th>
+                  <th>Date</th>
+                  <th>Action</th>
+              </tr>
+          </ng-template>
+          <ng-template #body let-article let-i="rowIndex">
+              <tr>
+                  <td>{{ i+1 }}</td>
+                  <td>{{ article.titre }}</td>
+                  <td>{{ article.sousrubrique.sousrubrique }}</td>
+                  <td>{{ article.dateparution | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+                  <td>
+                    <div class="flex">
+                        <a routerLink="['/',article.idarticle]" class="text-blue-500 hover:text-blue-700 mr-4" pTooltip="Mise à jour" tooltipPosition="top">
+                      <i class="pi pi-pencil"></i>
+                    </a>
+                     <a class="text-red-500 hover:text-red-700" >
+                        <i class="pi pi-trash"></i>
+                    </a>
+                    </div>
+
+                  </td>
+              </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
   </p-card>
 
 

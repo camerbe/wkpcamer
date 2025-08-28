@@ -1,3 +1,4 @@
+import { ArticleFormComponent } from './pages/article/article-form/article-form';
 import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
@@ -11,7 +12,11 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'article',
-        loadComponent: () => import('./pages/article/article').then((m) => m.Article)
+        loadComponent: () => import('./pages/article/article').then((m) => m.ArticleListComponent)
+      },
+      {
+        path: 'article/form',
+        loadComponent: () => import('./pages/article/article-form/article-form').then((m) => m.ArticleFormComponent)
       },
       {
         path: 'dimension',

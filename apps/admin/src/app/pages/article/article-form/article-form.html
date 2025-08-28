@@ -1,0 +1,147 @@
+
+  <p-card header="Articles" subheader="Ajout des articles" [style]="{width: '100%'}">
+    <div class="p-grid mb-4">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start></ng-template>
+          <ng-template #end>
+
+              <button pButton type="button"  icon="pi pi-save" class="p-button-success capitalize mr-4">enregistrer</button>
+              <button pButton type="button"  icon="pi pi-arrow-left" class="p-button-secondary capitalize" (click)="goBack()">retour</button>
+          </ng-template>
+        </p-toolbar>
+      </div>
+    </div>
+    <form [formGroup]="articleForm" class="p-fluid">
+
+        <div class="formgrid grid">
+            <div class="field col-12 md:col-4">
+                <label for="auteur"><span class="text-red-500 mr-2">*</span>Auteur</label>
+                <input formControlName="auteur" id="auteur" placeholder="Auteur" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (auteur?.invalid && (auteur?.touched || auteur?.dirty)) {
+                  <small class="text-red-500">L'auteur est requis</small>
+                }
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="source"><span class="text-red-500 mr-2">*</span>Source</label>
+                <input formControlName="source" id="source" placeholder="Source" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                @if (source?.invalid && (source?.touched || source?.dirty)) {
+                  <small class="text-red-500">La source est requise</small>
+                }
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="lastname2"><span class="text-red-500 mr-2">*</span>Date Parution</label>
+
+                <p-datepicker
+                  formControlName="dateparution"
+                  [showIcon]="true"
+                  inputId="buttondisplay"
+                  [showOnFocus]="false"
+                  [hourFormat]="'24'"
+                  [showTime]="true"
+                  placeholder="Date de publication"
+                  [dateFormat]="'dd/m/yy'"
+
+                />
+                @if (dateparution?.invalid && (dateparution?.touched || dateparution?.dirty)) {
+                  <small class="text-red-500"> La date est requise</small>
+                }
+            </div>
+
+            <div class="field col-12  md:col-6">
+                <label for="auteur"><span class="text-red-500 mr-2">*</span>Rubrique</label>
+                <p-select
+                  formControlName="fksousrubrique"
+                  [options]="sousRubriques"
+                  placeholder="Choix de la rubrique"
+                  [editable]="true"
+                  optionValue="idsousrubrique"
+                  optionLabel="sousrubrique"
+                  (onChange)="onChangeRubrique($event)"
+                  class="w-full md:w-56" />
+                @if (fksousrubrique?.invalid && (fksousrubrique?.touched || fksousrubrique?.dirty)) {
+                  <small class="text-red-500"> La rubrique est requise</small>
+                }
+          </div>
+            <div class="field col-12 md:col-6">
+                <label for="auteur"><span class="text-red-500 mr-2">*</span>Pays</label>
+                <p-select [options]="countries"  optionLabel="pays" placeholder="Choix du pays" class="w-full md:w-56"
+                optionValue="idpays"
+                formControlName="fkpays"
+                (onChange)="onChangeCountry($event)"
+                >
+
+                <ng-template let-country #item>
+                    <div class="flex items-center gap-2">
+                        <img
+                            src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                            [class]="'flag flag-' + country.idpays.toLowerCase()"
+                            style="width: 18px"
+                            alt="{{ country.country }}"
+                        />
+                        <div>{{ country.pays }}</div>
+                    </div>
+                </ng-template>
+                <ng-template #dropdownicon>
+                    <i class="pi pi-map"></i>
+                </ng-template>
+
+            </p-select>
+            @if (fkpays?.invalid && (fkpays?.touched || fkpays?.dirty)) {
+                <small class="text-red-500"> Le pays est requis</small>
+            }
+          </div>
+
+          <div class="field col-12">
+                <label for="titre"><span class="text-red-500 mr-2">*</span>Titre</label>
+                <input formControlName="titre" id="titre" placeholder="Titre" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (titre?.invalid && (titre?.touched || titre?.dirty)) {
+                    <small class="text-red-500"> Le titre est requis</small>
+                }
+                @if (titre!.errors && titre!.errors['maxlength']) {
+                    <small class="text-red-500"> La longueur maximale du titre est de 100 caratères</small>
+                }
+          </div>
+
+          <div class="field col-12  md:col-6">
+                <label for="keyword"><span class="text-red-500 mr-2">*</span>Mots clés</label>
+                <input  formControlName="keyword" id="keyword" placeholder="mot clé, mot clé, mot clé" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (keyword?.invalid && (keyword?.touched || keyword?.dirty)) {
+                    <small class="text-red-500 mr-4"> Les mots clés sont requis</small>
+                }
+                @if (keyword!.errors && keyword!.errors['invalidKeywords']) {
+                    <small class="text-red-500">Les mots clés sont invalides</small>
+                }
+          </div>
+          <div class="field col-12 md:col-6">
+                <label for="hashtag"><span class="text-red-500 mr-2">*</span>hashtags</label>
+                <input formControlName="hashtags" id="hashtag" placeholder="#hashtag, #hashtag, #hashtag" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                @if (hashtags?.invalid && (hashtags?.touched || hashtags?.dirty)) {
+                    <small class="text-red-500"> Les hashtags sont requis</small>
+                }
+                @if (hashtags!.errors && hashtags!.errors['invalidHashtags']) {
+                    <small class="text-red-500"> Chaque hashtag doit commencer par # et être séparé par une virgule</small>
+                }
+          </div>
+        </div>
+        <div class="field col-12">
+          <label for="article"><span class="text-red-500 mr-2">*</span>Article</label>
+          <editor id="article"  [init]="init" formControlName="info"/>
+          @if (info?.invalid && (info?.touched || info?.dirty)) {
+              <small class="text-red-500"> L'article est requis</small>
+          }
+
+        </div>
+        <div class="field col-12">
+          <label for="image"><span class="text-red-500 mr-2">*</span>Photo</label>
+          <editor id="image" [init]="initImage" formControlName="image"/>
+          @if (image?.invalid && (image?.touched || image?.dirty)) {
+              <small class="text-red-500"> L'image est requise</small>
+          }
+        </div>
+
+    </form>
+  </p-card>
+
+
+

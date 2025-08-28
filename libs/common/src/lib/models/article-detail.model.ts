@@ -1,7 +1,7 @@
-import { ImageDetail } from "./image-detail";
-import { PaysDetail } from "./pays-detail";
-import { RubriqueDetail } from "./rubrique-detail";
-import { SousRubriqueDetail } from "./sous-rubrique-detail";
+import { ImageDetail } from "./image-detail.model";
+import { PaysDetail } from "./pays-detail.model";
+import { RubriqueDetail } from "./rubrique-detail.model";
+import { SousRubriqueDetail } from "./sous-rubrique-detail.model";
 
 export interface ArticleDetail {
   idarticle: number;
