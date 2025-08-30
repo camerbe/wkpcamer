@@ -1,4 +1,4 @@
-
+<p-toast></p-toast>
   <p-card header="Articles" subheader="Ajout des articles" [style]="{width: '100%'}">
     <div class="p-grid mb-4">
       <div class="p-col-12">
@@ -6,14 +6,14 @@
           <ng-template #start></ng-template>
           <ng-template #end>
 
-              <button pButton type="button"  icon="pi pi-save" class="p-button-success capitalize mr-4">enregistrer</button>
+              <button [disabled]="!articleForm.valid"  pButton type="button"  icon="pi pi-save" (click)="onSubmit()" class="p-button-success capitalize mr-4">enregistrer</button>
               <button pButton type="button"  icon="pi pi-arrow-left" class="p-button-secondary capitalize" (click)="goBack()">retour</button>
           </ng-template>
         </p-toolbar>
       </div>
     </div>
-    <form [formGroup]="articleForm" class="p-fluid">
-
+    <form [formGroup]="articleForm"  class="p-fluid">
+        <input formControlName="fkuser" type="hidden">
         <div class="formgrid grid">
             <div class="field col-12 md:col-4">
                 <label for="auteur"><span class="text-red-500 mr-2">*</span>Auteur</label>

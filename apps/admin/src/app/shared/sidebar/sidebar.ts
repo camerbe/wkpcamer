@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+
+import { Component, Inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthenticationService } from '@wkpcamer/auth';
+
 
 @Component({
   selector: 'admin-sidebar',
@@ -7,6 +11,20 @@ import { RouterLink } from '@angular/router';
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.css']
 })
-export class Sidebar {
+export class Sidebar  {
+
+
+
+  /**
+   *
+   */
+  authenticationService = inject(AuthenticationService)
+
+
+
+
+  logout() {
+    this.authenticationService.logout() ;
+  }
 
 }

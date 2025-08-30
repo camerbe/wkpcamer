@@ -1,18 +1,29 @@
-import { ArticleFormComponent } from './pages/article/article-form/article-form';
+import { articleListResolver } from './../../../../libs/articles/article-list-resolver';
 import { Route } from '@angular/router';
+import { AuthGard } from './guards/auth-gard';
+import { adminGuard } from './guards/admin-guard';
+
 
 export const appRoutes: Route[] = [
   {
-    path: '',
+    path:'',
+    loadChildren:()=> import('@wkpcamer/users').then((m) => m.MY_LIB_ROUTES),
+  },
+  {
+
+    path: 'admin',
+    canActivate:[AuthGard],
     loadComponent: () => import('./shared/shell/shell').then((m) => m.Shell),
     children: [
       {
         path: 'user',
+        canActivate:[adminGuard],
         loadComponent: () => import('./pages/user/user').then((m) => m.User)
       },
       {
         path: 'article',
-        loadComponent: () => import('./pages/article/article').then((m) => m.ArticleListComponent)
+        loadComponent: () => import('./pages/article/article').then((m) => m.ArticleListComponent),
+        resolve: { ArticleItem: articleListResolver }
       },
       {
         path: 'article/form',
@@ -46,6 +57,7 @@ export const appRoutes: Route[] = [
         path: 'video',
         loadComponent: () => import('./pages/video/video').then((m) => m.Video)
       },
-    ]
+    ],
+
   }
 ];

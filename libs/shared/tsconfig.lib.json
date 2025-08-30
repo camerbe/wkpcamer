@@ -1,12 +1,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/out-tsc",
+    "outDir": "../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
     "types": []
   },
   "exclude": ["src/**/*.spec.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../apps/admin/src/app/guards/auth-gard.ts"]
+  "include": ["src/**/*.ts", "../../apps/admin/src/app/guards/auth-gard.ts"]
 }

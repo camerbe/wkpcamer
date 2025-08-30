@@ -20,6 +20,7 @@ export * from './lib/models/image-detail.model';
 export * from './lib/models/logged-user.model';
 export * from './lib/models/user-detail.model';
 export * from './lib/models/irepository.model';
+export * from './lib/models/credentials.model';
 
 
 

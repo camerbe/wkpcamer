@@ -1,0 +1,81 @@
+<div class="surface-100 min-h-screen flex justify-center items-center px-4">
+  <div class="w-4 flex-1/2">
+      <div class="w-full max-w-xs mt-4"> <!-- wrapper to control width -->
+      <p-card class="shadow-lg">
+        <ng-template #header>
+          <div class="text-2xl p-3 text-primary-700 flex items-center">
+            <i class="pi pi-key text-xl mr-2"></i>
+            Login
+          </div>
+        </ng-template>
+
+        <ng-template #footer>
+          <form [formGroup]="loginForm" (submit)="onSubmit()" class="w-full space-y-4">
+            <div class="field">
+              <label for="email" class="capitalize block mb-1">
+                <span class="text-red-500 mr-2">*</span>Email
+              </label>
+              <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-at"></i>
+                </p-inputgroup-addon>
+                <input
+                  id="email"
+                  pInputText
+                  placeholder="Email"
+                  type="text"
+                  formControlName="email"
+                 />
+              </p-inputgroup>
+
+              @if (email!.errors && email!.errors['email']) {
+                  <small class="text-red-500 mr-3">L'email valide est requis</small>
+              }
+              @if (email?.invalid && (email?.touched || email?.dirty)) {
+                  <small class="text-red-500">L'email est requis</small>
+              }
+            </div>
+
+            <div class="field">
+              <label for="password" class="capitalize block mb-1">
+                <span class="text-red-500 mr-2">*</span>Mot de passe
+              </label>
+              <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-lock"></i>
+                </p-inputgroup-addon>
+                <input
+                  id="password"
+                  pInputText
+                  placeholder="Mot de passe"
+                  type="password"
+                  formControlName="password"
+                 />
+              </p-inputgroup>
+              @if (password?.invalid && (password?.touched || password?.dirty)) {
+                <small class="text-red-500">Le mot de passe est requis</small>
+              }
+            </div>
+
+            <button
+              pButton
+              type="submit"
+              icon="pi pi-sign-in"
+              [raised]="true"
+              class="w-full p-button-primary capitalize"
+               [disabled]="!loginForm.valid"
+            >
+              Connexion
+            </button>
+            @if(isError){
+              <small class="text-red-500 p-3 mt-4">{{ errorMessage }}</small>
+            }
+          </form>
+        </ng-template>
+      </p-card>
+
+    </div>
+  </div>
+
+
+</div>

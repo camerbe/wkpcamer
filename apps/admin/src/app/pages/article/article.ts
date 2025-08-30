@@ -1,4 +1,4 @@
-import { loadArticles } from './../../../../../../libs/services/src/lib/actions/actions';
+import { LocalstorageService } from '@wkpcamer/users';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { Component, OnInit, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
@@ -26,12 +26,14 @@ export class ArticleListComponent implements OnInit {
 
   article!:Article;
   articles:ArticleDetail[]=[];
+  userId!:number;
 
   articleService = inject(ArticleService);
+  localstorageService=inject(LocalstorageService);
   route=inject(Router);
 
-  private load() {
-    return this.articleService.getAll().subscribe({
+  private load(id:number) {
+    return this.articleService.getArticleByUser(id).subscribe({
       next: (data) => {
         const tmpData = data as unknown as Article;
         this.articles = tmpData["data"] as unknown as ArticleDetail[];
@@ -44,10 +46,12 @@ export class ArticleListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.load();
+    const decodedToken=JSON.parse(atob(this.localstorageService.getToken().split('.')[1] )) ;
+    this.userId=+decodedToken.userId;
+    this.load(this.userId);
   }
   onCreate() {
-    this.route.navigate(['/article/form']);
+    this.route.navigate(['/admin/article/form']);
   }
 
 

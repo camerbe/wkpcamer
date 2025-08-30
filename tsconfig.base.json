@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@wkpcamer/actions": ["libs/services/src/index.ts"],
+      "@wkpcamer/auth": ["libs/shared/src/index.ts"],
       "@wkpcamer/config": ["libs/config/src/index.ts"],
       "@wkpcamer/models": ["libs/common/src/index.ts"],
       "@wkpcamer/services": ["libs/common/services/src/index.ts"],

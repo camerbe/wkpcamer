@@ -1,7 +1,10 @@
 import {
   ApplicationConfig,
+  inject,
+  Injector,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
+  runInInjectionContext,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
@@ -11,7 +14,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import { provideEffects } from '@ngrx/effects'; // Import providePrimeNG from PrimeNG
 import { provideStore } from '@ngrx/store';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { from, switchMap } from 'rxjs';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -50,7 +55,14 @@ export const appConfig: ApplicationConfig = {
     }),
     provideStore({}),
     provideEffects([]),
-    provideHttpClient()
+    provideHttpClient(withInterceptors([(req, next) => {
+        const injector = inject(Injector);
+        return from(import('@wkpcamer/users')).pipe(
+          switchMap(m => runInInjectionContext(injector, () => m.jwtInterceptor(req, next)))
+        );
+      }])),
+
+
 
 ],
 };

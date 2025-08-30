@@ -7,7 +7,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { DatePickerModule } from 'primeng/datepicker';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 import { ArticleService } from '@wkpcamer/services/articles';
@@ -18,6 +18,7 @@ import { MessageService } from 'primeng/api';
 import { SelectChangeEvent } from 'primeng/select';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LocalstorageService } from '@wkpcamer/users';
 
 @Component({
   selector: 'admin-article-form',
@@ -46,6 +47,7 @@ import { CommonModule } from '@angular/common';
 export class ArticleFormComponent implements OnInit {
 
 
+
   init: EditorComponent['init'] = {
 
     path_absolute: "/",
@@ -71,11 +73,16 @@ export class ArticleFormComponent implements OnInit {
   articleForm!: FormGroup;
   countries:PaysDetail[]=[];
   sousRubriques:SousRubriqueDetail[]=[];
+  userId!:number;
+  id!:number;
+  isAddMode!:boolean;
 
   fb = inject(FormBuilder);
   articleService = inject(ArticleService);
   route=inject(Router);
   messageService = inject(MessageService);
+  localstorageService=inject(LocalstorageService);
+  activatedRoute=inject(ActivatedRoute);
 
   private loadCountries(): void {
     this.articleService.getCountries().subscribe({
@@ -118,7 +125,7 @@ export class ArticleFormComponent implements OnInit {
       dateparution: ['', [Validators.required]],
       fksousrubrique : ['', [Validators.required]],
       fkrubrique : ['', [Validators.required]],
-      fkuser : ['', [Validators.required]],
+      fkuser : [''],
       fkpays: ['', [Validators.required]],
       titre: ['', [Validators.required, Validators.maxLength(100)]],
       keyword: ['', [this.keywordsValidator()]],
@@ -131,14 +138,58 @@ export class ArticleFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.id=this.activatedRoute.snapshot.params['id'];
+    this.isAddMode=!this.id;
+    
     this.initializeForm();
     this.loadCountries();
     this.loadSousRubriques()
   }
 
+  onSubmit() {
+
+    if (this.articleForm.invalid) {
+      //console.log('Form is invalid', this.articleForm.errors);
+      this.articleForm.markAllAsTouched();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Veuillez corriger les erreurs dans le formulaire'
+      });
+      return;
+    }
+    const decodedToken=JSON.parse(atob(this.localstorageService.getToken().split('.')[1] )) ;
+    this.userId=+decodedToken.userId;
+    this.articleForm?.patchValue({ fkuser: this.userId });
+    console.log(this.articleForm.value);
+    if (this.isAddMode) {
+      this.articleForm?.patchValue({ keyword: this.keyword+', '+this.hashtags});
+      this.articleService.create(this.articleForm.value).subscribe({
+        next: (data) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Article créé avec succès'
+          });
+          this.route.navigate(['/admin/article']);
+        },
+        error: (err) => {
+          console.error('Error creating article', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Erreur lors de la création de l\'article'
+          });
+        }
+      });
+    }
+    //console.log(this.articleForm.value);
+    //console.log(this.articleForm.valid);
+  }
+
 
   goBack() {
-    this.route.navigate(['/article']);
+    this.route.navigate(['/admin/article']);
   }
   onChangeCountry($event: SelectChangeEvent) {
     const countryId = $event.value;
@@ -183,6 +234,9 @@ export class ArticleFormComponent implements OnInit {
   }
   get image(){
     return this.articleForm.get('image');
+  }
+  get fkuser(){
+    return this.articleForm.get('fkuser');
   }
 
 

@@ -8,25 +8,27 @@
     <ul class="">
 
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a routerLink="/user"><span class="pi pi-users pr-2"></span>Administrateur</a>
+        <a routerLink="/admin/user"><span class="pi pi-users pr-2"></span>Administrateur</a>
 
       </li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  routerLink="/article"><span class="pi pi-file pr-2"></span>Article</a></li>
+        <a  routerLink="/admin/article"><span class="pi pi-file pr-2"></span>Article</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  routerLink="/dimension"><span class="pi pi-expand pr-2"></span>Dimension</a></li>
+        <a  routerLink="/admin/dimension"><span class="pi pi-expand pr-2"></span>Dimension</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  routerLink="/event"><span class="pi pi-verified pr-2"></span>évènement</a></li>
+        <a  routerLink="/admin/event"><span class="pi pi-verified pr-2"></span>évènement</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  routerLink="/pub"><span class="pi pi-receipt pr-2"></span>publicité</a></li>
+        <a  routerLink="/admin/pub"><span class="pi pi-receipt pr-2"></span>publicité</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  routerLink="/typepub"><span class="pi pi-box pr-2"></span>type publicité</a></li>
+        <a  routerLink="/admin/typepub"><span class="pi pi-box pr-2"></span>type publicité</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  routerLink="/rubrique"><span class="pi pi-folder-plus pr-2"></span>rubrique</a></li>
+        <a  routerLink="/admin/rubrique"><span class="pi pi-folder-plus pr-2"></span>rubrique</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  routerLink="/sousrubrique"><span class="pi pi-warehouse pr-2"></span>sous rubrique</a></li>
+        <a  routerLink="/admin/sousrubrique"><span class="pi pi-warehouse pr-2"></span>sous rubrique</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  routerLink="/video"><span class="pi pi-youtube pr-2"></span>vidéo</a></li>
+        <a  routerLink="/admin/video"><span class="pi pi-youtube pr-2"></span>vidéo</a></li>
+      <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+        <a  (click)="logout()"><span class="pi pi-sign-out pr-2 text-red-700"></span>déconnextion</a></li>
     </ul>
   </div>
 </div>
