@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit  {
   loginForm!: FormGroup;
   errorMessage="L'email ou le mot de passe n'est pas valide";
   isError=false;
+  currentYear: number = new Date().getFullYear();
 
   fb=inject(FormBuilder);
   authService=inject(AuthenticationService);

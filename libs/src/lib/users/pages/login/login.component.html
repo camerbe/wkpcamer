@@ -1,8 +1,10 @@
-<div class="surface-100 min-h-screen flex justify-center items-center px-4">
-  <div class="w-4 flex-1/2">
-      <div class="w-full max-w-xs mt-4"> <!-- wrapper to control width -->
+<div class="surface-100">
+  <div class="flex min-h-screen flex-col justify-center px-6 py-7 lg:px-8">
+
+    <div class="mt-10 mx-auto max-w-sm">
+      <!-- <div class="w-full max-w-xs mt-4"> wrapper to control width -->
       <p-card class="shadow-lg">
-        <ng-template #header>
+        <ng-template #header class="border-b-2">
           <div class="text-2xl p-3 text-primary-700 flex items-center">
             <i class="pi pi-key text-xl mr-2"></i>
             Login
@@ -73,9 +75,12 @@
           </form>
         </ng-template>
       </p-card>
+      <p class="mx-auto text-green-700 p-4">© 2005 - {{ currentYear }}, made with <i class="pi pi-heart-fill" ></i> by Camer Group</p>
+    <!-- </div> -->
 
     </div>
   </div>
 
 
 </div>
+

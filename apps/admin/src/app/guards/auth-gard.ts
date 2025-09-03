@@ -14,7 +14,7 @@ export class AuthGard implements CanActivate {
     const token=this.localstorageService.getToken();
     if(token){
       const decodedToken=JSON.parse(atob(token.split('.')[1] )) ;
-      if(!this.tokenExpired(decodedToken.expires_in)) return true;
+      if(!this.tokenExpired(+decodedToken.expires_in)) return true;
     }
     this.router.navigate(['/login'])
     return false;

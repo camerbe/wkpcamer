@@ -1,8 +1,8 @@
 export interface EventDetail {
   idevent: number;
-  eventdate: string;
+  eventdate: Date;
   affiche: string;
   imageheight: number;
-  imagewidth: never;
- 
+  imagewidth: number;
+
 }

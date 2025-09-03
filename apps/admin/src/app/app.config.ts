@@ -2,6 +2,7 @@ import {
   ApplicationConfig,
   inject,
   Injector,
+  LOCALE_ID,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
   runInInjectionContext,
@@ -16,10 +17,13 @@ import { provideEffects } from '@ngrx/effects'; // Import providePrimeNG from Pr
 import { provideStore } from '@ngrx/store';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { from, switchMap } from 'rxjs';
+import {registerLocaleData} from '@angular/common'
+import localeFr from '@angular/common/locales/fr';
 
-
+registerLocaleData(localeFr);
 export const appConfig: ApplicationConfig = {
   providers: [
+     { provide: LOCALE_ID, useValue: 'fr-FR' },
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
@@ -53,6 +57,7 @@ export const appConfig: ApplicationConfig = {
         firstDayOfWeek: 1
       }
     }),
+    
     provideStore({}),
     provideEffects([]),
     provideHttpClient(withInterceptors([(req, next) => {

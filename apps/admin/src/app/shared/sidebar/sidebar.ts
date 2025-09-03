@@ -1,13 +1,13 @@
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink,RouterLinkActive, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthenticationService } from '@wkpcamer/auth';
 
 
 @Component({
   selector: 'admin-sidebar',
-  imports: [RouterLink],
+  imports: [RouterLink,RouterLinkActive,RouterModule],
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.css']
 })

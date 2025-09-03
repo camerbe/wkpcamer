@@ -11,11 +11,11 @@
         <a routerLink="/admin/user"><span class="pi pi-users pr-2"></span>Administrateur</a>
 
       </li>
-      <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  routerLink="/admin/article"><span class="pi pi-file pr-2"></span>Article</a></li>
-      <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  routerLink="/admin/dimension"><span class="pi pi-expand pr-2"></span>Dimension</a></li>
-      <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }"   class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  routerLink="/admin/event"><span class="pi pi-verified pr-2"></span>évènement</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  routerLink="/admin/pub"><span class="pi pi-receipt pr-2"></span>publicité</a></li>
@@ -27,8 +27,7 @@
         <a  routerLink="/admin/sousrubrique"><span class="pi pi-warehouse pr-2"></span>sous rubrique</a></li>
       <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  routerLink="/admin/video"><span class="pi pi-youtube pr-2"></span>vidéo</a></li>
-      <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
-        <a  (click)="logout()"><span class="pi pi-sign-out pr-2 text-red-700"></span>déconnextion</a></li>
+
     </ul>
   </div>
 </div>

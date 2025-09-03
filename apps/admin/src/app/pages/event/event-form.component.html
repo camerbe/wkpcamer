@@ -1,0 +1,52 @@
+<p-toast></p-toast>
+  <p-card header="Evènement" subheader="{{ isAddMode ? 'Ajout des évènements' : 'Mise à jour des évènements' }}" [style]="{width: '100%'}" class="text-green-700">
+    <div class="p-grid mb-4">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start></ng-template>
+          <ng-template #end>
+
+              <button [disabled]="!eventForm.valid"  pButton type="button"  icon="pi pi-save" (click)="onSubmit()" class="p-button-success capitalize mr-4">{{ isAddMode ? 'Enregistrer' : 'Mettre à jour' }}</button>
+              <button pButton type="button"  icon="pi pi-arrow-left" class="p-button-secondary capitalize" (click)="goBack()">retour</button>
+          </ng-template>
+        </p-toolbar>
+      </div>
+    </div>
+    <form [formGroup]="eventForm"  class="p-fluid">
+
+        <div class="formgrid grid">
+
+            <div class="field col-12">
+                <label for="eventdate"><span class="text-red-500 mr-2">*</span>Date </label>
+                <p-datepicker
+                  id="eventdate"
+                  formControlName="eventdate"
+                  [showIcon]="true"
+                  inputId="buttondisplay"
+                  [showOnFocus]="false"
+                  [hourFormat]="'24'"
+                  [showTime]="true"
+                  placeholder="Date de l'évènement"
+                  [dateFormat]="'dd/m/yy'"
+
+                />
+                @if (eventdate?.invalid && (eventdate?.touched || eventdate?.dirty)) {
+                  <small class="text-red-500"> La date est requise</small>
+                }
+            </div>
+        </div>
+
+
+        <div class="field col-12">
+          <label for="affiche"><span class="text-red-500 mr-2">*</span>Affiche</label>
+          <editor id="image" [init]="initImage" formControlName="affiche"/>
+          @if (affiche?.invalid && (affiche?.touched || affiche?.dirty)) {
+              <small class="text-red-500"> L'affiche est requise</small>
+          }
+        </div>
+
+    </form>
+  </p-card>
+
+
+

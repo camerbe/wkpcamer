@@ -10,7 +10,7 @@ export interface ArticleDetail {
   fkpays: string;
   fkrubrique: number;
   fkuser: number;
-  dateparution: string;
+  dateparution: Date;
   hit: number;
   fksousrubrique: number;
   auteur: string;
