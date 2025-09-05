@@ -11,6 +11,7 @@ export * from './lib/models/event-detail.model';
 export * from './lib/models/pays-detail.model';
 export * from './lib/models/pub-dimension-detail.model';
 export * from './lib/models/pub.model';
+export * from './lib/models/pub-detail.model';
 export * from './lib/models/rubrique-detail.model';
 export * from './lib/models/sous-rubrique-detail.model';
 export * from './lib/models/type-pub-detail.model';
@@ -21,6 +22,7 @@ export * from './lib/models/logged-user.model';
 export * from './lib/models/user-detail.model';
 export * from './lib/models/irepository.model';
 export * from './lib/models/credentials.model';
+export * from './lib/models/stats.model';
 
 
 

@@ -1,0 +1,30 @@
+<p-toast></p-toast>
+  <p-card header="Rubrique" subheader="{{ isAddMode ? 'Ajout des rubriques' : 'Mise à jour des rubriques' }}" [style]="{width: '100%'}" class="text-green-700">
+    <div class="p-grid mb-4">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start></ng-template>
+          <ng-template #end>
+
+              <button [disabled]="!rubriqueForm.valid"  pButton type="button"  icon="pi pi-save" (click)="onSubmit()" class="p-button-success capitalize mr-4">{{ isAddMode ? 'Enregistrer' : 'Mettre à jour' }}</button>
+              <button pButton type="button"  icon="pi pi-arrow-left" class="p-button-secondary capitalize" (click)="goBack()">retour</button>
+          </ng-template>
+        </p-toolbar>
+      </div>
+    </div>
+    <form [formGroup]="rubriqueForm"  class="p-fluid">
+
+        <div class="formgrid grid">
+            <div class="field col-12">
+                <label for="rubrique" class="capitalize"><span class="text-red-500 mr-2">*</span>rubrique</label>
+                <input formControlName="rubrique" id="rubrique" placeholder="Rubrique" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (rubrique?.invalid && (rubrique?.touched || rubrique?.dirty)) {
+                  <small class="text-red-500">La rubrique est requise</small>
+                }
+            </div>
+        </div>
+    </form>
+  </p-card>
+
+
+

@@ -38,15 +38,19 @@
           <ng-template #body let-article let-i="rowIndex">
               <tr>
                   <td>{{ i+1 }}</td>
-                  <td>{{ article.titre }}</td>
-                  <td>{{ article.sousrubrique.sousrubrique }}</td>
-                  <td>{{ article.dateparution | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+                  <td>{{ article?.titre }}</td>
+                  <td>{{ article?.sousrubrique.sousrubrique }}</td>
+                  <td>{{ article?.dateparution | date: 'dd MMM yyyy HH:mm:ss' }}</td>
                   <td>
                     <div class="flex">
-                      <a [routerLink]="['/admin/article/show',article.id]" class="text-green-700 hover:text-blue-700 mr-4" pTooltip="Mise à jour" tooltipPosition="top">
+                      <a [routerLink]="['/admin/article/show',article?.id]" class="text-green-700 hover:text-blue-700 mr-4" pTooltip="Mise à jour" tooltipPosition="top">
                         <i class="pi pi-pen-to-square"></i>
                       </a>
-                     <a (click)="onDelete(article.id)" class="text-red-500 hover:text-red-700" pTooltip="Suppression" tooltipPosition="top">
+                     <a
+                     tabindex=""
+                     role="button"
+                     (click)="onDelete(article.id)"
+                     class="text-red-500 hover:text-red-700" pTooltip="Suppression" tooltipPosition="top">
                         <i class="pi pi-trash"></i>
                     </a>
                     </div>

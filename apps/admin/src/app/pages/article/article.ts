@@ -62,6 +62,7 @@ export class ArticleListComponent implements OnInit {
     if(this.isExpiredService.isExpired()) this.isExpiredService.logout();
     const decodedToken=JSON.parse(atob(this.localstorageService.getToken().split('.')[1] )) ;
     this.userId=+decodedToken.userId;
+
     this.activatedRoute.data.subscribe({
       next:(data)=>{
         this.articles=data["ArticleItem"];

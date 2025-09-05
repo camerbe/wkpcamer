@@ -11,13 +11,13 @@ import { Router, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router'
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 import { ArticleService } from '@wkpcamer/services/articles';
-import { PaysDetail, SousRubriqueDetail, Pays,SousRubrique, ArticleDetail } from '@wkpcamer/models';
+import { PaysDetail, SousRubriqueDetail, Pays,SousRubrique, ArticleDetail, Article } from '@wkpcamer/models';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { SelectChangeEvent } from 'primeng/select';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { KeywordAndHashtagService, LocalstorageService, IsExpiredService } from '@wkpcamer/users';
 import { CONFIG } from '@wkpcamer/config';
 import tinymce from 'tinymce';
@@ -201,23 +201,36 @@ export class ArticleFormComponent implements OnInit {
     this.loadSousRubriques()
     if(!this.isAddMode){
 
-      this.activatedRoute.data.subscribe({})
-
-      this.articleService.show(this.id).subscribe({
+      this.activatedRoute.data.subscribe({
         next:(data)=>{
-          const resData=data["data"] as ArticleDetail
+
+          const tmpData=data["article"];
+          const resData=tmpData["data"]  as ArticleDetail;
+          //console.log(resData);
+          //console.log(tmpData);
           resData.dateparution=new Date(this.datePipe.transform(resData.dateparution,'yyyy-MM-dd HH:mm:ss') || '');
           const hashtags=this.hashtagService.extractHashtags(resData.keyword);
           const motclef=this.hashtagService.removeHashtags(resData.keyword);
-          /*console.log(`resdate ${resData.keyword}`);
-          console.log(`motclef ${motclef}`);*/
-          resData.keyword=motclef;
-          this.articleForm.patchValue({
-            hashtags:hashtags
-          })
+          this.articleForm.patchValue({hashtags:hashtags});
           this.articleForm.patchValue(resData);
         }
       });
+
+      // this.articleService.show(this.id).subscribe({
+      //   next:(data)=>{
+      //     const resData=data["data"] as ArticleDetail
+      //     resData.dateparution=new Date(this.datePipe.transform(resData.dateparution,'yyyy-MM-dd HH:mm:ss') || '');
+      //     const hashtags=this.hashtagService.extractHashtags(resData.keyword);
+      //     const motclef=this.hashtagService.removeHashtags(resData.keyword);
+      //     /*console.log(`resdate ${resData.keyword}`);
+      //     console.log(`motclef ${motclef}`);*/
+      //     resData.keyword=motclef;
+      //     this.articleForm.patchValue({
+      //       hashtags:hashtags
+      //     })
+      //     this.articleForm.patchValue(resData);
+      //   }
+      // });
     }
   }
 
@@ -271,7 +284,7 @@ export class ArticleFormComponent implements OnInit {
           this.route.navigate(['/admin/article']);
         },
         error: (err) => {
-          console.error('Error creating article', err);
+          console.error('Error updating article', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Erreur',

@@ -1,9 +1,10 @@
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { PubDimension, PubDimensionDetail } from '@wkpcamer/models';
-import { IsExpiredService } from '@wkpcamer/users';
-import { DimensionsService } from '@wkpcamer/actions';
+import { PubTypeService } from '@wkpcamer/actions';
+import { TypePub, TypePubDetail } from '@wkpcamer/models';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { IsExpiredService } from '@wkpcamer/users';
+import { DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -16,65 +17,52 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  selector: 'admin-dimension-list',
+  selector: 'admin-type-pub-list',
   imports: [
-    CardModule, ToolbarModule, ButtonModule, InputIconModule,IconFieldModule,InputTextModule,TableModule, TooltipModule,RouterModule,  ConfirmDialogModule,ToastModule
+    CardModule, ToolbarModule, ButtonModule, InputIconModule,IconFieldModule,InputTextModule,TableModule, TooltipModule,RouterModule,  ConfirmDialogModule,ToastModule,DatePipe
   ],
-  templateUrl: './dimension.component.html',
-  styleUrl: './dimension.component.css',
   providers:[
-    MessageService,ConfirmationService
+    MessageService,ConfirmationService,DatePipe
   ],
+  templateUrl: './type-pub-list.component.html',
+  styleUrl: './type-pub-list.component.css'
 })
-export class DimensionListComponent implements OnInit {
+export class TypePubListComponent implements OnInit {
 
 
-  dimension!:PubDimension;
-  dimensions:PubDimensionDetail[]=[];
+  typepub!:TypePub;
+  typepubs:TypePubDetail[]=[];
 
+  pubtypeService=inject(PubTypeService);
+  activatedRoute=inject(ActivatedRoute);
   router=inject(Router);
   confirmationService=inject(ConfirmationService);
   messageService=inject(MessageService);
   isExpiredService=inject(IsExpiredService)
-  dimensionService=inject(DimensionsService)
-  activatedRoute=inject(ActivatedRoute);
 
   ngOnInit(): void {
     if(this.isExpiredService.isExpired()) this.isExpiredService.logout();
     this.activatedRoute.data.subscribe({
       next:(data)=>{
-        this.dimensions=data["dimensions"]
-      }
-    })
-  }
-
-  private load() {
-    return this.dimensionService.getAll().subscribe({
-      next: (data) => {
-        const tmpData = data as unknown as PubDimension;
-        this.dimensions = tmpData["data"] as unknown as PubDimensionDetail[];
-          //console.log(this.articles);
-      },
-      error: (err) => {
-        console.error('Error fetching articles', err);
+        this.typepubs=data["typepubs"];
       }
     });
   }
 
   onDelete(id: number) {
     this.confirmationService.confirm({
-      message:"Voulez-vous supprimer cette dimension ?",
-      header:"Suppression de dimension",
+      message:"Voulez-vous supprimer ce type de publicité ?",
+      header:"Suppression de type de publicité",
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
-        this.dimensionService.delete(id).subscribe({
+        this.pubtypeService.delete(id).subscribe({
           next:(data)=>{
-            this.dimensions.filter((d)=>d.idpubdimension!=id)
+            this.typepubs.filter((d)=>d.idpubtype!=id)
             this.load()
             this.messageService.add({
               severity: 'success',
               summary: 'Succès',
-              detail: 'Dimension supprimée avec succès'
+              detail: 'Type de publicité supprimé avec succès'
             })
 
           },
@@ -90,6 +78,19 @@ export class DimensionListComponent implements OnInit {
     })
   }
   onCreate() {
-    this.router.navigate(['/admin/dimension/form']);
+    this.router.navigate(['/admin/typepub/form']);
   }
+  private load() {
+      return this.pubtypeService.getAll().subscribe({
+        next: (data) => {
+          const tmpData = data as unknown as TypePub;
+          this.typepubs = tmpData["data"] as unknown as TypePubDetail[];
+              //console.log(this.articles);
+          },
+          error: (err) => {
+            console.error('Error fetching events', err);
+          }
+        });
+    }
+
 }

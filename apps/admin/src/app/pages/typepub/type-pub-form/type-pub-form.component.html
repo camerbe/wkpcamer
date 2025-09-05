@@ -1,0 +1,30 @@
+<p-toast></p-toast>
+  <p-card header="Type Publicité" subheader="{{ isAddMode ? 'Ajout de type publicitaire' : 'Mise à jour des type publicitaires' }}" [style]="{width: '100%'}" class="text-green-700">
+    <div class="p-grid mb-4">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start></ng-template>
+          <ng-template #end>
+
+              <button [disabled]="!typepubForm.valid"  pButton type="button"  icon="pi pi-save" (click)="onSubmit()" class="p-button-success capitalize mr-4">{{ isAddMode ? 'Enregistrer' : 'Mettre à jour' }}</button>
+              <button pButton type="button"  icon="pi pi-arrow-left" class="p-button-secondary capitalize" (click)="goBack()">retour</button>
+          </ng-template>
+        </p-toolbar>
+      </div>
+    </div>
+    <form [formGroup]="typepubForm"  class="p-fluid">
+
+        <div class="formgrid grid">
+            <div class="field col-12">
+                <label for="pubtype" class="capitalize"><span class="text-red-500 mr-2">*</span>type publicité</label>
+                <input formControlName="pubtype" id="pubtype" placeholder="Type publicité" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (pubtype?.invalid && (pubtype?.touched || pubtype?.dirty)) {
+                  <small class="text-red-500">Le type dr publicité est requise</small>
+                }
+            </div>
+        </div>
+    </form>
+  </p-card>
+
+
+

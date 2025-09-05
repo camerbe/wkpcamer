@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-  <p-card header="Dimension" subheader="Liste des dimensions publicitaires" [style]="{width: '100%'}">
+  <p-card header="Publicité" subheader="Liste des publicités" [style]="{width: '100%'}">
     <div class="p-grid">
       <div class="p-col-12">
         <p-toolbar>
@@ -10,7 +10,7 @@
 
         </ng-template>
           <ng-template #end>
-              <button (click)="onCreate()" pButton type="button"  icon="pi pi-plus" class="p-button-success capitalize">Nouvelle dimension</button>
+              <button (click)="onCreate()" pButton type="button"  icon="pi pi-plus" class="p-button-success capitalize">Nouvelle publicité</button>
           </ng-template>
 
 
@@ -20,30 +20,36 @@
     </div>
     <div class="p-grid p-mt-2">
       <div class="p-col-12">
-        <p-table [value]="dimensions" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
+        <p-table [value]="pubs" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
         stripedRows
         >
           <ng-template #header>
               <tr class="p-text-center capitalize">
                   <th>#</th>
                   <th>Dimension</th>
+                  <th>Editeur</th>
+                  <th>Lien</th>
+                  <th>Fin</th>
                   <th></th>
               </tr>
           </ng-template>
-          <ng-template #body let-dimension let-i="rowIndex">
+          <ng-template #body let-pub let-i="rowIndex">
               <tr>
                   <td>{{ i+1 }}</td>
-                  <td>{{ dimension.dimension }}</td>
+                  <td>{{ pub?.dimensions.dimension }}</td>
+                  <td>{{ pub?.editor }}</td>
+                  <td>{{ pub?.href }}</td>
+                  <td>{{ pub?.endpubdate | date:'dd MMMM yyyy' }}</td>
 
                   <td>
                     <div class="flex">
-                      <a [routerLink]="['/admin/dimension/show',dimension.idpubdimension]" class="text-green-700 hover:text-blue-700 mr-4" pTooltip="Mise à jour" tooltipPosition="top">
+                      <a [routerLink]="['/admin/pub/show',pub?.id]" class="text-green-700 hover:text-blue-700 mr-4" pTooltip="Mise à jour" tooltipPosition="top">
                         <i class="pi pi-pen-to-square"></i>
                       </a>
                      <a
-                        tabindex=""
-                        role="button"
-                        (click)="onDelete(dimension?.idpubdimension)" class="text-red-500 hover:text-red-700" pTooltip="Suppression" tooltipPosition="top">
+                      tabindex=""
+                      role="button"
+                     (click)="onDelete(pub?.id)" class="text-red-500 hover:text-red-700" pTooltip="Suppression" tooltipPosition="top">
                         <i class="pi pi-trash"></i>
                     </a>
                     </div>

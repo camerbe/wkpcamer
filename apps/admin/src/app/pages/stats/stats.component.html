@@ -1,0 +1,36 @@
+<p-panel header="Statistiques" class="uppercase shadow-lg">
+    <div class="flex space-x-4">
+            <div class="flex-1 surface-50 p-6 rounded-lg">
+
+                <p-card header="Rédacteur" subheader="Au total" class="text-green-600">
+                  <div class="grid grid-cols-2  py-3">
+                    <i class="pi pi-user text-5xl"></i>
+                    <span class="text-red-400 ml-auto text-4xl">
+                        {{ stats.total_admins}}
+                    </span>
+                  </div>
+                </p-card>
+            </div>
+            <div class="flex-1 surface-100 p-6 rounded-lg">
+                <p-card header="Articles" subheader="Aujourd'hui" class="text-green-600">
+                  <div class="grid grid-cols-2 py-3">
+                    <i class="pi pi-book text-5xl"></i>
+                    <span class="text-red-400 ml-auto text-4xl">
+                      {{ stats.published_today }}
+                    </span>
+                  </div>
+                </p-card>
+            </div>
+            <div class="flex-1 surface-50 p-6 rounded-lg">
+                <p-card header="Articles" subheader="Programmés" class="text-green-600">
+                  <div class="grid grid-cols-2 py-3">
+                    <i class="pi pi-calendar-plus text-5xl"></i>
+                    <span class="text-red-400 ml-auto text-4xl">
+                      {{ stats.scheduled }}
+                    </span>
+                  </div>
+                </p-card>
+            </div>
+        </div>
+</p-panel>
+

@@ -1,0 +1,80 @@
+<p-toast></p-toast>
+  <p-card header="Publicité" subheader="{{ isAddMode ? 'Ajout des publicités' : 'Mise à jour des publicités' }}" [style]="{width: '100%'}" class="text-green-700">
+    <div class="p-grid mb-4">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start></ng-template>
+          <ng-template #end>
+
+              <button [disabled]="!pubForm.valid"  pButton type="button"  icon="pi pi-save" (click)="onSubmit()" class="p-button-success capitalize mr-4">{{ isAddMode ? 'Enregistrer' : 'Mettre à jour' }}</button>
+              <button pButton type="button"  icon="pi pi-arrow-left" class="p-button-secondary capitalize" (click)="goBack()">retour</button>
+          </ng-template>
+        </p-toolbar>
+      </div>
+    </div>
+    <form [formGroup]="pubForm"  class="p-fluid">
+
+        <div class="formgrid grid">
+            <div class="field col-12 md:col-4">
+                <label for="editor"><span class="text-red-500 mr-2">*</span>Editeur</label>
+                <input formControlName="editor" id="editor" placeholder="Editeur" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (editor?.invalid && (editor?.touched || editor?.dirty)) {
+                  <small class="text-red-500">L'éditeur est requis</small>
+                }
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="href"><span class="text-red-500 mr-2">*</span>Lien</label>
+                <input formControlName="href" id="href" placeholder="Lien" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (href?.invalid && (href?.touched || href?.dirty)) {
+                  <small class="text-red-500">Le lien est requis</small>
+                }
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="endpubdate"><span class="text-red-500 mr-2">*</span>Date </label>
+                <p-datepicker
+                  class="w-full"
+                  id="endpubdate"
+                  formControlName="endpubdate"
+                  [showIcon]="true"
+                  inputId="buttondisplay"
+                  [showOnFocus]="false"
+                  [hourFormat]="'24'"
+                  placeholder="Date de fin de la publicité"
+                  [dateFormat]="'dd/m/yy'"
+
+                />
+                @if (endpubdate?.invalid && (endpubdate?.touched || endpubdate?.dirty)) {
+                  <small class="text-red-500"> La date est requise</small>
+                }
+            </div>
+        </div>
+       <!---->
+       <div class="field col-12  md:col-6">
+                <label for="fkdimension "><span class="text-red-500 mr-2">*</span>Dimension</label>
+                <p-select
+                  formControlName="fkdimension"
+                  [options]="pubDimensions"
+                  placeholder="Choix de la dimension"
+                  [editable]="true"
+                  optionValue="idpubdimension"
+                  optionLabel="dimension"
+                  (onChange)="onChangeDimension($event)"
+                  class="w-full md:w-56" />
+                @if (fkdimension?.invalid && (fkdimension?.touched || fkdimension?.dirty)) {
+                  <small class="text-red-500"> La dimension est requise</small>
+                }
+          </div>
+
+        <div class="field col-12">
+          <label for="affiche"><span class="text-red-500 mr-2">*</span>Affiche</label>
+          <editor id="image" [init]="initImage" formControlName="pub"/>
+          @if (pub?.invalid && (pub?.touched || pub?.dirty)) {
+              <small class="text-red-500"> L'affiche est requise</small>
+          }
+        </div>
+
+    </form>
+  </p-card>
+
+
+

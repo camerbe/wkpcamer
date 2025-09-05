@@ -3,8 +3,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
-import { EventService } from '@wkpcamer/actions';
+import { PubService } from '@wkpcamer/actions';
 import { CONFIG } from '@wkpcamer/config';
+import { PubDimension, PubDimensionDetail, TypePubDetail } from '@wkpcamer/models';
 import { IsExpiredService } from '@wkpcamer/users';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -13,14 +14,14 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
+import { SelectChangeEvent, SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import tinymce from 'tinymce';
 
 @Component({
-  selector: 'admin-event-form',
+  selector: 'admin-pub-form',
   imports: [
     CardModule,
     ToolbarModule,
@@ -40,13 +41,15 @@ import tinymce from 'tinymce';
     { provide: TINYMCE_SCRIPT_SRC, useValue: '/tinymce/tinymce.min.js' },
     MessageService,ConfirmationService,DatePipe
   ],
-  templateUrl: './event-form.component.html',
-  styleUrl: './event-form.component.css',
+  templateUrl: './pub-form.component.html',
+  styleUrl: './pub-form.component.css',
 })
-export class EventFormComponent implements OnInit {
+export class PubFormComponent implements OnInit {
 
 
-    initImage: EditorComponent['init'] = {
+
+
+  initImage: EditorComponent['init'] = {
     path_absolute: "/",
     relative_urls: false,
     base_url: '/tinymce',
@@ -78,112 +81,103 @@ export class EventFormComponent implements OnInit {
 	}
   };
 
-  eventForm!: FormGroup;
+  pubForm!: FormGroup;
   id!:number;
   isAddMode!:boolean;
+  pubTypes:TypePubDetail[]=[];
+  pubDimensions:PubDimensionDetail[]=[];
 
   fb = inject(FormBuilder);
-  eventService = inject(EventService);
+  pubService = inject(PubService);
   route=inject(Router);
   messageService = inject(MessageService);
   activatedRoute=inject(ActivatedRoute);
   datePipe=inject(DatePipe);
   isExpiredService=inject(IsExpiredService)
-
-
   ngOnInit(): void {
     if(this.isExpiredService.isExpired()) this.isExpiredService.logout();
     this.id=this.activatedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
     this.initializeForm();
+    this.getDimensions();
+    this.id=this.activatedRoute.snapshot.params['id'];
+    this.isAddMode=!this.id;
     if(!this.isAddMode){
+      if(!this.isAddMode){
       this.activatedRoute.data.subscribe({
         next:(data) =>{
-          const evt =data["event"];
+          const evt =data["pub"];
           const resData=evt["data"]
-          resData.eventdate=new Date(this.datePipe.transform(resData.eventdate,'yyyy-MM-dd') || '');
-          this.eventForm.patchValue(resData);
+          resData.endpubdate=new Date(this.datePipe.transform(resData.endpubdate,'yyyy-MM-dd') || '');
+          this.pubForm.patchValue(resData);
         }
       })
+    }
     }
   }
 
   private initializeForm(): void {
-    this.eventForm = this.fb.group({
-      eventdate: ['', [Validators.required]],
-      affiche : ['', [Validators.required]],
+    this.pubForm = this.fb.group({
+      endpubdate: ['', [Validators.required]],
+      pub : ['', [Validators.required]],
+      fktype : ['', [Validators.required]],
+      href : ['', [Validators.required]],
+      fkdimension : ['', [Validators.required]],
       imageheight : [''],
       imagewidth : [''],
+      editor : ['',[Validators.required]],
 
     });
   }
-  get eventdate(){
-    return this.eventForm.get("eventdate");
+  get endpubdate(){
+    return this.pubForm.get("endpubdate");
   }
-  get affiche(){
-    return this.eventForm.get("affiche");
+  get pub(){
+    return this.pubForm.get("pub");
+  }
+  get fktype(){
+    return this.pubForm.get("fktype");
+  }
+  get fkdimension(){
+    return this.pubForm.get("fkdimension");
   }
   get imageheight(){
-    return this.eventForm.get("imageheight");
+    return this.pubForm.get("imageheight");
   }
   get imagewidth(){
-    return this.eventForm.get("imagewidth");
+    return this.pubForm.get("imagewidth");
+  }
+  get editor(){
+    return this.pubForm.get("editor");
+  }
+  get href(){
+    return this.pubForm.get("href");
   }
 
   goBack() {
-    this.route.navigate(['/admin/event'])
+    this.route.navigate(['/admin/pub'])
   }
   onSubmit() {
-    if (this.eventForm.invalid) {
-      //console.log('Form is invalid', this.articleForm.errors);
-      this.eventForm.markAllAsTouched();
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erreur',
-        detail: 'Veuillez corriger les erreurs dans le formulaire'
-      });
-      return;
-    }
-    if (this.isAddMode){
-      this.eventService.create(this.eventForm.value).subscribe({
-        next:(data)=>{
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Succès',
-            detail: 'Evènement créé avec succès'
-          });
-          this.route.navigate(['/admin/event']);
-        },
-        error: (err) => {
-          console.error('Error creating evènement', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erreur',
-            detail: 'Erreur lors de la création de l\'évènement'
-          });
-        }
-      });
-    }
-    else{
-       this.eventForm.patchValue({eventdate: this.datePipe.transform(this.eventForm.value.eventdate,'yyyy-MM-dd')});
-       this.eventService.patch(this.id,this.eventForm.value).subscribe({
-          next:(data)=>{
-            this.messageService.add({
-            severity: 'success',
-            summary: 'Succès',
-            detail: 'Evènement mis à jour avec succès'
-          });
-          this.route.navigate(['/admin/event']);
-          },
-          error: (err) => {
-          console.error('Error creating évènement', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erreur',
-            detail: 'Erreur lors de la mise à jour l\'évènement'
-          });
-        }
-       });
-    }
+  throw new Error('Method not implemented.');
   }
+
+  onChangeDimension($event: SelectChangeEvent) {
+    const idpubdimension = $event.value;
+    this.pubForm.patchValue({ fkdimension: idpubdimension });
+    // const selected = this.pubDimensions.find(r => r.idpubdimension === idpubdimension);
+
+    // if (selected) {
+    //   this.pubForm.patchValue({ fkrubrique: selected.fkrubrique });
+    // }
+  }
+  private getDimensions(){
+    return this.pubService.getPubDimension().subscribe({
+      next:(data)=>{
+        const tmpData=data as unknown as PubDimension;
+        this.pubDimensions=tmpData["data"] as unknown as PubDimensionDetail[];
+        console.log(this.pubDimensions)
+      }
+    });
+  }
+
 }
