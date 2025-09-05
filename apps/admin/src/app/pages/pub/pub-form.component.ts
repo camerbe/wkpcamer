@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { PubService } from '@wkpcamer/actions';
 import { CONFIG } from '@wkpcamer/config';
-import { PubDimension, PubDimensionDetail, TypePubDetail } from '@wkpcamer/models';
+import { PubDimension, PubDimensionDetail, TypePub, TypePubDetail } from '@wkpcamer/models';
 import { IsExpiredService } from '@wkpcamer/users';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -45,9 +45,6 @@ import tinymce from 'tinymce';
   styleUrl: './pub-form.component.css',
 })
 export class PubFormComponent implements OnInit {
-
-
-
 
   initImage: EditorComponent['init'] = {
     path_absolute: "/",
@@ -100,19 +97,20 @@ export class PubFormComponent implements OnInit {
     this.isAddMode=!this.id;
     this.initializeForm();
     this.getDimensions();
+    this.getTypes();
     this.id=this.activatedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
     if(!this.isAddMode){
       if(!this.isAddMode){
-      this.activatedRoute.data.subscribe({
-        next:(data) =>{
-          const evt =data["pub"];
-          const resData=evt["data"]
-          resData.endpubdate=new Date(this.datePipe.transform(resData.endpubdate,'yyyy-MM-dd') || '');
-          this.pubForm.patchValue(resData);
-        }
-      })
-    }
+        this.activatedRoute.data.subscribe({
+          next:(data) =>{
+            const evt =data["pub"];
+            const resData=evt["data"]
+            resData.endpubdate=new Date(this.datePipe.transform(resData.endpubdate,'yyyy-MM-dd') || '');
+            this.pubForm.patchValue(resData);
+          }
+        })
+      }
     }
   }
 
@@ -158,7 +156,58 @@ export class PubFormComponent implements OnInit {
     this.route.navigate(['/admin/pub'])
   }
   onSubmit() {
-  throw new Error('Method not implemented.');
+    if (this.pubForm.invalid) {
+      //console.log('Form is invalid', this.articleForm.errors);
+      this.pubForm.markAllAsTouched();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Veuillez corriger les erreurs dans le formulaire'
+      });
+      return;
+    }
+    if (this.isAddMode){
+      this.pubService.create(this.pubForm.value).subscribe({
+        next:(data)=>{
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Publicité créé avec succès'
+          });
+          this.route.navigate(['/admin/pub']);
+        },
+        error: (err) => {
+          console.error('Error creating Pub', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Erreur lors de la création de la pub'
+          });
+        }
+      });
+    }
+    else{
+       this.pubForm.patchValue({endpubdate: this.datePipe.transform(this.pubForm.value.endpubdate,'yyyy-MM-dd')});
+       this.pubService.patch(this.id,this.pubForm.value).subscribe({
+          next:(data)=>{
+            this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Publicité mise à jour avec succès'
+          });
+          this.route.navigate(['/admin/pub']);
+          },
+          error: (err) => {
+          console.error('Error creating pub', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Erreur lors de la mise à jour la publicité'
+          });
+        }
+       });
+    }
+
   }
 
   onChangeDimension($event: SelectChangeEvent) {
@@ -170,12 +219,25 @@ export class PubFormComponent implements OnInit {
     //   this.pubForm.patchValue({ fkrubrique: selected.fkrubrique });
     // }
   }
+  onChangeTypePub($event: SelectChangeEvent) {
+    const id = $event.value;
+    this.pubForm.patchValue({ fktype: id });
+  }
   private getDimensions(){
     return this.pubService.getPubDimension().subscribe({
       next:(data)=>{
         const tmpData=data as unknown as PubDimension;
         this.pubDimensions=tmpData["data"] as unknown as PubDimensionDetail[];
-        console.log(this.pubDimensions)
+       // console.log(this.pubDimensions)
+      }
+    });
+  }
+  private getTypes(){
+    return this.pubService.getPubType().subscribe({
+      next:(data)=>{
+        const tmpData=data as unknown as TypePub;
+        this.pubTypes=tmpData["data"] as unknown as TypePubDetail[];
+       // console.log(this.pubDimensions)
       }
     });
   }

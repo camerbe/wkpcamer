@@ -14,6 +14,10 @@ import { typePubListResolver } from './shared/resolvers/type-pub-list-resolver';
 import { typePubResolver } from './shared/resolvers/type-pub-resolver';
 import { rubriqueListResolver } from './shared/resolvers/rubrique-list-resolver';
 import { rubriqueResolver } from './shared/resolvers/rubrique-resolver';
+import { sousRubriqueListResolver } from './shared/resolvers/sous-rubrique-list-resolver';
+import { sousRubriqueResolver } from './shared/resolvers/sous-rubrique-resolver';
+import { videoListResolver } from './shared/resolvers/video-list-resolver';
+import { videoResolver } from './shared/resolvers/video-resolver';
 
 
 export const appRoutes: Route[] = [
@@ -83,40 +87,47 @@ export const appRoutes: Route[] = [
           },
         ]
       },
-
-
-
       {
         path: 'event',
-        loadComponent: () => import('./pages/event/event-list.component').then((m) => m.EventListComponent),
-         resolve:{events:eventListResolver},
-      },
-      {
-        path: 'event/form',
-        loadComponent: () => import('./pages/event/event-form.component').then((m) => m.EventFormComponent)
-      },
-      {
-        path: 'event/show/:id',
-        loadComponent: () => import('./pages/event/event-form.component').then((m) => m.EventFormComponent),
-        resolve:{event:eventResolver}
+        children:[
+          {
+            path: '',
+            loadComponent: () => import('./pages/event/event-list.component').then((m) => m.EventListComponent),
+            resolve:{events:eventListResolver},
+          },
+          {
+            path: 'form',
+            loadComponent: () => import('./pages/event/event-form.component').then((m) => m.EventFormComponent)
+          },
+          {
+            path: 'show/:id',
+            loadComponent: () => import('./pages/event/event-form.component').then((m) => m.EventFormComponent),
+            resolve:{event:eventResolver}
+          },
+        ]
       },
       {
         path: 'pub',
-        loadComponent: () => import('./pages/pub/pub-list.component').then((m) => m.PubListComponent),
-        resolve:{pubs:pubListResolver},
-        canActivate:[adminGuard],
-      },
-      {
-        path: 'pub/form',
-        loadComponent: () => import('./pages/pub/pub-form.component').then((m) => m.PubFormComponent),
-        canActivate:[adminGuard],
-      },
-      {
-        path: 'pub/show/:id',
-        loadComponent: () => import('./pages/pub/pub-form.component').then((m) => m.PubFormComponent),
-        resolve:{pub:pubResolver},
-        canActivate:[adminGuard],
+        children:[
+          {
+            path: '',
+            loadComponent: () => import('./pages/pub/pub-list.component').then((m) => m.PubListComponent),
+            resolve:{pubs:pubListResolver},
+            canActivate:[adminGuard],
+          },
+          {
+            path: 'form',
+            loadComponent: () => import('./pages/pub/pub-form.component').then((m) => m.PubFormComponent),
+            canActivate:[adminGuard],
+          },
+          {
+            path: 'show/:id',
+            loadComponent: () => import('./pages/pub/pub-form.component').then((m) => m.PubFormComponent),
+            resolve:{pub:pubResolver},
+            canActivate:[adminGuard],
 
+          },
+        ]
       },
       {
         path: 'typepub',
@@ -159,18 +170,52 @@ export const appRoutes: Route[] = [
           },
         ]
       },
-
       {
         path: 'sousrubrique',
-        loadComponent: () => import('./pages/sousrubrique/sousrubrique').then((m) => m.Sousrubrique)
+        children:[
+            {
+              path: '',
+              loadComponent: () => import('./pages/sousrubrique/sous-rubrique-list/sous-rubrique-list.component').then((m) => m.SousRubriqueListComponent),
+              resolve:{sousrubriques:sousRubriqueListResolver},
+            },
+            {
+              path: 'form',
+              loadComponent: () => import('./pages/sousrubrique/sous-rubrique-form/sous-rubrique-form.component').then((m) => m.SousRubriqueFormComponent),
+
+            },
+            {
+              path: 'show/:id',
+              loadComponent: () => import('./pages/sousrubrique/sous-rubrique-form/sous-rubrique-form.component').then((m) => m.SousRubriqueFormComponent),
+              resolve:{sousrubrique:sousRubriqueResolver},
+            },
+        ]
       },
+
+
       {
         path: 'video',
-        loadComponent: () => import('./pages/video/video').then((m) => m.Video)
+        children:[
+          {
+            path: '',
+            loadComponent: () => import('./pages/video/video-list/video-list.component').then((m) => m.VideoListComponent),
+            resolve:{videos:videoListResolver},
+          },
+          {
+            path: 'form',
+            loadComponent: () => import('./pages/video/video-form/video-form.component').then((m) => m.VideoFormComponent),
+
+          },
+          {
+            path: 'show/:id',
+            loadComponent: () => import('./pages/video/video-form/video-form.component').then((m) => m.VideoFormComponent),
+            resolve:{video:videoResolver},
+          },
+        ]
+
       },
       {
         path: '**',
-        redirectTo: ''
+        redirectTo: 'login'
       }
     ],
 

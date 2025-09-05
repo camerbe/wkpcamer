@@ -1,10 +1,9 @@
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
-import { PubTypeService } from '@wkpcamer/actions';
-import { TypePub, TypePubDetail } from '@wkpcamer/models';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { SousRubriqueService } from '@wkpcamer/actions';
+import { SousRubrique, SousRubriqueDetail } from '@wkpcamer/models';
 import { IsExpiredService } from '@wkpcamer/users';
-import { DatePipe } from '@angular/common';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -17,52 +16,52 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  selector: 'admin-type-pub-list',
+  selector: 'admin-sous-rubrique-list',
   imports: [
     CardModule, ToolbarModule, ButtonModule, InputIconModule,IconFieldModule,InputTextModule,TableModule, TooltipModule,RouterModule,  ConfirmDialogModule,ToastModule
   ],
-  providers:[
+   providers:[
     MessageService,ConfirmationService
   ],
-  templateUrl: './type-pub-list.component.html',
-  styleUrl: './type-pub-list.component.css'
+  templateUrl: './sous-rubrique-list.component.html',
+  styleUrl: './sous-rubrique-list.component.css'
 })
-export class TypePubListComponent implements OnInit {
+export class SousRubriqueListComponent implements OnInit {
 
+  sousrubrique!:SousRubrique;
+  sousrubriques:SousRubriqueDetail[]=[];
 
-  typepub!:TypePub;
-  typepubs:TypePubDetail[]=[];
-
-  pubtypeService=inject(PubTypeService);
-  activatedRoute=inject(ActivatedRoute);
   router=inject(Router);
   confirmationService=inject(ConfirmationService);
   messageService=inject(MessageService);
   isExpiredService=inject(IsExpiredService)
+  sousrubriqueService=inject(SousRubriqueService)
+  activatedRoute=inject(ActivatedRoute);
+
+
 
   ngOnInit(): void {
     if(this.isExpiredService.isExpired()) this.isExpiredService.logout();
     this.activatedRoute.data.subscribe({
       next:(data)=>{
-        this.typepubs=data["typepubs"];
+        this.sousrubriques=data["sousrubriques"]
       }
-    });
+    })
   }
-
   onDelete(id: number) {
     this.confirmationService.confirm({
-      message:"Voulez-vous supprimer ce type de publicité ?",
-      header:"Suppression de type de publicité",
+      message:"Voulez-vous supprimer cette sousrubrique ?",
+      header:"Suppression de sousrubrique",
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
-        this.pubtypeService.delete(id).subscribe({
+        this.sousrubriqueService.delete(id).subscribe({
           next:(data)=>{
-            this.typepubs.filter((d)=>d.idpubtype!=id)
+            this.sousrubriques.filter((d)=>d.idsousrubrique!=id)
             this.load()
             this.messageService.add({
               severity: 'success',
               summary: 'Succès',
-              detail: 'Type de publicité supprimé avec succès'
+              detail: 'SousRubrique supprimée avec succès'
             })
 
           },
@@ -70,27 +69,27 @@ export class TypePubListComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Erreur',
-              detail: 'Erreur lors de la suppression de dimension'
+              detail: 'Erreur lors de la suppression de sousrubrique'
             })
            }
         })
       }
     })
   }
-  onCreate() {
-    this.router.navigate(['/admin/typepub/form']);
-  }
-  private load() {
-      return this.pubtypeService.getAll().subscribe({
+  load() {
+    return this.sousrubriqueService.getAll().subscribe({
         next: (data) => {
-          const tmpData = data as unknown as TypePub;
-          this.typepubs = tmpData["data"] as unknown as TypePubDetail[];
-              //console.log(this.articles);
-          },
-          error: (err) => {
-            console.error('Error fetching events', err);
-          }
-        });
-    }
+          const tmpData = data as unknown as SousRubrique;
+          this.sousrubriques = tmpData["data"] as unknown as SousRubriqueDetail[];
+                  //console.log(this.articles);
+        },
+        error: (err) => {
+          console.error('Error fetching SousRubrique', err);
+        }
+    });
+  }
+  onCreate() {
+    this.router.navigate(['/admin/sousrubrique/form']);
+  }
 
 }

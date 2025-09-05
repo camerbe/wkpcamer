@@ -1,0 +1,62 @@
+<p-toast></p-toast>
+  <p-card header="Vidéo" subheader="Liste des vidéos" [style]="{width: '100%'}">
+    <div class="p-grid">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start>
+
+          </ng-template>
+          <ng-template #center>
+
+          </ng-template>
+            <ng-template #end>
+                <button (click)="onCreate()" pButton type="button"  icon="pi pi-plus" class="p-button-success capitalize">Nouvelle vidéo</button>
+            </ng-template>
+          </p-toolbar>
+      </div>
+    </div>
+    <div class="p-grid p-mt-2">
+      <div class="p-col-12">
+        <p-table [value]="videos" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
+        stripedRows
+        >
+          <ng-template #header>
+              <tr class="p-text-center capitalize">
+                  <th>#</th>
+                  <th>titre</th>
+                  <th>type de vidéo</th>
+                  <th></th>
+              </tr>
+          </ng-template>
+          <ng-template #body let-video let-i="rowIndex">
+              <tr>
+                  <td>{{ i+1 }}</td>
+                  <td>{{ video?.titre }}</td>
+                  <td [noWrap]="true">{{ video?.typevideo }}</td>
+
+                  <td>
+                    <div class="flex">
+                      <a [routerLink]="['/admin/video/show',video?.idvideo]" class="text-green-700 hover:text-blue-700 mr-4" pTooltip="Mise à jour" tooltipPosition="top">
+                        <i class="pi pi-pen-to-square"></i>
+                      </a>
+                     <a
+                      tabindex=""
+                      role="button"
+                      (click)="onDelete(video?.idvideo)"
+                      (keydown.enter)="onDelete(video?.idvideo)"
+                      (keydown.space)="onDelete(video?.idvideo)"
+                      class="text-red-500 hover:text-red-700" pTooltip="Suppression" tooltipPosition="top">
+                        <i class="pi pi-trash"></i>
+                    </a>
+                    </div>
+
+                  </td>
+              </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+  </p-card>
+<p-confirmdialog />
+

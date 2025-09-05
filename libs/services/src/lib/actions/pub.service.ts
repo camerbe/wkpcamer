@@ -13,9 +13,9 @@ export class PubService extends DataService<Pub> {
     super(inject(HttpClient), CONFIG.apiUrl + `/pubs`);
   }
   getPubDimension(){
-    return this.httpClient.get<PubDimension[]>(CONFIG.apiUrl+`/pubs/dimensions`);
+    return this.httpClient.get<PubDimension[]>(CONFIG.apiUrl+`/pubs/dimension/list`);
   }
   getPubType(){
-    return this.httpClient.get<TypePub[]>(CONFIG.apiUrl+`/pubs/pubtypes`);
+    return this.httpClient.get<TypePub[]>(CONFIG.apiUrl+`/pubs/pubtype/list`);
   }
 }

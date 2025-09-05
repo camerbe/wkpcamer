@@ -1,11 +1,11 @@
-<div class="bg-gray-800 text-white  min-h-screen flex flex-col">
+<div class="bg-gray-800 text-white  h-full flex flex-col">
   <div class="bg-gray-800 text-white w-64 flex-shrink-0">
     <div class="p-4 border-b border-gray-100 uppercase">
       <span class="pi pi-home pr-2"></span>Dashboard
       <img src="/assets/images/logo.png" alt="Logo" class="h-8 w-auto inline-block ml-2">
     </div>
 
-    <ul class="">
+    <ul class="" (scroll)="true">
       <li  routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a routerLink="/admin/admin"><span class="pi pi-barcode pr-2"></span>dashboard</a>
 
@@ -29,7 +29,7 @@
         <a  role="button"  routerLink="/admin/rubrique"><span class="pi pi-folder-plus pr-2"></span>rubrique</a></li>
       <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button"  routerLink="/admin/sousrubrique"><span class="pi pi-warehouse pr-2"></span>sous rubrique</a></li>
-      <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li  routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button"  routerLink="/admin/video"><span class="pi pi-youtube pr-2"></span>vidéo</a></li>
 
     </ul>

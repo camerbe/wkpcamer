@@ -1,10 +1,9 @@
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
-import { PubTypeService } from '@wkpcamer/actions';
-import { TypePub, TypePubDetail } from '@wkpcamer/models';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { VideoService } from '@wkpcamer/actions';
+import { Video, VideoDetail } from '@wkpcamer/models';
 import { IsExpiredService } from '@wkpcamer/users';
-import { DatePipe } from '@angular/common';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -17,36 +16,34 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  selector: 'admin-type-pub-list',
+  selector: 'admin-video-list',
   imports: [
     CardModule, ToolbarModule, ButtonModule, InputIconModule,IconFieldModule,InputTextModule,TableModule, TooltipModule,RouterModule,  ConfirmDialogModule,ToastModule
   ],
   providers:[
     MessageService,ConfirmationService
   ],
-  templateUrl: './type-pub-list.component.html',
-  styleUrl: './type-pub-list.component.css'
+  templateUrl: './video-list.component.html',
+  styleUrl: './video-list.component.css'
 })
-export class TypePubListComponent implements OnInit {
+export class VideoListComponent implements OnInit{
 
+  video!:Video;
+  videos:VideoDetail[]=[];
 
-  typepub!:TypePub;
-  typepubs:TypePubDetail[]=[];
-
-  pubtypeService=inject(PubTypeService);
+  videoService=inject(VideoService);
   activatedRoute=inject(ActivatedRoute);
   router=inject(Router);
   confirmationService=inject(ConfirmationService);
   messageService=inject(MessageService);
   isExpiredService=inject(IsExpiredService)
-
   ngOnInit(): void {
     if(this.isExpiredService.isExpired()) this.isExpiredService.logout();
-    this.activatedRoute.data.subscribe({
-      next:(data)=>{
-        this.typepubs=data["typepubs"];
-      }
-    });
+      this.activatedRoute.data.subscribe({
+        next:(data)=>{
+          this.videos=data["videos"];
+        }
+      });
   }
 
   onDelete(id: number) {
@@ -55,14 +52,14 @@ export class TypePubListComponent implements OnInit {
       header:"Suppression de type de publicité",
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
-        this.pubtypeService.delete(id).subscribe({
+        this.videoService.delete(id).subscribe({
           next:(data)=>{
-            this.typepubs.filter((d)=>d.idpubtype!=id)
+            this.videos.filter((d)=>d.idvideo!=id)
             this.load()
             this.messageService.add({
               severity: 'success',
               summary: 'Succès',
-              detail: 'Type de publicité supprimé avec succès'
+              detail: 'Vidéo supprimée avec succès'
             })
 
           },
@@ -70,27 +67,27 @@ export class TypePubListComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Erreur',
-              detail: 'Erreur lors de la suppression de dimension'
+              detail: 'Erreur lors de la suppression de le vidéo'
             })
            }
         })
       }
     })
   }
-  onCreate() {
-    this.router.navigate(['/admin/typepub/form']);
-  }
-  private load() {
-      return this.pubtypeService.getAll().subscribe({
+  load() {
+    return this.videoService.getAll().subscribe({
         next: (data) => {
-          const tmpData = data as unknown as TypePub;
-          this.typepubs = tmpData["data"] as unknown as TypePubDetail[];
-              //console.log(this.articles);
-          },
-          error: (err) => {
-            console.error('Error fetching events', err);
-          }
-        });
-    }
+            const tmpData = data as unknown as Video;
+            this.videos = tmpData["data"] as unknown as VideoDetail[];
+                  //console.log(this.articles);
+        },
+        error: (err) => {
+          console.error('Error fetching events', err);
+        }
+    });
+  }
+  onCreate() {
+    this.router.navigate(['/admin/video/form']);
+  }
 
 }

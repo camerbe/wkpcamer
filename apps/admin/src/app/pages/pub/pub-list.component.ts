@@ -64,8 +64,33 @@ export class PubListComponent implements OnInit {
         });
   }
 
-  onDelete(arg0: any) {
-  throw new Error('Method not implemented.');
+  onDelete(id: number) {
+    this.confirmationService.confirm({
+      message:"Voulez-vous supprimer cette évènement ?",
+      header:"Suppression d'évènement",
+      icon:"pi pi-exclamation-triangle",
+      accept:()=>{
+        this.pubService.delete(id).subscribe({
+          next:(data)=>{
+            this.pubs.filter((d)=>d.id!=id)
+            this.load()
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Publicté supprimée avec succès'
+            })
+
+          },
+           error:(err)=>{
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Erreur lors de la suppression de publicité'
+            })
+           }
+        })
+      }
+    })
   }
   onCreate() {
     this.router.navigate(['/admin/pub/form']);

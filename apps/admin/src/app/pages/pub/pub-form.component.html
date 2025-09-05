@@ -49,10 +49,11 @@
             </div>
         </div>
        <!---->
-       <div class="field col-12  md:col-6">
-                <label for="fkdimension "><span class="text-red-500 mr-2">*</span>Dimension</label>
-                <p-select
-                  formControlName="fkdimension"
+        <div class="formgrid grid">
+            <div class="field col-12  md:col-6">
+            <label for="fkdimension "><span class="text-red-500 mr-2">*</span>Dimension</label>
+            <p-select
+                formControlName="fkdimension"
                   [options]="pubDimensions"
                   placeholder="Choix de la dimension"
                   [editable]="true"
@@ -60,14 +61,32 @@
                   optionLabel="dimension"
                   (onChange)="onChangeDimension($event)"
                   class="w-full md:w-56" />
-                @if (fkdimension?.invalid && (fkdimension?.touched || fkdimension?.dirty)) {
+              @if (fkdimension?.invalid && (fkdimension?.touched || fkdimension?.dirty)) {
                   <small class="text-red-500"> La dimension est requise</small>
-                }
-          </div>
+              }
+        </div>
+        <!---->
+       <div class="field col-12  md:col-6">
+            <label for="fktype "><span class="text-red-500 mr-2">*</span>Type publicité</label>
+            <p-select
+                formControlName="fktype"
+                id="fktype"
+                  [options]="pubTypes"
+                  placeholder="Choix du type de publicité"
+                  [editable]="true"
+                  optionValue="idpubtype"
+                  optionLabel="pubtype"
+                  (onChange)="onChangeTypePub($event)"
+                  class="w-full md:w-56" />
+              @if (fktype?.invalid && (fktype?.touched || fktype?.dirty)) {
+                  <small class="text-red-500"> Le type de pub est requis</small>
+              }
+        </div>
+        </div>
 
         <div class="field col-12">
           <label for="affiche"><span class="text-red-500 mr-2">*</span>Affiche</label>
-          <editor id="image" [init]="initImage" formControlName="pub"/>
+          <editor id="affiche" [init]="initImage" formControlName="pub"/>
           @if (pub?.invalid && (pub?.touched || pub?.dirty)) {
               <small class="text-red-500"> L'affiche est requise</small>
           }

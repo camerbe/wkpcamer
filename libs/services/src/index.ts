@@ -5,3 +5,5 @@ export * from './lib/actions/pub.service';
 export * from './lib/actions/stats.service';
 export * from './lib/actions/pub-type.service';
 export * from './lib/actions/rubrique.service';
+export * from './lib/actions/sous-rubrique.service';
+export * from './lib/actions/video.service';

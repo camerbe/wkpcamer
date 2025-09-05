@@ -1,0 +1,57 @@
+<p-toast></p-toast>
+  <p-card header="Vidéo" subheader="{{ isAddMode ? 'Ajout de vidéo' : 'Mise à jour de vidéo' }}" [style]="{width: '100%'}" class="text-green-700">
+    <div class="p-grid mb-4">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start></ng-template>
+          <ng-template #end>
+
+              <button [disabled]="!videoForm.valid"  pButton type="button"  icon="pi pi-save" (click)="onSubmit()" class="p-button-success capitalize mr-4">{{ isAddMode ? 'Enregistrer' : 'Mettre à jour' }}</button>
+              <button pButton type="button"  icon="pi pi-arrow-left" class="p-button-secondary capitalize" (click)="goBack()">retour</button>
+          </ng-template>
+        </p-toolbar>
+      </div>
+    </div>
+    <form [formGroup]="videoForm"  class="p-fluid">
+
+        <div class="formgrid grid">
+          <div class="field col-12 md:col-6">
+                <label for="pubtype" class="capitalize"><span class="text-red-500 mr-2">*</span>Type de vidéo</label>
+                <div class="flex">
+                    <div class="flex-1">
+                      <p-radiobutton formControlName="typevideo" value="Autre" inputId="Autre"  name="typevideo"/>
+                      <label for="Autre" class="ml-2">Autre</label>
+                    </div>
+                    <div class="flex-1">
+                      <p-radiobutton formControlName="typevideo" value="Camer" inputId="Camer" name="typevideo" />
+                      <label for="Camer" class="ml-2">Camer</label>
+                    </div>
+                    <div class="flex-1">
+                      <p-radiobutton formControlName="typevideo" value="Sopie" inputId="Sopie"  name="typevideo"/>
+                      <label for="Sopie" class="ml-2">Sopie</label>
+                    </div>
+                </div>
+                @if (typevideo?.invalid && (typevideo?.touched || typevideo?.dirty)) {
+                  <small class="text-red-500">Le choix du type de vidéo requis</small>
+                }
+            </div>
+            <div class="field col-12 md:col-6">
+                <label for="titre" class="capitalize"><span class="text-red-500 mr-2">*</span>titre</label>
+                <input formControlName="titre" id="titre" placeholder="Titre" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (titre?.invalid && (titre?.touched || titre?.dirty)) {
+                  <small class="text-red-500">Le titre est requis</small>
+                }
+            </div>
+        </div>
+        <div class="field col-12">
+          <label for="video"><span class="text-red-500 mr-2">*</span>Vidéo</label>
+          <editor id="video" [init]="initImage" formControlName="video"  placeholder="Vidéo"/>
+          @if (video?.invalid && (video?.touched || video?.dirty)) {
+              <small class="text-red-500"> La vidéo est requise</small>
+          }
+        </div>
+    </form>
+  </p-card>
+
+
+
