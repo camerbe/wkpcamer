@@ -1,6 +1,9 @@
-import { IRepository } from "./irepository.model";
 import { UserDetail } from "./user-detail.model";
 
-export interface LoggedUser extends IRepository<UserDetail> {
+export interface LoggedUser {
+  success:boolean;
+  user:UserDetail;
   token: string;
+  message: string;
+
 }

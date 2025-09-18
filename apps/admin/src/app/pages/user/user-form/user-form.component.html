@@ -1,0 +1,63 @@
+<p-toast></p-toast>
+  <p-card header="Rédacteur" subheader="{{ isAddMode ? 'Ajout de rédacteur' : 'Mise à jour de rédacteur' }}" [style]="{width: '100%'}" class="text-green-700">
+    <div class="p-grid mb-4">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start></ng-template>
+          <ng-template #end>
+
+              <button [disabled]="!userForm.valid"  pButton type="button"  icon="pi pi-save" (click)="onSubmit()" class="p-button-success capitalize mr-4">{{ isAddMode ? 'Enregistrer' : 'Mettre à jour' }}</button>
+              <button pButton type="button"  icon="pi pi-arrow-left" class="p-button-secondary capitalize" (click)="goBack()">retour</button>
+          </ng-template>
+        </p-toolbar>
+      </div>
+    </div>
+    <form [formGroup]="userForm"  class="p-fluid">
+
+        <div class="formgrid grid">
+          <div class="field col-12 md:col-6">
+                <label for="pubtype" class="capitalize"><span class="text-red-500 mr-2">*</span>rôle</label>
+                <div class="flex">
+                    <div class="flex-1">
+                      <p-radiobutton formControlName="role" value="ADM" inputId="ADM"  name="typevideo"/>
+                      <label for="ADM" class="ml-2">ADM</label>
+                    </div>
+                    <div class="flex-1">
+                      <p-radiobutton formControlName="role" value="USR" inputId="USR" name="typevideo" />
+                      <label for="USR" class="ml-2">USR</label>
+                    </div>
+
+                </div>
+                @if (role?.invalid && (role?.touched || role?.dirty)) {
+                  <small class="text-red-500">Le rôle est requis</small>
+                }
+            </div>
+            <div class="field col-12 md:col-6">
+                <label for="email" class="capitalize"><span class="text-red-500 mr-2">*</span>email</label>
+                <input formControlName="email" id="titre" placeholder="Email" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (email?.invalid && (email?.touched || email?.dirty)) {
+                  <small class="text-red-500">L'email est requis</small>
+                }
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col-12 md:col-6">
+                <label for="nom" class="capitalize"><span class="text-red-500 mr-2">*</span>nom</label>
+                <input formControlName="nom" id="titre" placeholder="Nom" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (nom?.invalid && (nom?.touched || nom?.dirty)) {
+                  <small class="text-red-500">Le nom est requis</small>
+                }
+            </div>
+            <div class="field col-12 md:col-6">
+                <label for="prenom" class="capitalize"><span class="text-red-500 mr-2">*</span>prénom</label>
+                <input formControlName="prenom" id="titre" placeholder="Prénom" type="text" pInputText class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full ">
+                @if (prenom?.invalid && (prenom?.touched || prenom?.dirty)) {
+                  <small class="text-red-500">Le prénom est requis</small>
+                }
+            </div>
+        </div>
+    </form>
+  </p-card>
+
+
+

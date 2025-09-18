@@ -1,0 +1,72 @@
+<p-toast></p-toast>
+  <p-card header="Rédacteur" subheader="Liste des rédacteurs" [style]="{width: '100%'}">
+    <div class="p-grid">
+      <div class="p-col-12">
+        <p-toolbar>
+          <ng-template #start>
+
+          </ng-template>
+          <ng-template #center>
+
+          </ng-template>
+            <ng-template #end>
+                <button (click)="onCreate()" pButton type="button"  icon="pi pi-plus" class="p-button-success capitalize">Nouveau rédacteur</button>
+            </ng-template>
+          </p-toolbar>
+      </div>
+    </div>
+    <div class="p-grid p-mt-2">
+      <div class="p-col-12">
+        <p-table [value]="users" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
+        stripedRows
+        >
+          <ng-template #header>
+              <tr class="p-text-center capitalize">
+                  <th>#</th>
+                  <th>Rédacteur</th>
+                  <th>Email</th>
+                  <th>statut</th>
+                  <th>Rôle</th>
+                  <th></th>
+              </tr>
+          </ng-template>
+          <ng-template #body let-user let-i="rowIndex">
+              <tr>
+                  <td>{{ i+1 }}</td>
+                  <td>{{ user?.fullName }}</td>
+                  <td>{{ user?.email }}</td>
+                  @if(user?.email_verified_at){
+                    <td><i class="pi pi-check-circle text-green-500"></i></td>
+                  }
+                  @else {
+                    <td><i class="pi pi-ban text-red-500"></i></td>
+                  }
+
+                  <td >{{ user?.role }}</td>
+
+                  <td>
+                    <div class="flex">
+                      <a [routerLink]="['/admin/user/show',user?.id]" class="text-green-700 hover:text-blue-700 mr-4" pTooltip="Mise à jour" tooltipPosition="top">
+                        <i class="pi pi-pen-to-square"></i>
+                      </a>
+                     <a
+                      tabindex=""
+                      role="button"
+                      (click)="onDelete(user?.id)"
+                      (keydown.enter)="onDelete(user?.id)"
+                      (keydown.space)="onDelete(user?.id)"
+                      class="text-red-500 hover:text-red-700" pTooltip="Suppression" tooltipPosition="top">
+                        <i class="pi pi-trash"></i>
+                    </a>
+                    </div>
+
+                  </td>
+              </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+  </p-card>
+<p-confirmdialog />
+

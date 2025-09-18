@@ -18,6 +18,9 @@ import { sousRubriqueListResolver } from './shared/resolvers/sous-rubrique-list-
 import { sousRubriqueResolver } from './shared/resolvers/sous-rubrique-resolver';
 import { videoListResolver } from './shared/resolvers/video-list-resolver';
 import { videoResolver } from './shared/resolvers/video-resolver';
+import { userResolver } from './shared/resolvers/user-resolver';
+import { userListResolver } from './shared/resolvers/user-list-resolver';
+import { changePasswordResolver } from 'libs/src/lib/users/resolvers/change-password-resolver';
 
 
 export const appRoutes: Route[] = [
@@ -42,9 +45,8 @@ export const appRoutes: Route[] = [
         resolve: { statistique: statsResolver }
       },
       {
-        path: 'user',
-        canActivate:[adminGuard],
-        loadComponent: () => import('./pages/user/user').then((m) => m.User)
+        path:'unauthorize',
+        loadComponent:()=>import('./pages/unauthorize/unauthorize.component').then((m)=>m.UnauthorizeComponent)
       },
       {
          path: 'article',
@@ -190,8 +192,6 @@ export const appRoutes: Route[] = [
             },
         ]
       },
-
-
       {
         path: 'video',
         children:[
@@ -211,6 +211,33 @@ export const appRoutes: Route[] = [
             resolve:{video:videoResolver},
           },
         ]
+
+      },
+      {
+         path: 'user',
+         canActivate:[adminGuard],
+         children:[
+            {
+              path: '',
+              loadComponent: () => import('./pages/user/user-list/user-list.component').then((m) => m.UserListComponent),
+              resolve:{users:userListResolver},
+            },
+            {
+              path: 'form',
+              loadComponent: () => import('./pages/user/user-form/user-form.component').then((m) => m.UserFormComponent),
+              //resolve:{videos:videoListResolver},
+            },
+            {
+              path: 'show/:id',
+              loadComponent: () => import('./pages/user/user-form/user-form.component').then((m) => m.UserFormComponent),
+              resolve:{user:userResolver},
+            },
+            {
+              path: 'activating/:email',
+              loadComponent: () => import('./pages/user/user-form/user-form.component').then((m) => m.UserFormComponent),
+              resolve:{userpw:changePasswordResolver},
+            },
+         ]
 
       },
       {

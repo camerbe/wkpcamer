@@ -154,14 +154,14 @@ export class VideoFormComponent implements OnInit {
     this.isAddMode=!this.id;
     if(!this.isAddMode){
       if(!this.isAddMode){
-      this.activatedRoute.data.subscribe({
-        next:(data) =>{
-          const video =data["video"];
-          const resData=video["data"]
-          this.videoForm.patchValue(resData);
-        }
-      });
-	  }
+        this.activatedRoute.data.subscribe({
+          next:(data) =>{
+            const video =data["video"];
+            const resData=video["data"]
+            this.videoForm.patchValue(resData);
+          }
+        });
+      }
     }
 
   }

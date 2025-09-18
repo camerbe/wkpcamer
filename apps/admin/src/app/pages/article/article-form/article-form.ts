@@ -73,9 +73,9 @@ export class ArticleFormComponent implements OnInit {
 			  title: 'Camer.be',
 			  width: x * 0.8,
 			  height: y * 0.8,
+
 			  onMessage: (api: any, message: any) => {
-          console.log(message.content);
-            callback(message.content);
+          callback(message.content);
           api.close();
 			  }
 
@@ -402,6 +402,7 @@ filePickerHandler(callback: any, value: any, meta: any,tinymce:any) {
       title: 'Camer.be',
       width: x * 0.8,
       height: y * 0.8,
+
       onMessage: (api: any, message: any) => {
         callback(message.content);
         api.close();

@@ -1,35 +1,35 @@
 <div class="bg-gray-800 text-white  h-full flex flex-col">
   <div class="bg-gray-800 text-white w-64 flex-shrink-0">
-    <div class="p-4 border-b border-gray-100 uppercase">
-      <span class="pi pi-home pr-2"></span>Dashboard
-      <img src="/assets/images/logo.png" alt="Logo" class="h-8 w-auto inline-block ml-2">
+    <div class="p-4 border-b border-gray-100 uppercase flex">
+
+      <img src="/assets/images/logo.png" alt="Logo" class="h-6 w-auto inline-block ml-2">
     </div>
 
-    <ul class="" (scroll)="true">
+    <ul class="">
       <li  routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a routerLink="/admin/admin"><span class="pi pi-barcode pr-2"></span>dashboard</a>
 
       </li>
-      <li class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: false }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button" routerLink="/admin/user"><span class="pi pi-users pr-2"></span>Administrateur</a>
 
       </li>
 
-      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: false }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button"  routerLink="/admin/article"><span class="pi pi-file pr-2"></span>Article</a></li>
-      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: false }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button"  routerLink="/admin/dimension"><span class="pi pi-expand pr-2"></span>Dimension</a></li>
-      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }"   class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: false }"   class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button" routerLink="/admin/event"><span class="pi pi-verified pr-2"></span>évènement</a></li>
       <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button"  routerLink="/admin/pub"><span class="pi pi-receipt pr-2"></span>publicité</a></li>
-      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: false }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a role="button" routerLink="/admin/typepub"><span class="pi pi-box pr-2"></span>type publicité</a></li>
-      <li  routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li  routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: false }" class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button"  routerLink="/admin/rubrique"><span class="pi pi-folder-plus pr-2"></span>rubrique</a></li>
-      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: false }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button"  routerLink="/admin/sousrubrique"><span class="pi pi-warehouse pr-2"></span>sous rubrique</a></li>
-      <li  routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: true }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
+      <li  routerLinkActive="bg-gray-700" [routerLinkActiveOptions]="{ exact: false }"  class="p-3 hover:bg-gray-700 cursor-pointer capitalize">
         <a  role="button"  routerLink="/admin/video"><span class="pi pi-youtube pr-2"></span>vidéo</a></li>
 
     </ul>

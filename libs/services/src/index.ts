@@ -7,3 +7,4 @@ export * from './lib/actions/pub-type.service';
 export * from './lib/actions/rubrique.service';
 export * from './lib/actions/sous-rubrique.service';
 export * from './lib/actions/video.service';
+export * from './lib/actions/user.service';

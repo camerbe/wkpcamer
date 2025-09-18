@@ -1,5 +1,5 @@
 import { AuthenticationService } from '@wkpcamer/auth';
-import { LoggedUser } from '@wkpcamer/models';
+import { LoggedUser, UserDetail } from '@wkpcamer/models';
 import { Component, inject, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -37,8 +37,18 @@ export class LoginComponent implements OnInit  {
     this.isError=false
     this.authService.login(this.loginForm.value).subscribe({
       next:(result)=>{
-        const tmpData =result as unknown as LoggedUser
-        //console.log(tmpData);
+        const tmpData =result
+        const { user, ...rest } = result;
+        //console.log(tmpData.success);
+        //console.log(tmpData.token);
+        //console.log(tmpData.user);
+        if(tmpData.message=='change_password') {
+          console.log("Toto")
+          this.router.navigate(['/changepw',user.email]);
+          return
+        }
+        console.log(tmpData.message);
+        console.log(tmpData);
         this.localstorageService.setToken(tmpData.token);
         this.router.navigate(['/admin'])
       },
