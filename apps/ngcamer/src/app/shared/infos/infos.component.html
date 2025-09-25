@@ -1,0 +1,98 @@
+<p-dataview
+  [value]="pairedItems()"
+  [layout]="layout"
+  [rows]="5"
+  [paginator]="true"
+  [totalRecords]="pairedItems.length"
+  class="w-full bg-transparent ">
+  <ng-template #header>
+    <p class="md:text-2xl text-teal-800">Actualités</p>
+  </ng-template>
+  <ng-template #grid let-items>
+    <div class="col-12 md:col-6 gap-4">
+        @for (pairedItems of items; track $index){
+          <div class="flex gap-4 flex-column md:flex-row">
+            <article itemscope itemtype="https://schema.org/NewsArticle" class="flex flex-column md:flex-row gap-4 w-full">
+            <meta itemprop="mainEntityOfPage" [content]="'/' + slugifyService.slugify(pairedItems.left.rubrique.rubrique)+'/'+slugifyService.slugify(pairedItems.left.sousrubrique.sousrubrique)+'/'+pairedItems.left.slug" />
+              <p-card class="col-12 w-full md:col-6 lg:col-6 gap-4 py-2 mt-4 relative">
+                <ng-template #header>
+                  <div class="w-72 aspect-[4/3] overflow-hidden rounded-t-lg relative">
+                    <img
+                      priority
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      title="{{pairedItems.left.countries.pays}} :: {{ pairedItems.left.titre }}"
+                      [ngSrc]="pairedItems.left.image_url"
+                      itemprop="thumbnailUrl"
+                      alt="{{pairedItems.left.countries.pays}} :: {{ pairedItems.left.titre }}"
+                      class="object-cover absolute inset-0"
+                      />
+                  </div>
+                </ng-template>
+                <ng-template #title>
+                  <div class="uppercase font-semibold text-teal-800 text-sm text-justify" itemprop="headline">{{ pairedItems.left.titre }}</div>
+                </ng-template>
+                <ng-template #subtitle>
+                  <time itemprop="datePublished" [attr.datetime]="pairedItems.left.dateparution">
+                    <small class="flex text-teal-950 gap-3">
+                      <span class="mr-2"><i class="pi pi-eye mr-2"></i> <span class="text-xs">{{ pairedItems.left.hit }}</span></span>
+                      <span class="mr-2"><i class="pi pi-calendar"></i> {{ pairedItems.left.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
+                    </small>
+                  </time>
+
+                </ng-template>
+                <p class="line-clamp-3 text-justify"  itemprop="description">{{ pairedItems.left.chapeau }}</p>
+                <ng-template #footer>
+                  <a
+                    label="Lire la suite"
+                    icon="pi pi-eye"
+                    pButton
+                    itemprop="url"
+                    [routerLink]="['/'+slugifyService.slugify(pairedItems.left.rubrique.rubrique)+'/'+slugifyService.slugify(pairedItems.left.sousrubrique.sousrubrique),pairedItems.left.slug]" class="no-underline w-full">
+                      <!-- <button pButton type="button" icon="pi pi-eye" class="p-button-text" >Lire la suite</button> -->
+                  </a>
+                </ng-template>
+              </p-card>
+
+              <meta itemprop="mainEntityOfPage" [content]="'/' + slugifyService.slugify(pairedItems.right.rubrique.rubrique)+'/'+slugifyService.slugify(pairedItems.right.sousrubrique.sousrubrique)+'/'+pairedItems.right.slug" />
+              <p-card class="col-12 w-full md:col-6 lg:col-6 gap-4 py-2 mt-4">
+                <ng-template #header>
+                  <div class="w-72 h-48 overflow-hidden rounded-t-lg">
+                    <img
+                      title="{{pairedItems.right.countries.pays}} :: {{ pairedItems.right.titre }}"
+                      src="{{pairedItems.right.image_url}} "
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      itemprop="thumbnailUrl"
+                      alt="{{pairedItems.right.countries.pays}} :: {{ pairedItems.right.titre }}"
+                      class="responsive-image object-cover transition-transform group-hover:scale-105"
+                      />
+                  </div>
+                </ng-template>
+                <ng-template #title>
+                  <div class="uppercase font-semibold text-teal-800 text-sm text-justify" itemprop="headline">{{ pairedItems.right.titre }}</div>
+                </ng-template>
+                <ng-template #subtitle>
+                      <time itemprop="datePublished" [attr.datetime]="pairedItems.right.dateparution">
+                        <small class="flex text-teal-950 gap-3">
+                            <span class="mr-2"><i class="pi pi-eye mr-2"></i> <span class="text-xs">{{ pairedItems.right.hit }}</span></span>
+                            <span class="mr-2"><i class="pi pi-calendar"></i> {{ pairedItems.right.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
+                        </small>
+                    </time>
+                </ng-template>
+                <p class="line-clamp-3 text-justify"  itemprop="description">{{ pairedItems.right.chapeau }}</p>
+                 <ng-template #footer>
+                    <a
+                      label="Lire la suite"
+                      icon="pi pi-eye"
+                      pButton itemprop="url" [routerLink]="['/'+slugifyService.slugify(pairedItems.right.rubrique.rubrique)+'/'+slugifyService.slugify(pairedItems.right.sousrubrique.sousrubrique),pairedItems.right.slug]" class="no-underline  w-full">
+                      <!-- <button pButton type="button" icon="pi pi-eye" class="p-button-text" >Lire la suite</button> -->
+                    </a>
+                  </ng-template>
+              </p-card>
+            </article>
+
+          </div>
+        }
+    </div>
+  </ng-template>
+</p-dataview>

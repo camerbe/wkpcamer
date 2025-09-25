@@ -12,7 +12,7 @@
       "options": {
         "outputPath": "dist/apps/ngcamer",
         "browser": "apps/ngcamer/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
         "tsConfig": "apps/ngcamer/tsconfig.app.json",
         "assets": [
           {

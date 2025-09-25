@@ -1,39 +1,14 @@
-<div class="flex flex-col min-h-screen">
-  <!-- Header -->
-  <header class="bg-green-300 p-4">
-    <p-megamenu></p-megamenu>
 
-  </header>
 
-  <!-- Main content -->
-  <!--<<main class="container mx-auto mt-8 px-4">-->
-  <main class="flex-1 container mx-auto px-4 py-6 surface-50">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="container mx-auto px-2">
+    <app-header class="w-full"></app-header>
+  </div>
+  <main class="pt-20 lg:pt-20 surface-100 py-8 mb-10" >
+		<div class="h-64 container mx-auto px-4">
+      <router-outlet/>
+		</div>
+	</main>
+  <app-footer class="w-full  bottom-0 left-0"></app-footer>
 
-      <!-- Colonne 1 : Actualité Camerounaise -->
-      <section class="bg-white p-4 shadow rounded">
-        <h2 class="text-xl font-bold mb-4">Actualité Camerounaise</h2>
-        <!-- Contenu dynamique ici -->
-        <p>Articles récents sur le Cameroun...</p>
-      </section>
 
-      <!-- Colonne 2 : Actualité Internationale -->
-      <section class="bg-white p-4 shadow rounded">
-        <h2 class="text-xl font-bold mb-4">Actualité Internationale</h2>
-        <p>Dernières nouvelles du monde...</p>
-      </section>
 
-      <!-- Colonne 3 : Fourre-tout -->
-      <section class="bg-white p-4 shadow rounded">
-        <h2 class="text-xl font-bold mb-4">Divers</h2>
-        <p>Contenus variés et autres informations...</p>
-      </section>
-
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-black text-white p-4 text-center">
-    © 2025 Site d'information
-  </footer>
-</div>

@@ -1,0 +1,64 @@
+<div class="flex flex-column md:flex-row gap-2">
+  <div class="col-12 md:col-8 my-3">
+    <p-dataview
+      #dv [value]="listIndex()"
+      [layout]="layout"
+      [rows]="10"
+      [paginator]="true"
+      [totalRecords]="listIndex.length"
+      class="w-full bg-transparent col-12 md:col-8"
+    >
+      <ng-template #header>
+        <p class="md:text-2xl uppercase text-teal-800">Dernières nouvelles</p>
+      </ng-template>
+      <ng-template #grid let-items>
+        <div class="grid col-12 md:col-8">
+          @for(listIndex of items; track $index){
+            <div class="flex gap-4 flex-column md:flex-row">
+              @if(listIndex.fkpays==='CM'){
+                <p-card
+                  class="col-12 w-full  gap-4 py-2 mt-4 relative"
+                  itemscope itemtype="https://schema.org/NewsArticle">
+                  <meta itemprop="mainEntityOfPage" [content]="'/' + slugifyService.slugify(listIndex.rubrique.rubrique)+'/'+slugifyService.slugify(listIndex.sousrubrique.sousrubrique)+'/'+listIndex.slug" />
+                  <ng-template #header>
+                    <img
+                      src="{{listIndex.image_url}}"
+                      class="object-cover absolute inset-0"
+                    />
+
+                  </ng-template>
+                  <ng-template #title>
+                    <div class="uppercase font-semibold text-teal-800 text-sm text-justify" itemprop="headline">{{ listIndex.titre }}</div>
+                  </ng-template>
+                </p-card>
+            }
+            @if(listIndex.flays!=='CM'){
+                <p-card
+                  class="col-12 w-full md:col-6 lg:col-4 gap-4 py-2 mt-4 relative"
+                  itemscope itemtype="https://schema.org/NewsArticle">
+                  <meta itemprop="mainEntityOfPage" [content]="'/' + slugifyService.slugify(listIndex.rubrique.rubrique)+'/'+slugifyService.slugify(listIndex.sousrubrique.sousrubrique)+'/'+listIndex.slug" />
+                  <ng-template #header>
+                    <img
+                      fill
+                      ngSrc="listIndex.image_url"
+                      class="object-cover absolute inset-0"
+                    />
+
+                  </ng-template>
+                  <ng-template #title>
+                    <div class="uppercase font-semibold text-teal-800 text-sm text-justify" itemprop="headline">{{ listIndex.titre }}</div>
+                  </ng-template>
+                </p-card>
+            }
+            </div>
+
+          }
+        </div>
+      </ng-template>
+    </p-dataview>
+  </div>
+  <div class="col-12 md:col-4 my-3 gap-3">
+
+  </div>
+
+</div>

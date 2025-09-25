@@ -1,0 +1,18 @@
+<div class="fixed-megamenu">
+  <p-megamenu [model]="items" class="border-0 p-3">
+    <ng-template #start>
+      <a routerLink="/accueil" class="no-underline bg-transparent border-0 cursor-pointer">
+        <img src="/assets/images/logo.png" alt="Camer.be" class="mr-2">
+      </a>
+    </ng-template>
+
+    <ng-template #end>
+      <p-inputgroup>
+        <input pInputText placeholder="Rechercher..." />
+        <p-inputgroup-addon>
+          <p-button icon="pi pi-search" severity="success" variant="text" />
+        </p-inputgroup-addon>
+      </p-inputgroup>
+    </ng-template>
+  </p-megamenu>
+</div>

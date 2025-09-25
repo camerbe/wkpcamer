@@ -23,4 +23,9 @@ export interface ArticleDetail {
   rubrique: RubriqueDetail;
   sousrubrique: SousRubriqueDetail;
   images: ImageDetail;
+  image_url: string;
+  image_width: string;
+  image_height: string;
 }
+
+
