@@ -1,7 +1,7 @@
 <div class="fixed-megamenu">
   <p-megamenu [model]="items" class="border-0 p-3">
     <ng-template #start>
-      <a routerLink="/accueil" class="no-underline bg-transparent border-0 cursor-pointer">
+      <a [routerLink]="['/accueil']" class="no-underline bg-transparent border-0 cursor-pointer">
         <img src="/assets/images/logo.png" alt="Camer.be" class="mr-2">
       </a>
     </ng-template>

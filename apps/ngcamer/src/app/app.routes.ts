@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { accueilResolver } from './shared/resolvers/accueil-resolver';
+import { slugResolver } from './shared/resolvers/slug-resolver';
 
 export const appRoutes: Route[] = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -13,6 +14,11 @@ export const appRoutes: Route[] = [
         //component: HomeComponent,
         resolve: { accueilList: accueilResolver }
       },
+      {
+        path: ':rubrique/:sousrubrique/:slug',
+        loadComponent:()=>import('./pages/article/article.component').then((m)=>m.ArticleComponent),
+        resolve:{articleSlug:slugResolver}
+      }
 
 
     ]

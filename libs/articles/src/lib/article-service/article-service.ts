@@ -15,9 +15,7 @@ import { inject } from '@angular/core';
   providedIn: 'root'
 })
 export class ArticleService extends DataService<Article> {
-  static getArticle(arg0: string): import("@angular/router").MaybeAsync<Article | import("@angular/router").RedirectCommand | null> {
-    throw new Error('Method not implemented.');
-  }
+
   constructor() {
     super(inject(HttpClient), CONFIG.apiUrl + `/articles`);
   }
@@ -32,5 +30,11 @@ export class ArticleService extends DataService<Article> {
   }
   public getArticle(){
     return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/news`);
+  }
+  public getArticleBySlug(slug:string){
+    return this.httpClient.get<Article>(CONFIG.apiUrl+`/articles/slug/${slug}`);
+  }
+  public getSameRubrique(fksousrubrique:number){
+    return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/same/${fksousrubrique}`);
   }
 }

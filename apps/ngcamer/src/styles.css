@@ -1,8 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files*/
 @import 'primeicons/primeicons.css';
 @import 'primeflex/primeflex.css';
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
+@plugin "@tailwindcss/line-clamp";
+
 
 :root {
     --p-megamenu-background: #2c3e50;
@@ -13,9 +15,6 @@
 }
 :root {
   --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-
-
-
 }
 
 * {
@@ -47,6 +46,7 @@
 }
 
 /* Responsive - ajustement pour mobile */
+
 @media (max-width: 768px) {
   .content-with-fixed-menu {
     margin-top: 100px; /* Plus d'espace sur mobile si nécessaire */
@@ -58,8 +58,455 @@
   background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(10px);
 }
+/*********************************************************/
+/* ===== STYLES GÉNÉRAUX DU COMPOSANT ===== */
 
+.list-camer-container {
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
 
+/* ===== STYLES POUR P-DATAVIEW TRANSPARENT ===== */
 
+:host ::ng-deep .transparent-dataview {
+  background: transparent !important;
+  border: none !important;
+}
 
+:host ::ng-deep .transparent-dataview .p-dataview-content {
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+}
 
+:host ::ng-deep .transparent-dataview .p-dataview-grid {
+  display: grid;
+  gap: 1.5rem;
+  padding: 0;
+}
+
+/* ===== LAYOUT RESPONSIVE POUR LA GRILLE ===== */
+
+/* Mobile : 1 colonne */
+:host ::ng-deep .transparent-dataview .p-dataview-grid {
+  grid-template-columns: 1fr;
+}
+
+/* Desktop : 2 colonnes */
+@media (min-width: 768px) {
+  :host ::ng-deep .transparent-dataview .p-dataview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== STYLES POUR P-CARD ===== */
+
+.list-camer-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.list-camer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== STYLES POUR L'IMAGE DANS LE HEADER ===== */
+
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.rounded-image {
+  border-radius: 12px 12px 0 0;
+}
+
+.list-camer-card:hover .card-image {
+  transform: scale(1.05);
+}
+
+/* ===== STYLES POUR LE TITRE ===== */
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  color: #2c3e50;
+  padding: 1rem 1rem 0.5rem;
+  text-transform:uppercase;
+
+}
+
+/* .line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+} */
+@media (min-width: 992px) {
+    /* Base styles applied to all line-clamp classes */
+    .line-clamp-1,
+    .line-clamp-2,
+    .line-clamp-3,
+    .line-clamp-4 {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+    }
+
+    /* Specific line limits */
+    .line-clamp-1 {
+      -webkit-line-clamp: 1;
+    }
+    .line-clamp-2 {
+      -webkit-line-clamp: 2;
+    }
+    .line-clamp-3 {
+      -webkit-line-clamp: 3;
+    }
+    .line-clamp-4 {
+      -webkit-line-clamp: 4;
+    }
+}
+
+/* ===== STYLES POUR LE SUBTITLE (DATE ET AUTEUR) ===== */
+
+.card-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6c757d;
+  padding: 0 1rem 0.5rem;
+  margin: 0;
+}
+
+.card-date {
+  font-weight: 500;
+}
+
+.card-separator {
+  color: #dee2e6;
+}
+
+.card-author {
+  font-style: italic;
+}
+
+/* ===== STYLES POUR LE CONTENU (CHAPEAU) ===== */
+
+.card-content {
+  flex: 1;
+  padding: 0 1rem 1rem;
+}
+.card-info {
+  line-height: 1.6;
+  text-align:justify;
+  font-size: 1.3rem;
+}
+.card-info p{
+  white-space: pre-line;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin-bottom: 1em;
+}
+.card-chapeau {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #495057;
+  margin: 0;
+  text-align: justify;
+}
+
+/* ===== STYLES POUR LE FOOTER (BOUTON/LIEN) ===== */
+
+.card-footer {
+  padding: 1rem;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+/* .card-link-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  min-width: 120px;
+} */
+
+/* .card-link-button:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  color: white;
+  text-decoration: none;
+}
+
+.card-link-button:active {
+  transform: translateY(0);
+} */
+
+/* ===== STYLES POUR LA PAGINATION ===== */
+
+/* :host ::ng-deep .p-paginator {
+  background: transparent;
+  border: none;
+  padding: 1.5rem 0;
+  justify-content: center;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  border-radius: 8px;
+  margin: 0 0.25rem;
+  transition: all 0.3s ease;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+  background-color: #e9ecef;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+}
+
+.pagination-info {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-style: italic;
+} */
+
+/* ===== MESSAGE AUCUNE DONNÉE ===== */
+
+.no-data-message {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.no-data-message p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS SUPPLÉMENTAIRES ===== */
+
+/* Tablettes */
+@media (min-width: 576px) and (max-width: 767px) {
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .card-chapeau {
+    font-size: 0.9rem;
+  }
+}
+
+/* Grands écrans */
+@media (min-width: 1200px) {
+  .list-camer-container {
+    padding: 2rem;
+  }
+
+  :host ::ng-deep .transparent-dataview .p-dataview-grid {
+    gap: 2rem;
+  }
+}
+
+/* ===== ANIMATIONS ET TRANSITIONS ===== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.list-camer-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Délai d'animation pour effet en cascade */
+.list-camer-card:nth-child(1) { animation-delay: 0.1s; }
+.list-camer-card:nth-child(2) { animation-delay: 0.2s; }
+.list-camer-card:nth-child(3) { animation-delay: 0.3s; }
+.list-camer-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* ===== ACCESSIBILITÉ ===== */
+
+.card-link-button:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list-camer-card,
+  .card-image,
+  .card-link-button {
+    transition: none;
+    animation: none;
+  }
+}
+/******************* Related Article ****************************/
+.related-articles-section {
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  margin: 0.5rem auto 0;
+}
+
+/* Grille pour les écrans moyens et larges */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Styles pour les cartes */
+.article-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-image-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.article-card:hover .article-image {
+  transform: scale(1.05);
+}
+
+.article-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.article-summary {
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+}
+
+/* Styles pour le carrousel mobile */
+.articles-carousel {
+  margin-bottom: 2rem;
+}
+
+.carousel-card {
+  margin: 0 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .related-articles-section {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .articles-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .articles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1025px) {
+  .articles-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1400px) {
+  .articles-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

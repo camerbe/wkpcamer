@@ -1,0 +1,64 @@
+<section  class="grid mt-5">
+  <div class="col-12 md:col-8">
+    <article  itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="mainEntityOfPage"
+          [content]="'/' + slugifyService.slugify(article.rubrique.rubrique) + '/' + slugifyService.slugify(article.sousrubrique.sousrubrique) + '/' + article.slug"
+      />
+      <meta itemprop="thumbnailUrl" [content]="article.image_url" />
+      <meta itemprop="description" [content]="article.chapeau" />
+      <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <meta itemprop="name" content="Camer.be" />
+        <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+          <meta itemprop="url" content="https://camer-sport.com/logo.png" />
+        </span>
+      </span>
+      <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+        <meta itemprop="name" [content]="article.auteur">
+      </span>
+
+      <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" [content]="article.image_url" />
+        <meta itemprop="width" content="{{article.image_width}}" />
+        <meta itemprop="height" content="{{article.image_height}}" />
+      </span>
+      <meta itemprop="articleSection" content="{{article.sousrubrique.sousrubrique}}" />.
+      <p-card class="list-camer-card">
+        <ng-template #header>
+          <div class="card-image-container">
+            <img
+
+              [ngSrc]="article.image_url"
+              alt="{{ article.countries.pays }} :: {{ article.titre }}"
+              title="{{ article.countries.pays }} :: {{ article.titre }}"
+              height="{{ article.image_height }}"
+              width="{{ article.image_width }}"
+              priority
+              class="card-image"
+              sizes="(max-width: 768px) 100vw, 50vw">
+            >
+          </div>
+
+        </ng-template>
+        <ng-template #title>
+          <h3 class="card-title text-green-700 md:text-2xl" itemprop="headline">{{ article.titre }}</h3>
+        </ng-template>
+        <ng-template #subtitle>
+          <time itemprop="datePublished" [attr.datetime]="article.dateparution">
+            <div class="card-subtitle">
+
+              <i class="pi pi-user"></i> {{ article.auteur }}
+              <i class="pi pi-calendar"></i><span class="card-date">{{article.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
+                <span class="card-separator">•</span>
+              <i class="pi pi-eye"></i><span class="card-author">{{ article.hit }}</span>
+            </div>
+          </time>
+        </ng-template>
+        <div itemprop="articleBody" [innerHTML]="sanitizer.bypassSecurityTrustHtml(article.info)" class="card-content card-info"></div>
+
+        <app-related-articles [relatedArticles]="relatedArticles()"></app-related-articles>
+        <p-scrolltop />
+      </p-card>
+    </article>
+  </div>
+  <div class="col-12 md:col-4">BB</div>
+</section>

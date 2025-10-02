@@ -6,6 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -16,7 +17,8 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
     FormsModule,
     InputGroupModule,
     ButtonModule,
-    InputGroupAddonModule
+    InputGroupAddonModule,
+    RouterModule
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
