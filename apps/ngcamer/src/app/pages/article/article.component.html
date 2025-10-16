@@ -1,15 +1,17 @@
-<section  class="grid mt-5">
-  <div class="col-12 md:col-8">
+<section  class="grid grid-cols-1 md:grid-cols-12 gap-5">
+  <div class="md:col-span-8">
     <article  itemscope itemtype="https://schema.org/NewsArticle">
+      @if(article){
       <meta itemprop="mainEntityOfPage"
           [content]="'/' + slugifyService.slugify(article.rubrique.rubrique) + '/' + slugifyService.slugify(article.sousrubrique.sousrubrique) + '/' + article.slug"
       />
+
       <meta itemprop="thumbnailUrl" [content]="article.image_url" />
       <meta itemprop="description" [content]="article.chapeau" />
       <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
         <meta itemprop="name" content="Camer.be" />
         <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-          <meta itemprop="url" content="https://camer-sport.com/logo.png" />
+          <meta itemprop="url" content="https://www.camer.be/logo.png" />
         </span>
       </span>
       <span itemprop="author" itemscope itemtype="https://schema.org/Person">
@@ -21,26 +23,29 @@
         <meta itemprop="width" content="{{article.image_width}}" />
         <meta itemprop="height" content="{{article.image_height}}" />
       </span>
-      <meta itemprop="articleSection" content="{{article.sousrubrique.sousrubrique}}" />.
+      <meta itemprop="articleSection" content="{{article.sousrubrique.sousrubrique}}" />
+      <meta itemprop="wordCount" [content]="wordCount" />
+      <meta itemprop="keywords" [content]="keyWord()" />
+      <meta itemprop="dateModified" [attr.datetime]="dateModif()" />
+
       <p-card class="list-camer-card">
-        <ng-template #header>
-          <div class="card-image-container">
+        <ng-template pTemplate="header">
+          <div class="relative card-image-container-article">
             <img
 
               [ngSrc]="article.image_url"
               alt="{{ article.countries.pays }} :: {{ article.titre }}"
               title="{{ article.countries.pays }} :: {{ article.titre }}"
-              height="{{ article.image_height }}"
-              width="{{ article.image_width }}"
+              fill
+              class="object-cover"
+              fetchpriority=high
               priority
-              class="card-image"
-              sizes="(max-width: 768px) 100vw, 50vw">
             >
           </div>
-
+          <p-tag severity="warn" value="{{article.sousrubrique.sousrubrique }}" [rounded]="true" class="top-3 left-3 z-5 absolute"/>
         </ng-template>
-        <ng-template #title>
-          <h3 class="card-title text-green-700 md:text-2xl" itemprop="headline">{{ article.titre }}</h3>
+        <ng-template  pTemplate="title">
+          <h3 class="card-title border-l-4 border-orange-300 !text-teal-700 md:!text-3xl" itemprop="headline">{{ article.titre }}</h3>
         </ng-template>
         <ng-template #subtitle>
           <time itemprop="datePublished" [attr.datetime]="article.dateparution">
@@ -53,12 +58,22 @@
             </div>
           </time>
         </ng-template>
-        <div itemprop="articleBody" [innerHTML]="sanitizer.bypassSecurityTrustHtml(article.info)" class="card-content card-info"></div>
-
+        <div itemprop="articleBody" [innerHTML]="sanitizer.bypassSecurityTrustHtml(article.info || '')" class="card-content card-info video-responsive"></div>
         <app-related-articles [relatedArticles]="relatedArticles()"></app-related-articles>
-        <p-scrolltop />
+        <div id="taboola-below-article-thumbnails"></div>
+
       </p-card>
+      }
     </article>
   </div>
-  <div class="col-12 md:col-4">BB</div>
+  <div class="md:col-span-4">
+    <app-most-readed-rubrique-country [mostReadedArticles]="mostReadeArticles()" class="pb-3 !rounded-t-md"/>
+    <p-divider></p-divider>
+    <app-ad-moneytizer [appId]="'9307-3'" [zoneId]="'AADZ2f-Di1Vp9x2i'"></app-ad-moneytizer>
+    <p-divider></p-divider>
+    <app-sport [sportArticles]="sports()" />
+
+
+  </div>
+
 </section>

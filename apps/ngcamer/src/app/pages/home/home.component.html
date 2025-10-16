@@ -1,138 +1,22 @@
-<div class="grid mt-5">
-  <div class="col-12 md:col-8">
-    <div class="grid">
-      <p-dataview #dv
-        [value]="listCamer()"
-        [rows]="5"
-        [paginator]="true"
-        [layout]="'list'"
-        [rowsPerPageOptions]="[5,10,20]"
-
-      >
-        <ng-template #header>
-          <h2 class="md:text-2xl capitalize">actualités récentes</h2>
-        </ng-template>
-        <ng-template #list let-items>
-          @for(item of items;track $index){
-
-          <div class="grid p-3">
-            <div class="col-12 md:col-6">
-              <article itemscope itemtype="https://schema.org/NewsArticle">
-                <meta itemprop="mainEntityOfPage"
-                                      [content]="`${window.location.protocol}//${window.location.host}/` + slugifyService.slugify(item.rubrique.rubrique) + '/' + slugifyService.slugify(item.sousrubrique.sousrubrique) + '/' + item.slug" />
-                <p-card class="list-camer-card">
-
-                    <ng-template #header>
-                      <div class="card-image-container">
-                        <img
-                          [ngSrc]="item.image_url"
-                            alt="{{ item.countries.pays }} :: {{ item.titre }}"
-                            title="{{ item.countries.pays }} :: {{ item.titre }}"
-                            height="300"
-                            width="300"
-                            class="card-image"
-                            sizes="(max-width: 768px) 100vw, 50vw">
-                          >
-                      </div>
-                      <img
-                        src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-                        alt=""
-                      >
-                    </ng-template>
-                    <ng-template #title>
-                      <h4 class="card-title line-clamp-2">{{ item.titre }}</h4>
-                    </ng-template>
-                    <ng-template #subtitle>
-                      <time itemprop="datePublished" [attr.datetime]="item.dateparution">
-                          <div class="card-subtitle">
-                            <i class="pi pi-calendar"></i><span class="card-date">{{item.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
-                            <span class="card-separator">•</span>
-                            <i class="pi pi-eye"></i><span class="card-author">{{ item.hit }}</span>
-                          </div>
-                      </time>
-                    </ng-template>
-                    <div class="card-content">
-                      <p class="card-chapeau line-clamp-4">{{ item.chapeau }}</p>
-                    </div>
-                    <ng-template #footer>
-                      <!-- <div> -->
-
-                        <a
-                          pButton
-                          [routerLink]="['/'+slugifyService.slugify(item.rubrique.rubrique)+'/'+slugifyService.slugify(item.sousrubrique.sousrubrique),item.slug]"
-                          class="w-full"
-                          >
-                          <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
-                        </a>
-                      <!-- </div> -->
-                    </ng-template>
-                  <!-- -->
-
-                </p-card>
-              </article>
-            </div>
-            <div class="col-12 md:col-6">
-              <article>
-              <p-card  class="list-camer-card">
-
-                  <ng-template #header>
-                    <div class="card-image-container">
-                      <img
-                        src="{{listOther()[(dv.first || 0) + $index].image_url}}"
-                         alt="{{ listOther()[(dv.first || 0) + $index].countries.pays }} :: {{ listOther()[(dv.first || 0) + $index].titre }}"
-                        title="{{ listOther()[(dv.first || 0) + $index].countries.pays }} :: {{ listOther()[(dv.first || 0) + $index].titre }}"
-                        class="card-image"
-                        >
-                    </div>
-                    <p-tag
-                      value="{{ listOther()[(dv.first || 0) + $index].countries.pays }} :: {{ listOther()[(dv.first || 0) + $index].sousrubrique.sousrubrique }}"
-                            [severity]="'danger'"
-                            class="absolute dark:!bg-surface-900"
-                            [style.left.px]="4"
-                            [style.top.px]="4"
-                    />
-
-                  </ng-template>
-                  <ng-template #title>
-                    <!-- <h4 class="card-title">{{listOther()[(dv.first || 0) + $index].titre}}</h4> -->
-                    <h4 class="card-title line-clamp-2">{{listOther()[(dv.first || 0) + $index].titre}}</h4>
-                  </ng-template>
-                  <ng-template #subtitle>
-                    <time itemprop="datePublished" [attr.datetime]="item.dateparution">
-                        <div class="card-subtitle">
-                          <i class="pi pi-calendar"></i><span class="card-date">{{listOther()[(dv.first || 0) + $index].dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
-                          <span class="card-separator">•</span>
-                          <i class="pi pi-eye"></i><span class="card-author">{{ listOther()[(dv.first || 0) + $index].hit }}</span>
-                        </div>
-                    </time>
-                  </ng-template>
-                  <div class="card-content">
-                    <p class="card-chapeau line-clamp-4">{{ listOther()[(dv.first || 0) + $index].chapeau }}</p>
-                  </div>
-                  <ng-template #footer>
-                     <!-- <div class="card-footer"> -->
-
-                      <a
-                        pButton
-                        [routerLink]="['/'+slugifyService.slugify(listOther()[(dv.first || 0) + $index].rubrique.rubrique)+'/'+slugifyService.slugify(listOther()[(dv.first || 0) + $index].sousrubrique.sousrubrique),listOther()[(dv.first || 0) + $index].slug]"
-                        class="w-full"
-                        >
-                        <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
-                      </a>
-                    <!-- </div> -->
-                  </ng-template>
-              </p-card>
-              </article>
-
-            </div>
-          </div>
-          }
-        </ng-template>
-
-      </p-dataview>
+  <section class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-5">
+    <div class="col-span-1 md:col-span-8">
+      <app-index [indexArticles]="listIndex()"></app-index>
     </div>
-  </div>
-  <div class="col-12 md:col-4">
-    <p class="text-justify">TOTO</p>
-  </div>
-</div>
+    <div class="col-span-1 md:col-span-4">
+      <app-sport [sportArticles]="sports()" />
+      <p-divider></p-divider>
+       <app-adsense
+        [adClient]="'ca-pub-8638642715460968'"
+        [adSlot]="'6927429462'"
+        [adFormat]="'auto'"
+        [fullWidthResponsive]="true"
+        class="p-3 bg-white border-round"
+      >
+
+      </app-adsense>
+      <p-divider></p-divider>
+      <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'"/>
+    </div>
+  </section>
+
+

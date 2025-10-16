@@ -11,4 +11,10 @@ export class VideoService extends DataService<Video>{
   constructor() {
     super(inject(HttpClient), CONFIG.apiUrl + `/videos`);
   }
+  public VideoCamer(){
+    return this.httpClient.get<Video[]>(CONFIG.apiUrl+`/videos/videocamer`);
+  }
+  public VideoSopie(){
+    return this.httpClient.get<Video[]>(CONFIG.apiUrl+`/videos/videosem`);
+  }
 }

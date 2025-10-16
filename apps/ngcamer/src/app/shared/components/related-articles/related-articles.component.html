@@ -1,39 +1,9 @@
 <section class="related-articles-section">
     <p-divider align="left" type="solid">
-      <strong class="uppercase text-green-600">Dans la même rubrique</strong>
+      <strong class="uppercase text-teal-700"><i class="pi pi-clipboard mr-1 text-red-700"></i>Dans la même rubrique</strong>
     </p-divider>
   <div class="">
-    <!-- @for(item of relatedArticles;track $index){ -->
-      <!-- <p-card
-        [header]="item.titre"
-        [subheader]="item.sousrubrique.sousrubrique"
-        class="text-sm line-clamp-2"
-      >
-      <ng-template #header>
-        <div class="card-image-container">
-          <img
-            src="{{ item.image_url }}"
-            alt="{{ item.countries.pays }} :: {{ item.titre }}"
-            title="{{ item.countries.pays }} :: {{ item.titre }}"
-            class="article-image"
-            loading="lazy"
-          >
-        </div>
 
-      </ng-template>
-      <ng-template #footer>
-
-          <p-button
-            label="Lire"
-            icon="pi pi-arrow-right"
-            iconPos="right"
-            class="w-full"
-          >
-          </p-button>
-
-
-      </ng-template>
-     </p-card> -->
      <p-carousel
         [value]="relatedArticles"
         [numVisible]="2"
@@ -44,6 +14,7 @@
         [autoplayInterval]="5000"
         containerClass="shadow-3 border-round"
         contentClass="bg-white border-round"
+        [responsiveOptions]="responsiveOptions"
 
 
      >
@@ -51,37 +22,46 @@
 
       </ng-template>
       <ng-template let-article pTemplate="item">
-        <div class="border border-surface rounded-border m-2 p-4">
+        <div class="m-2 p-4">
           <div class="mb-2 relative">
             <div class=" mx-auto card-image-container">
               <img
-                src="{{ article.image_url }}"
-                alt="{{ article.countries.pays}} :: {{ article.titre }}"
-                title="{{ article.countries.pays}} :: {{ article.titre }}"
-                class="w-full rounded-border article-image" />
+                [ngSrc]="article.image_url"
+                fill
+                class="object-cover"
+                alt="{{article.countries.pays}} :: {{article.titre }}"
+                title="{{article.countries.pays}} :: {{article.titre }}"
+
+                 />
             </div>
             <p-tag
               [value]="article.sousrubrique.sousrubrique"
               [severity]="'warn'"
-              class="absolute top-0 left-3 z-10"
+              class="absolute top-3 left-3 z-10"
 
-               />
+            />
               <div
                 class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 transition-opacity duration-500 opacity-100 group-hover:opacity-100">
                   <h2
                     class="text-white text-sm  font-semibold mb-2 uppercase">
                   {{ article.titre }}
                 </h2>
-                <a
 
-                  >
+                <!-- <a
+                    itemprop="url"
+                    rel="noopener noreferrer"
+                    [routerLink]="['/'+slugifyService.slugify(article.rubrique.rubrique)+'/'+slugifyService.slugify(article.sousrubrique.sousrubrique),article.slug]"
+                    class="w-full"
+                  > -->
                   <p-button
-                    label="Lire l'article"
-                    title="Lire"
+                    (onClick)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique ,article.slug)"
+
+                    label="Lire"
+
                     icon="pi pi-arrow-right"
-                    styleClass="p-button-rounded p-button-outlined p-button-success"
+                    styleClass="p-button-rounded p-button-outlined p-button-success w-full"
                   ></p-button>
-                </a>
+                <!-- </a> -->
               </div>
           </div>
 

@@ -1,0 +1,174 @@
+
+    <div class="grid">
+      <p-dataview #dv
+        [value]="combinedList"
+        [rows]="5"
+        [paginator]="true"
+        [layout]="'grid'"
+        [rowsPerPageOptions]="[5,10,20]"
+        class="px-4"
+
+      >
+        <ng-template #header>
+          <h2 class="md:text-2xl uppercase font-semibold text-teal-700">actualités récentes</h2>
+        </ng-template>
+        <ng-template #grid let-items>
+          @for(item of items;track $index){
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="">
+              <article itemscope itemtype="https://schema.org/NewsArticle">
+                <meta itemprop="mainEntityOfPage"
+                  [content]="`/` + slugifyService.slugify(item.item1.rubrique.rubrique) + '/' + slugifyService.slugify(item.item1.sousrubrique.sousrubrique) + '/' + item.item1.slug" />
+                <meta itemprop="thumbnailUrl" [content]="item.item1.image_url" />
+                <meta itemprop="description" [content]="item.item1.chapeau" />
+                <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+                  <meta itemprop="name" content="Camer.be" />
+                  <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                    <meta itemprop="url" content="https://www.camer.be/logo.png" />
+                  </span>
+                </span>
+                <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+                  <meta itemprop="name" [content]="item.item1.auteur">
+                </span>
+
+                <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                  <meta itemprop="url" [content]="item.item1.image_url" />
+                  <meta itemprop="width" content="{{item.item1.image_width}}" />
+                  <meta itemprop="height" content="{{item.item1.image_height}}" />
+                </span>
+                <meta itemprop="articleSection" content="{{item.item1.sousrubrique.sousrubrique}}" />
+                <meta itemprop="wordCount" [content]="wordCount(item.item1.info)" />
+                <meta itemprop="keywords" [content]="keywordAndHashtagService.removeHashtags(item.item1.keyword)" />
+                <meta itemprop="dateModified" [attr.datetime]="dateModif()" />
+                <p-card class="list-camer-card my-4">
+
+                    <ng-template pTemplate="header">
+                      <div class="card-image-container relative">
+                        @if (item.item1?.image_width && item.item1?.image_height){
+                          <img
+                          [ngSrc]="item.item1.image_url"
+                          alt="{{ item.item1.countries.pays }} :: {{ item.item1.titre }}"
+                          title="{{ item.item1.countries.pays }} :: {{ item.item1.titre }}"
+                          fill
+                          class="object-cover"
+
+                          >
+                        }
+
+                      </div>
+                      <p-tag severity="warn" value="{{item.item1.sousrubrique.sousrubrique }}" [rounded]="true" class="bottom-80 right-3 z-5 absolute"/>
+                    </ng-template>
+                    <ng-template pTemplate="title">
+                      <h4 class="card-title line-clamp-2">{{ item.item1.titre }}</h4>
+                    </ng-template>
+                    <ng-template pTemplate="subheader">
+                      <time itemprop="datePublished" [attr.datetime]="item.item1.dateparution">
+                          <div class="card-subtitle">
+                            <i class="pi pi-calendar"></i><span class="card-date">{{item.item1.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
+                            <span class="card-separator">•</span>
+                            <i class="pi pi-eye"></i><span class="card-author">{{ item.item1.hit }}</span>
+                          </div>
+                      </time>
+                    </ng-template>
+                    <div class="card-content">
+                      <p class="card-chapeau line-clamp-4">{{ item.item1.chapeau }}</p>
+                    </div>
+                    <ng-template pTemplate="footer">
+                      <!-- <div> -->
+
+                        <a
+                          pButton
+                          [routerLink]="['/'+slugifyService.slugify(item.item1.rubrique.rubrique)+'/'+slugifyService.slugify(item.item1.sousrubrique.sousrubrique),item.item1.slug]"
+                          class="w-full"
+                          >
+                          <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
+                        </a>
+                      <!-- </div> -->
+                    </ng-template>
+                  <!-- -->
+
+                </p-card>
+              </article>
+            </div>
+            <div class="">
+              <article itemscope itemtype="https://schema.org/NewsArticle">
+                <meta itemprop="mainEntityOfPage"
+                  [content]="`/` + slugifyService.slugify(item.item2.rubrique.rubrique) + '/' + slugifyService.slugify(item.item2.sousrubrique.sousrubrique) + '/' + item.item2.slug" />
+                <meta itemprop="thumbnailUrl" [content]="item.item2.image_url" />
+                <meta itemprop="description" [content]="item.item2.chapeau" />
+                <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+                  <meta itemprop="name" content="Camer.be" />
+                  <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                    <meta itemprop="url" content="https://www.camer.be/logo.png" />
+                  </span>
+                </span>
+                <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+                  <meta itemprop="name" [content]="item.item2.auteur">
+                </span>
+
+                <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                  <meta itemprop="url" [content]="item.item2.image_url" />
+                  <meta itemprop="width" content="{{item.item2.image_width}}" />
+                  <meta itemprop="height" content="{{item.item2.image_height}}" />
+                </span>
+                <meta itemprop="articleSection" content="{{item.item2.sousrubrique.sousrubrique}}" />
+                <meta itemprop="wordCount" [content]="wordCount(item.item2.info)" />
+                <meta itemprop="keywords" [content]="keywordAndHashtagService.removeHashtags(item.item2.keyword)" />
+                <meta itemprop="dateModified" [attr.datetime]="dateModif()" />
+              <p-card  class="list-camer-card my-4">
+
+                  <ng-template pTemplate="header">
+                    <div class="card-image-container">
+                      @if (item.item2?.image_width && item.item2?.image_height){
+                          <img
+                        ngSrc="{{item.item2.image_url}}"
+                        alt="{{ item.item2.countries.pays }} :: {{ item.item2.titre }}"
+                        title="{{ item.item2.countries.pays }} :: {{ item.item2.titre }}"
+                        fill
+                        class="object-cover"
+
+                        >
+                      }
+
+                    </div>
+                    <p-tag severity="warn" value="{{item.item2.sousrubrique.sousrubrique }}" [rounded]="true" class="bottom-80 right-3 z-5 absolute"/>
+
+                  </ng-template>
+                  <ng-template pTemplate="title">
+
+                    <h4 class="card-title line-clamp-2">{{item.item2.titre}}</h4>
+                  </ng-template>
+                  <ng-template pTemplate="subheader">
+                    <time itemprop="datePublished" [attr.datetime]="item.item2.dateparution">
+                        <div class="card-subtitle">
+                          <i class="pi pi-calendar"></i><span class="card-date">{{item.item2.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
+                          <span class="card-separator">•</span>
+                          <i class="pi pi-eye"></i><span class="card-author">{{ item.item2.hit }}</span>
+                        </div>
+                    </time>
+                  </ng-template>
+                  <div class="card-content">
+                    <p class="card-chapeau line-clamp-4">{{ item.item2.chapeau }}</p>
+                  </div>
+                  <ng-template pTemplate="footer">
+                     <!-- <div class="card-footer"> -->
+
+                      <a
+                        pButton
+                        [routerLink]="['/'+slugifyService.slugify(item.item2.rubrique.rubrique)+'/'+slugifyService.slugify(item.item2.sousrubrique.sousrubrique),item.item2.slug]"
+                        class="w-full"
+                        >
+                        <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
+                      </a>
+                    <!-- </div> -->
+                  </ng-template>
+              </p-card>
+              </article>
+            </div>
+          </div>
+          }
+        </ng-template>
+      </p-dataview>
+      
+    </div>
+

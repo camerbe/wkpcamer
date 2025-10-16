@@ -1,7 +1,7 @@
 import { CONFIG } from '@wkpcamer/config';
 import { Component, Injectable } from '@angular/core';
 import { DataService } from '@wkpcamer/services'; // Update the path as needed
-import { Article, SousRubrique,Pays } from '@wkpcamer/models'; // Update the path
+import { Article, SousRubrique,Pays, Sport } from '@wkpcamer/models'; // Update the path
 import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
 
@@ -28,6 +28,9 @@ export class ArticleService extends DataService<Article> {
   getArticleByUser(userid:number){
     return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/adm/${userid}`);
   }
+  public getMostReadRubriqueByCountry(fksousrubrique:number,fkpays:string){
+    return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/most/${fksousrubrique}/${fkpays}`);
+  }
   public getArticle(){
     return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/news`);
   }
@@ -36,5 +39,12 @@ export class ArticleService extends DataService<Article> {
   }
   public getSameRubrique(fksousrubrique:number){
     return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/same/${fksousrubrique}`);
+  }
+  public getSportArticle(){
+    return this.httpClient.get<Sport[]>(CONFIG.apiUrl+`/articles/sport`);
+  }
+
+  public getRubriqueArticle(fksousrubrique:number,fkrubrique:number){
+    return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/${fksousrubrique}/${fkrubrique}`);
   }
 }

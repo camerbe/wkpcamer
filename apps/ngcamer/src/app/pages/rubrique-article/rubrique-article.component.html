@@ -1,0 +1,21 @@
+
+
+  <section class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-5">
+    <div class="col-span-1 md:col-span-8">
+      <app-sousrubrique-article [rubriqueArticles]="rubriqueArticles" [label]="label"></app-sousrubrique-article>
+      <p-divider></p-divider>
+      <p-card>
+        <div
+      id="taboola-below-article-thumbnails"></div>
+      </p-card>
+
+    </div>
+    <div class="col-span-1 md:col-span-4">
+       <app-sport [sportArticles]="sports()" />
+       <p-divider></p-divider>
+      <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'"/>
+    </div>
+  </section>
+
+
+

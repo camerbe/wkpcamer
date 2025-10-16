@@ -1,16 +1,27 @@
 <div class="fixed-megamenu">
-  <p-megamenu [model]="items" class="border-0 p-3">
-    <ng-template #start>
-      <a [routerLink]="['/accueil']" class="no-underline bg-transparent border-0 cursor-pointer">
-        <img src="/assets/images/logo.png" alt="Camer.be" class="mr-2">
+  <p-megamenu [model]="items" [class]="'bg-teal-700 text-white'">
+    <ng-template pTemplate="start">
+      <a
+        (click)="gotoHome()"
+        tabindex="0"
+        (keypress)="gotoHome()"
+        class="inline-flex items-center no-underline bg-transparent border-0 cursor-pointer"
+      >
+        <img src="/assets/images/logo.png" alt="Camer.be" class="mr-2" width="182" height="61">
+        <span class="sr-only">Accueil Camer.be</span>
       </a>
     </ng-template>
 
-    <ng-template #end>
+
+    <ng-template pTemplate="end">
       <p-inputgroup>
         <input pInputText placeholder="Rechercher..." />
         <p-inputgroup-addon>
-          <p-button icon="pi pi-search" severity="success" variant="text" />
+          <p-button icon="pi pi-search"
+
+          label=""
+          severity="success"
+          variant="text" />
         </p-inputgroup-addon>
       </p-inputgroup>
     </ng-template>

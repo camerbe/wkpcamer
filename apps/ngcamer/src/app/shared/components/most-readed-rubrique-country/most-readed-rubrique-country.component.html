@@ -1,0 +1,65 @@
+
+<p-card>
+<p-dataview #dv [value]="mostReadedArticles" class="!rounded-md">
+   @if(mostReadedArticles && mostReadedArticles.length > 0){
+  <ng-template #header>
+
+    <h2 class="uppercase p-3 md:font-semibold text-teal-700 flex">
+      <picture>
+
+        <img
+          class="mr-2 py-1 rounded-md"
+          src="https://flagcdn.com/20x15/{{mostReadedArticles[0].countries.idpays.toLowerCase()}}.png || ''"
+          width="20"
+          height="15"
+          alt="{{ mostReadedArticles[0].countries.pays || '' }}">
+
+      </picture>
+      {{ mostReadedArticles[0].sousrubrique.sousrubrique }} :: les <i class="pi pi-plus mr-2 ml-2 py-0.5"></i>lus</h2>
+
+  </ng-template>
+  <ng-template #list let-items>
+    <div class="grid grid-cols-12 gap-4 grid-nogutter">
+      @for(article of mostReadedArticles;track $index;let first = $first){
+      <div class="col-span-12">
+        <div
+            class="flex items-center p-3 gap-4"
+            [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
+        >
+          <div class="md:w-16 relative h-16 flex-shrink-0">
+              <img
+                [ngSrc]="article.image_url.startsWith('http') ? article.image_url:'https://www.camer.be' + article.image_url"
+                fill
+                alt="{{ article.titre }}"
+                title="{{article.countries.pays }} :: {{ article.titre }}"
+                class="object-cover rounded-full"
+              />
+              <p-overlaybadge value="{{article.hit}}"
+              class="absolute top-1 left-3 z-10"
+              severity="warn"
+              >
+              </p-overlaybadge>
+          </div>
+          <div class="flex-1">
+          <a
+            class="cursor-pointer text-justify group"
+            (click)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            (keypress)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            tabindex="0"
+          >
+              <span class="text-md text-gray-500 leading-tight group-hover:text-orange-600 group-hover:underline transition-colors duration-200">{{ article.titre }}</span>
+          </a>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      }
+    </div>
+  </ng-template>
+  }
+</p-dataview>
+</p-card>
+

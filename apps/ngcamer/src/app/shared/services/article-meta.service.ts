@@ -1,4 +1,5 @@
-import { inject, Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ArticleDetail } from '@wkpcamer/models';
@@ -10,8 +11,12 @@ export class ArticleMetaService {
   meta=inject(Meta);
   title=inject(Title);
   router=inject(Router);
+  isBrowser=signal(false);
+  platformId = inject(PLATFORM_ID);
 
   updateArticleMeta(article:ArticleDetail){
+    this.isBrowser.set(isPlatformBrowser(this.platformId));
+    if(!this.isBrowser()) return;
     const date = new Date().toISOString().slice(0, 19) + '+00:00';
     const articleDate = new Date(article.dateparution).toISOString().slice(0, 19) + '+00:00';
     const titre=this.appendCountryIfFound(article.titre,article.countries.country)+' - Camer.be';

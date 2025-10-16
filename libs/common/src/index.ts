@@ -23,6 +23,8 @@ export * from './lib/models/user-detail.model';
 export * from './lib/models/irepository.model';
 export * from './lib/models/credentials.model';
 export * from './lib/models/stats.model';
+export * from './lib/models/sport-detail.model';
+export * from './lib/models/sport.model';
 
 
 

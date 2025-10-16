@@ -1,0 +1,66 @@
+<section>
+
+  <div class="">
+
+     <p-carousel
+        [value]="carouselArticles"
+        [numVisible]="3"
+        [numScroll]="1"
+        [circular]="true"
+        [showIndicators]="false"
+        [showNavigators]="false"
+        [autoplayInterval]="2500"
+        containerClass="shadow-3 border-round"
+        contentClass="bg-white border-round"
+        [responsiveOptions]="responsiveOptions"
+
+
+     >
+      <!-- <ng-template #header>
+        <h1 class="uppercase p-3 bg-teal-600 text-black-alpha-40 rounded-t-md md:font-semibold"><i class="pi pi-trophy mr-2"></i>sport</h1>
+      </ng-template> -->
+      <ng-template let-article pTemplate="item">
+        <div class="m-2 p-4">
+          <div class="mb-2 relative">
+            <div class="mx-auto card-image-container">
+              <img
+                [ngSrc]="article.image_url"
+                fill
+                class="object-cover"
+                alt="{{ article.countries.pays }} :: {{article.titre }}"
+                title="{{ article.countries.pays }} ::{{article.titre }}"
+
+                />
+            </div>
+            <p-tag
+              [value]="article.sousrubrique.sousrubrique"
+              [severity]="'warn'"
+              class="absolute top-3 left-3 z-10 uppercase"
+
+            />
+              <div
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 transition-opacity duration-500 opacity-100 group-hover:opacity-100">
+                <a
+                  class="cursor-pointer"
+                  tabindex="0"
+                  (keydown)="gotoArticle(article.slug,article.rubrique.rubrique,article.sousrubrique.sousrubrique)"
+                  (keypress)="gotoArticle(article.slug,article.rubrique.rubrique,article.sousrubrique.sousrubrique)"
+
+                  (click)="gotoArticle(article.slug,article.rubrique.rubrique,article.sousrubrique.sousrubrique)"
+                >
+                  <h2
+                    class="text-white text-sm  font-semibold mb-2 uppercase">
+                  {{ article.titre }}
+                </h2>
+                </a>
+
+              </div>
+          </div>
+
+        </div>
+      </ng-template>
+     </p-carousel>
+    
+
+  </div>
+</section>

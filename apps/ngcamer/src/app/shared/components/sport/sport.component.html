@@ -1,0 +1,59 @@
+<section>
+
+  <p-card>
+    <ng-template #header>
+        <h1 class="uppercase p-3 rounded-t-md md:font-semibold text-teal-700 border-b border-b-gray-200"><i class="pi pi-trophy mr-2"></i>sport</h1>
+      </ng-template>
+     <p-carousel
+        [value]="sportArticles"
+        [numVisible]="1"
+        [numScroll]="1"
+        [circular]="true"
+        [showIndicators]="true"
+        [showNavigators]="false"
+        [autoplayInterval]="5000"
+        containerClass="shadow-3 border-round"
+        contentClass="bg-white border-round"
+        [responsiveOptions]="responsiveOptions"
+
+
+     >
+      
+      <ng-template let-article pTemplate="item">
+        <div class="m-2 p-4">
+          <div class="mb-2 relative">
+            <div class=" mx-auto card-image-container">
+              <img
+                [ngSrc]="article.images.url"
+                fill
+                class="object-cover"
+                alt="{{article.titre }}"
+                title="{{article.titre }}"
+
+                />
+            </div>
+            <p-tag
+              [value]="article.competition.competition"
+              [severity]="'warn'"
+              class="absolute top-3 left-3 z-10 uppercase"
+
+            />
+              <div
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 transition-opacity duration-500 opacity-100 group-hover:opacity-100">
+                <a href="https://camer-sport.com/{{article.slug}}" target="_blank"  rel="noopener noreferrer">
+                  <h2
+                    class="text-white text-sm  font-semibold mb-2 uppercase">
+                  {{ article.titre }}
+                </h2>
+                </a>
+
+              </div>
+          </div>
+
+        </div>
+      </ng-template>
+     </p-carousel>
+    <!-- } -->
+
+  </p-card>
+</section>
