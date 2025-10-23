@@ -1,8 +1,11 @@
 
-    <div class="grid">
+    <div class="grid" itemscope itemtype="https://schema.org/ItemList">
+      <meta itemprop="name" content="Actualités récentes" />
+      <meta itemprop="itemListOrder" content="https://schema.org/ItemListOrderDescending" />
+      <meta itemprop="numberOfItems" [content]="combinedList.length" />
       <p-dataview #dv
         [value]="combinedList"
-        [rows]="5"
+        [rows]="10"
         [paginator]="true"
         [layout]="'grid'"
         [rowsPerPageOptions]="[5,10,20]"
@@ -10,12 +13,18 @@
 
       >
         <ng-template #header>
-          <h2 class="md:text-2xl uppercase font-semibold text-teal-700">actualités récentes</h2>
+          <h2 class="md:text-2xl uppercase font-semibold text-teal-700" itemprop="name">actualités récentes</h2>
         </ng-template>
         <ng-template #grid let-items>
           @for(item of items;track $index){
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="">
+            <div
+              class=""
+              itemprop="itemListElement"
+              itemscope
+              itemtype="https://schema.org/ListItem"
+            >
+              <meta itemprop="position" [content]="($index * 2) + 1" />
               <article itemscope itemtype="https://schema.org/NewsArticle">
                 <meta itemprop="mainEntityOfPage"
                   [content]="`/` + slugifyService.slugify(item.item1.rubrique.rubrique) + '/' + slugifyService.slugify(item.item1.sousrubrique.sousrubrique) + '/' + item.item1.slug" />
@@ -51,7 +60,7 @@
                           title="{{ item.item1.countries.pays }} :: {{ item.item1.titre }}"
                           fill
                           class="object-cover"
-
+                          itemprop="image"
                           >
                         }
 
@@ -59,7 +68,7 @@
                       <p-tag severity="warn" value="{{item.item1.sousrubrique.sousrubrique }}" [rounded]="true" class="bottom-80 right-3 z-5 absolute"/>
                     </ng-template>
                     <ng-template pTemplate="title">
-                      <h4 class="card-title line-clamp-2">{{ item.item1.titre }}</h4>
+                      <h4 class="card-title line-clamp-2" itemprop="headline">{{ item.item1.titre }}</h4>
                     </ng-template>
                     <ng-template pTemplate="subheader">
                       <time itemprop="datePublished" [attr.datetime]="item.item1.dateparution">
@@ -80,6 +89,7 @@
                           pButton
                           [routerLink]="['/'+slugifyService.slugify(item.item1.rubrique.rubrique)+'/'+slugifyService.slugify(item.item1.sousrubrique.sousrubrique),item.item1.slug]"
                           class="w-full"
+                          itemprop="url"
                           >
                           <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
                         </a>
@@ -90,7 +100,13 @@
                 </p-card>
               </article>
             </div>
-            <div class="">
+            <div
+              class=""
+              itemprop="itemListElement"
+              itemscope
+              itemtype="https://schema.org/ListItem"
+            >
+              <meta itemprop="position" [content]="($index * 2) + 2" />
               <article itemscope itemtype="https://schema.org/NewsArticle">
                 <meta itemprop="mainEntityOfPage"
                   [content]="`/` + slugifyService.slugify(item.item2.rubrique.rubrique) + '/' + slugifyService.slugify(item.item2.sousrubrique.sousrubrique) + '/' + item.item2.slug" />
@@ -126,7 +142,7 @@
                         title="{{ item.item2.countries.pays }} :: {{ item.item2.titre }}"
                         fill
                         class="object-cover"
-
+                        itemprop="image"
                         >
                       }
 
@@ -136,7 +152,7 @@
                   </ng-template>
                   <ng-template pTemplate="title">
 
-                    <h4 class="card-title line-clamp-2">{{item.item2.titre}}</h4>
+                    <h4 class="card-title line-clamp-2" itemprop="headline">{{item.item2.titre}}</h4>
                   </ng-template>
                   <ng-template pTemplate="subheader">
                     <time itemprop="datePublished" [attr.datetime]="item.item2.dateparution">
@@ -157,6 +173,7 @@
                         pButton
                         [routerLink]="['/'+slugifyService.slugify(item.item2.rubrique.rubrique)+'/'+slugifyService.slugify(item.item2.sousrubrique.sousrubrique),item.item2.slug]"
                         class="w-full"
+                        itemprop="url"
                         >
                         <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
                       </a>
@@ -169,6 +186,6 @@
           }
         </ng-template>
       </p-dataview>
-      
+
     </div>
 

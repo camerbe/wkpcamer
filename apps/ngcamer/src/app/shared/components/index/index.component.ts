@@ -1,6 +1,6 @@
 import { ArticleMetaService } from './../../services/article-meta.service';
 import { CommonModule, DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
-import { Component, inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ArticleDetail } from '@wkpcamer/models';
 import { ButtonModule } from 'primeng/button';
@@ -10,6 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { SlugifyService } from '../../services/slugify.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { KeywordAndHashtagService } from '@wkpcamer/users';
+import { JsonLdService } from '../../services/json-ld.service';
 
 @Component({
   selector: 'app-index',
@@ -26,14 +27,17 @@ import { KeywordAndHashtagService } from '@wkpcamer/users';
   templateUrl: './index.component.html',
   styleUrl: './index.component.css'
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit,AfterViewInit{
+
 
 
   @Input() indexArticles: ArticleDetail[] = [];
   listCamer: ArticleDetail[] = [];
   listOther: ArticleDetail[] = [];
+  jsonLdArticles: ArticleDetail[] = [];
+  jsonLdObjects: any[] = [];
   combinedList: { item1: ArticleDetail; item2: ArticleDetail; }[] = [];
-  isBrowser=signal(false);
+  isBrowser = signal(false);
 
   dateModif=signal('');
 
@@ -43,6 +47,7 @@ export class IndexComponent implements OnInit {
   router=inject(Router);
   platformId = inject(PLATFORM_ID);
   keywordAndHashtagService=inject(KeywordAndHashtagService);
+  jsonLdService=inject(JsonLdService);
 
 
   ngOnInit(): void {
@@ -58,7 +63,7 @@ export class IndexComponent implements OnInit {
           item2: this.listOther[index]
         };
       });
-
+      this.jsonLdArticles=this.indexArticles.slice(0,10);
       this.titleService.setTitle(`Cameroun,Cameroon Camer.be, l'information claire et nette::Cameroun,Cameroon,CAMEROUN INFO ,CAMEROUN ACTU`);
       this.metaService.updateTag({ name: 'description', content: `Camer.be est le site de la diaspora du cameroun. camer.be is the leading portal of cameroon in belgium. L&#039;info claire et nette.` });
       this.metaService.updateTag({ name: 'keywords', content: `cameroun,cameroon,cameroun,cameroon,camer,information,claire,nette,cameroun,cameroon,camer,est,site,diaspora,the,leading,portal,belgium`});
@@ -79,6 +84,9 @@ export class IndexComponent implements OnInit {
       this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
       this.metaService.updateTag({ name: 'twitter:creator', content: '@camerbe' });
       this.metaService.updateTag({ name: 'twitter:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
+
+
+
     }
     else{
       console.log("Null");
@@ -96,4 +104,50 @@ export class IndexComponent implements OnInit {
     return text.split(/\s+/).filter(w => w.length > 0).length;
   }
 
+  ngAfterViewInit(): void {
+    this.isBrowser.set(isPlatformBrowser(this.platformId));
+    if(!this.isBrowser()) return;
+    if(this.indexArticles && this.indexArticles.length>0){
+      this.jsonLdArticles.forEach((article, index) => {
+        const date =new Date(Date.now());
+        const today=date.toISOString().slice(0, 19) + '+00:00'
+        const articleDate = new Date(article.dateparution).toISOString().slice(0, 19) + '+00:00';
+        const jsonLd ={
+          "@context": "https://schema.org",
+          "@type": "NewsArticle",
+          "url": `${window.location.protocol}//${window.location.host}${this.router.url}`,
+          "publisher": {
+            "@type": "Organization",
+            "name": "Camer.be",
+            "logo": `${window.location.protocol}//${window.location.host}/assets/images/logo.png`,
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `${window.location.protocol}//${window.location.host}${this.router.url}`
+          },
+          "headline": article.titre,
+          "image": {
+            "@type": "ImageObject",
+            "url": article.image_url,
+            "width": article.image_width,
+            "height": article.image_width
+          },
+          "datePublished": articleDate,
+          "dateModified": today,
+            "author": {
+            "@type": "Person",
+            "name": article.auteur
+          },
+          "description": article.chapeau,
+          "articleSection": article.sousrubrique.sousrubrique,
+          "articleBody": article.info,
+          "keywords": this.keywordAndHashtagService.removeHashtags(article.keyword),
+          "inLanguage": "fr",
+          "articleTag": this.keywordAndHashtagService.extractHashtags(article.keyword),
+        }
+        this.jsonLdObjects.push(jsonLd);
+      });
+      this.jsonLdService.setJsonLd(this.jsonLdObjects);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UrlMapperService } from './../../shared/services/url-mapper.service';
-import { AfterViewInit, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { CommonModule, DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { Article, ArticleDetail, SportDetail } from '@wkpcamer/models';
@@ -60,16 +60,12 @@ export class RubriqueArticleComponent implements OnInit,AfterViewInit {
   router=inject(Router);
   keywordAndHashtagService=inject(KeywordAndHashtagService);
   sportBehaviorService=inject(SportBehaviorService);
+  cdr=inject(ChangeDetectorRef);
   ngOnInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
-    this.rubrique=this.activatedRoute.snapshot.params["rubrique"];
-    this.sousrubrique=this.activatedRoute.snapshot.params["sousrubrique"];
-    this.url=this.rubrique+'/'+this.sousrubrique
-    this.toSplitKeys=this.urlMapperService.getIds(this.url)
-    const[fkS,fkR]=(this.toSplitKeys?? '').split('|').map(Number);
-    this.rubriqueArticles.set(this.activatedRoute.snapshot.data['menuList']);
-    this.label.set(this.rubriqueArticles()[0].sousrubrique.sousrubrique);
+
+
     this.sportBehaviorService.state$.subscribe({
       next:(data:SportDetail[])=>{
         this.sports.set(data.slice(0,10));
@@ -80,6 +76,16 @@ export class RubriqueArticleComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
+    
+    this.activatedRoute.data.subscribe({
+      next:data=>{
+        this.rubriqueArticles.set(data['menuList']);
+        //console.log(this.rubriqueArticles());
+        this.label.set(this.rubriqueArticles()[0].sousrubrique.sousrubrique);
+        this.cdr.detectChanges();
+      }
+
+    });
 
   }
 

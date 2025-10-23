@@ -17,4 +17,7 @@ export class VideoService extends DataService<Video>{
   public VideoSopie(){
     return this.httpClient.get<Video[]>(CONFIG.apiUrl+`/videos/videosem`);
   }
+  public getVideos(resource :string){
+    return this.httpClient.get<Video[]>(CONFIG.apiUrl+`/videos/videofind/${resource}`);
+  }
 }

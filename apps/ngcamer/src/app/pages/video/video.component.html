@@ -1,1 +1,23 @@
-<p>video works!</p>
+  <section class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-5">
+    <div class="col-span-1 md:col-span-8">
+      <app-video-list [indexVideos]="listVideos" [label]="label"></app-video-list>
+    </div>
+    <div class="col-span-1 md:col-span-4">
+      <app-sport [sportArticles]="sports()" />
+      <p-divider></p-divider>
+       <app-adsense
+        [adClient]="'ca-pub-8638642715460968'"
+        [adSlot]="'6927429462'"
+        [adFormat]="'auto'"
+        [fullWidthResponsive]="true"
+        class="p-3 bg-white border-round"
+      >
+
+      </app-adsense>
+      <p-divider></p-divider>
+      <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'"/>
+    </div>
+  </section>
+
+
+

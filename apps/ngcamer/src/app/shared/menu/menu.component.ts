@@ -138,8 +138,8 @@ export class MenuComponent implements OnInit,AfterViewInit {
           [
             {
               items:[
-                {label: 'Camer', icon: 'pi pi-fw pi-video',command: () => this.navigateToVideo("/video/camer")},
-                {label: 'Sopie Prod', icon: 'pi pi-fw pi-youtube',command: () => this.navigateToVideo("/video/sopie")},
+                {label: 'Camer', icon: 'pi pi-fw pi-video',command: () => this.navigateTo("/video/Camer")},
+                {label: 'Sopie Prod', icon: 'pi pi-fw pi-youtube',command: () => this.navigateTo("/video/Sopie")},
 
 
 
@@ -172,8 +172,6 @@ export class MenuComponent implements OnInit,AfterViewInit {
     this.cdr.detectChanges();
   }
   navigateTo(path:string){
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([path]);
-    });
+    this.router.navigate([path]);
   }
 }

@@ -43,8 +43,8 @@ export class SousrubriqueArticleComponent implements OnInit {
    ngOnInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
-
-    this.label.set(this.rubriqueArticles()[0].sousrubrique.sousrubrique);
+    //console.log(this.rubriqueArticles());
+    //this.label.set(this.rubriqueArticles()[0].sousrubrique.sousrubrique);
     this.dateModif.set(new Date().toISOString().slice(0, 19) + '+00:00') ;
 
     this.titleService.setTitle(`Cameroun,Cameroon Camer.be, l'information claire et nette::Cameroun,Cameroon,CAMEROUN INFO ,CAMEROUN ACTU ${this.rubriqueArticles()[0].sousrubrique.sousrubrique}`);

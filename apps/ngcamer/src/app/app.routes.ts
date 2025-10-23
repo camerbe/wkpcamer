@@ -14,7 +14,14 @@ export const appRoutes: Route[] = [
         path: 'accueil',
         loadComponent:()=>import('./pages/home/home.component').then((m)=>m.HomeComponent),
         //component: HomeComponent,
-        resolve: { accueilList: accueilResolver }
+        resolve: { accueilList: accueilResolver },
+        runGuardsAndResolvers: 'always'
+      },
+      {
+        path: 'video/:video',
+        loadComponent:()=>import('./pages/video/video.component').then((m)=>m.VideoComponent),
+        resolve: { videoList: videoResolver },
+        runGuardsAndResolvers: 'always'
       },
       {
         path: ':rubrique/:sousrubrique/:slug',
@@ -25,17 +32,10 @@ export const appRoutes: Route[] = [
       {
         path: ':rubrique/:sousrubrique',
         loadComponent:()=>import('./pages/rubrique-article/rubrique-article.component').then((m)=>m.RubriqueArticleComponent),
-
         resolve: { menuList: sousrubriqueRubriqueResolver },
         runGuardsAndResolvers: 'always'
       },
 
-      {
-        path: 'video/:video',
-        loadComponent:()=>import('./pages/video/video.component').then((m)=>m.VideoComponent),
-        resolve: { videoList: videoResolver },
-        runGuardsAndResolvers: 'always'
-      },
 
     ]
   }

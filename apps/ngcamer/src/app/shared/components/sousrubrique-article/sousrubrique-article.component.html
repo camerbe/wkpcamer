@@ -3,7 +3,7 @@
       <p-dataview #dv
         [value]="rubriqueArticles()"
         [rows]="10"
-        [paginator]="true"
+        [paginator]="rubriqueArticles().length>0"
         [layout]="'grid'"
         [rowsPerPageOptions]="[5,10,20]"
         class="px-4"

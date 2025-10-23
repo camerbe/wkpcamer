@@ -1,0 +1,96 @@
+
+    <div class="grid" itemscope itemtype="https://schema.org/ItemList">
+      <meta itemprop="name" content="{{ label() }}" />
+      <meta itemprop="itemListOrder" content="https://schema.org/ItemListOrderAscending" />
+      <p-dataview #dv
+        [value]="indexVideos()"
+        [rows]="10"
+        [paginator]="indexVideos().length > 0"
+        [layout]="'grid'"
+        [rowsPerPageOptions]="[5,10,20]"
+        class="px-4"
+
+      >
+        <ng-template #header>
+          <h2 class="md:text-2xl uppercase font-semibold text-teal-700">{{ label() }}</h2>
+        </ng-template>
+        <ng-template #grid let-items>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for(video of items;track $index){
+            <!-- <div> -->
+              <p-card
+                class="py-4"
+                itemprop="itemListElement"
+                itemscope
+                itemtype="https://schema.org/VideoObject"
+              >
+                <meta itemprop="position" content="{{ $index + 1 }}" />
+                <ng-template pTemplate="header">
+                    <div class="card-image-container relative group">
+                        @if (video.cover_image){
+                          <img
+                          [ngSrc]="video.cover_image"
+                          alt="{{video.titre}}"
+                          title="{{video.titre}}"
+                          fill
+                          class="object-cover"
+                          itemprop="thumbnailUrl"
+                          >
+                        }
+                        <div
+                          class="absolute bottom-0 left-0 right-0
+                          flex flex-col items-center justify-center bg-gradient-to-t from-black/80 to-transparent p-2 transition-opacity duration-500 opacity-100 group-hover:opacity-100
+                          "
+                        >
+
+                          <a
+                             (keydown)="gotoVideo(video.video_url,video.titre)"
+                             (click)="gotoVideo(video.video_url,video.titre)"
+                             tabindex="0"
+                          class="text-white text-center text-sm md:text-base font-semibold uppercase cursor-auto"
+                           >
+                            <span itemprop="name">{{ video.titre }}</span>
+                          </a>
+                          <meta itemprop="description" [content]="video.titre" />
+                          <i
+                            class="pi pi-youtube text-white text-6xl md:text-8xl
+                            "
+                          ></i>
+                        </div>
+                      </div>
+                </ng-template>
+
+              <!-- </article> -->
+              </p-card>
+            <!-- </div> -->
+        }
+          </div>
+
+        </ng-template>
+      </p-dataview>
+
+     <p-dialog
+      header="{{ selectedVideo?.titre }}"
+      [(visible)]="displayVideo"
+      [style]="{width: '80vw', height: '80vh'}"
+      modal="true"
+      closable="true"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      draggable="false"
+      resizable="false"
+      >
+      <iframe
+        width="100%"
+        height="315"
+        [src]="selectedVideo?.videoUrl"
+        title="{{ selectedVideo?.titre }}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+
+     </p-dialog>
+    </div>
+
