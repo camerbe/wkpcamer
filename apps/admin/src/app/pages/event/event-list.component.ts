@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EventService } from '@wkpcamer/actions';
-import { EventDetail, Event } from '@wkpcamer/models';
+import { EventDetail, Evenement } from '@wkpcamer/models';
 import { IsExpiredService } from '@wkpcamer/users';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -31,7 +31,7 @@ import { TooltipModule } from 'primeng/tooltip';
 export class EventListComponent implements OnInit{
 
 
-  event!:Event;
+  event!:Evenement;
   events:EventDetail[]=[];
 
   router=inject(Router);
@@ -53,7 +53,7 @@ export class EventListComponent implements OnInit{
   private load() {
     return this.eventService.getAll().subscribe({
       next: (data) => {
-        const tmpData = data as unknown as Event;
+        const tmpData = data as unknown as Evenement;
         this.events = tmpData["data"] as unknown as EventDetail[];
             //console.log(this.articles);
         },

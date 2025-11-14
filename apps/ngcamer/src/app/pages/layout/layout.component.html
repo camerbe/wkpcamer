@@ -2,6 +2,7 @@
   <!-- header -->
   <div class="mx-auto px-2 w-full">
     <app-header class="w-full"></app-header>
+
     <app-ad-moneytizer
      [appId]="'9307'"
      [zoneId]="'28'"
@@ -12,15 +13,16 @@
   <!-- contenu principal -->
   <main class="flex-1 pt-20 lg:pt-20 bg-gray-100 py-8">
     <div class="mx-auto px-4 list-camer-container">
+
       <app-header-carousel [carouselArticles]="filteredCarouselArticles()"/>
       <app-adsense
         [adClient]="'ca-pub-8638642715460968'"
         [adSlot]="'6927429462'"
         [adFormat]="'auto'"
         [fullWidthResponsive]="true"
-      >
+      />
 
-      </app-adsense>
+
       <router-outlet></router-outlet>
     </div>
   </main>

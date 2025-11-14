@@ -62,16 +62,26 @@ export class EventFormComponent implements OnInit {
 		let cmsURL = `${CONFIG.apiUrl}/laravel-filemanager?editor=${fieldname}`;
 		cmsURL += (filetype == 'image') ? '&type=Images' : '&type=Files';
 
+    if (filetype === 'image') {
+      cmsURL += '&type=Images';
+    } else if (filetype === 'media') {
+      cmsURL += '&type=Medias';
+    } else {
+      cmsURL += '&type=Files';
+    }
+
 			tinymce?.activeEditor?.windowManager.openUrl({
 			  url: cmsURL,
 			  title: 'Camer.be',
 			  width: x * 0.8,
 			  height: y * 0.8,
 			  onMessage: (api: any, message: any) => {
-          console.log(message)
-				callback(message.content);
-				api.close();
-
+         let currentUrl = message.content;
+        if (currentUrl.includes('/api/storage')) {
+          currentUrl = currentUrl.replace('/api/storage', '/storage');
+        }
+        callback(currentUrl);
+        api.close();
 
 			  }
 		});

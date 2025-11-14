@@ -1,0 +1,42 @@
+/* 1️⃣ — Forcer la couleur blanche sur les textes et icônes du menu principal */
+:host ::ng-deep .p-megamenu .p-menuitem-link,
+:host ::ng-deep .p-megamenu .p-menuitem-link .p-menuitem-text,
+:host ::ng-deep .p-megamenu .p-menuitem-link .p-menuitem-icon,
+:host ::ng-deep .p-megamenu a > .p-megamenu-item-link {
+  color: #ffffff !important; /* texte + icônes blancs */
+}
+
+/* 2️⃣ — Garde le fond vert de ton MegaMenu */
+:host ::ng-deep .p-megamenu {
+  background-color: rgb(16, 185, 129) !important; /* bg-green-500 */
+  border: none !important;
+}
+
+/* 3️⃣ — Changer la couleur au survol pour un vert plus foncé */
+:host ::ng-deep .p-megamenu .p-menuitem-link:hover {
+  background-color: rgb(5, 150, 105) !important; /* bg-green-600 */
+  color: #ffffff !important;
+}
+
+/* 4️⃣ — Garder les sous-menus lisibles (fond blanc + texte noir)*/
+:host ::ng-deep .p-megamenu .p-megamenu-panel {
+  background-color: #ffffff !important;
+}
+
+
+:host ::ng-deep .p-megamenu .p-megamenu-panel .p-menuitem-link,
+:host ::ng-deep .p-megamenu .p-megamenu-panel .p-menuitem-link .p-menuitem-text,
+:host ::ng-deep .p-megamenu .p-megamenu-panel .p-menuitem-link .p-menuitem-icon {
+  color: #000000 !important;
+}
+
+ :host ::ng-deep .p-megamenu .p-megamenu-item-icon {
+  color: #ffffff !important;
+}
+:host ::ng-deep .p-megamenu .p-megamenu-item-label {
+  color: #ffffff !important;
+}
+/*
+:host ::ng-deep li>.p-megamenu-item> .p-megamenu-item-icon {
+  color: #000000 !important;
+}*/

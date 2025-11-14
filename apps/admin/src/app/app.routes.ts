@@ -1,7 +1,6 @@
 import { articleResolver } from './shared/resolvers/article-resolver';
 import { articleListResolver } from './../../../../libs/articles/article-list-resolver';
 import { Route } from '@angular/router';
-import { AuthGard } from './guards/auth-gard';
 import { adminGuard } from './guards/admin-guard';
 import { dimensionListResolver } from './shared/resolvers/dimension-list-resolver';
 import { dimensionResolver } from './shared/resolvers/dimension-resolver';
@@ -20,7 +19,8 @@ import { videoListResolver } from './shared/resolvers/video-list-resolver';
 import { videoResolver } from './shared/resolvers/video-resolver';
 import { userResolver } from './shared/resolvers/user-resolver';
 import { userListResolver } from './shared/resolvers/user-list-resolver';
-import { changePasswordResolver } from 'libs/src/lib/users/resolvers/change-password-resolver';
+import { changePasswordResolver } from '@wkpcamer/users';
+import { authGuard } from '@wkpcamer/auth';
 
 
 export const appRoutes: Route[] = [
@@ -31,7 +31,7 @@ export const appRoutes: Route[] = [
   {
 
     path: 'admin',
-    canActivate:[AuthGard],
+    canActivate:[authGuard],
     loadComponent: () => import('./shared/shell/shell').then((m) => m.Shell),
     children: [
       {

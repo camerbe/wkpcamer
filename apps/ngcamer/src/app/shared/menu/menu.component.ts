@@ -21,7 +21,7 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
     RouterModule
   ],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css'
+  styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit,AfterViewInit {
 
@@ -37,20 +37,38 @@ export class MenuComponent implements OnInit,AfterViewInit {
       {
         label: 'Accueil',
         icon: 'pi pi-fw pi-home',
-        styleClass: 'text-green-800 font-bold',
+        style: { 'color': '#ffffff' },
         items: [
           [
             {
               items:[
-                {label: 'Diaspora', icon: 'pi pi-fw pi-users',
+                {
+                  label: 'Diaspora',
+                  icon: 'pi pi-fw pi-users',
+                  styleClass: 'text-gray-500',
                   command: () => this.navigateTo("/camerounais-du-monde/diaspora")
                 },
-                {label: 'Économie', icon: 'pi pi-fw pi-dollar',
+                {
+                  label: 'Économie',
+                  icon: 'pi pi-fw pi-dollar',
+                  styleClass: 'text-gray-500',
                   command: () => this.navigateTo("/actualites/economie")
                 },
-                {label: 'Religion', icon: 'pi pi-fw pi-crown',command: () => this.navigateTo("/actualites/religion")},
-                {label: 'Société', icon: 'pi pi-fw pi-bullseye',command: () => this.navigateTo("/actualites/societe")},
-                {label: 'Politique', icon: 'pi pi-fw pi-list',command: () => this.navigateTo("/actualites/politique")},
+                {
+                  label: 'Religion',
+                  icon: 'pi pi-fw pi-crown',
+                  styleClass: 'text-gray-500',
+                  command: () => this.navigateTo("/actualites/religion")},
+                {
+                  label: 'Société',
+                  icon: 'pi pi-fw pi-bullseye',
+                  styleClass: 'text-gray-500',
+                  command: () => this.navigateTo("/actualites/societe")},
+                {
+                  label: 'Politique',
+                  icon: 'pi pi-fw pi-list',
+                  styleClass: 'text-gray-500',
+                  command: () => this.navigateTo("/actualites/politique")},
               ],
               label: 'Actualité & Société'
             },
@@ -95,7 +113,7 @@ export class MenuComponent implements OnInit,AfterViewInit {
       {
         label: 'Culture',
         icon: 'pi pi-fw pi-eye',
-        styleClass: 'text-green-800 font-bold',
+        styleClass: 'text-white',
         items: [
           [
             {
@@ -114,7 +132,7 @@ export class MenuComponent implements OnInit,AfterViewInit {
       {
         label: 'Expression Libre',
         icon: 'pi pi-fw pi-volume-down',
-        styleClass: 'text-green-800; font-bold',
+        styleClass: 'text-white',
         items: [
           [
             {
@@ -133,7 +151,7 @@ export class MenuComponent implements OnInit,AfterViewInit {
       {
         label: 'Vidéos',
         icon: 'pi pi-fw pi-youtube',
-        styleClass: 'text-green-800; font-bold',
+        styleClass: 'text-white',
         items: [
           [
             {
@@ -152,7 +170,7 @@ export class MenuComponent implements OnInit,AfterViewInit {
       {
         label: 'Contact',
         icon: 'pi pi-fw pi-briefcase',
-        styleClass: 'text-green-800; font-bold'
+        styleClass: 'text-white'
 
       }
 

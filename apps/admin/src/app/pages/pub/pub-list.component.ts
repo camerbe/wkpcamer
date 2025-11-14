@@ -47,6 +47,7 @@ export class PubListComponent implements OnInit {
     this.activatedRoute.data.subscribe({
       next:(data)=>{
         this.pubs=data["pubs"];
+        //console.log(this.pubs);
       }
     });
   }

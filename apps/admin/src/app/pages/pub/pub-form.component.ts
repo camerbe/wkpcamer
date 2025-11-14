@@ -46,6 +46,7 @@ import tinymce from 'tinymce';
 })
 export class PubFormComponent implements OnInit {
 
+
   initImage: EditorComponent['init'] = {
     path_absolute: "/",
     relative_urls: false,
@@ -60,7 +61,13 @@ export class PubFormComponent implements OnInit {
     const fieldname=meta['fieldname'];
     const filetype=meta['filetype'];
 		let cmsURL = `${CONFIG.apiUrl}/laravel-filemanager?editor=${fieldname}`;
-		cmsURL += (filetype == 'image') ? '&type=Images' : '&type=Files';
+		if (filetype === 'image') {
+      cmsURL += '&type=Images';
+    } else if (filetype === 'media') {
+      cmsURL += '&type=Medias';
+    } else {
+      cmsURL += '&type=Files';
+    }
 
 			tinymce?.activeEditor?.windowManager.openUrl({
 			  url: cmsURL,
@@ -68,8 +75,11 @@ export class PubFormComponent implements OnInit {
 			  width: x * 0.8,
 			  height: y * 0.8,
 			  onMessage: (api: any, message: any) => {
-          console.log(message)
-				callback(message.content);
+          let currentUrl = message.content;
+          if (currentUrl.includes('/api/storage')) {
+            currentUrl = currentUrl.replace('/api/storage', '/storage');
+          }
+				callback(currentUrl);
 				api.close();
 
 
@@ -167,6 +177,8 @@ export class PubFormComponent implements OnInit {
       return;
     }
     if (this.isAddMode){
+      //console.log(this.pubForm.value);
+      //return;
       this.pubService.create(this.pubForm.value).subscribe({
         next:(data)=>{
           this.messageService.add({

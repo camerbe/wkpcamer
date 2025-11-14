@@ -58,7 +58,7 @@ export class VideoFormComponent implements OnInit {
 		const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
     const fieldname=meta['fieldname'];
     const filetype=meta['filetype'];
-		let cmsURL = `${CONFIG.apiUrl}/laravel-filemanager?editor=${fieldname}`;
+		let cmsURL = `${CONFIG.siteUrl}/laravel-filemanager?editor=${fieldname}`;
 		cmsURL += (filetype == 'image') ? '&type=Images' : '&type=Files';
 
 			tinymce?.activeEditor?.windowManager.openUrl({

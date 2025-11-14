@@ -25,6 +25,7 @@ export * from './lib/models/credentials.model';
 export * from './lib/models/stats.model';
 export * from './lib/models/sport-detail.model';
 export * from './lib/models/sport.model';
+export * from './lib/models/cache-entry.model';
 
 
 

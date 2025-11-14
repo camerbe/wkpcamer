@@ -43,12 +43,12 @@ export class LoginComponent implements OnInit  {
         //console.log(tmpData.token);
         //console.log(tmpData.user);
         if(tmpData.message=='change_password') {
-          console.log("Toto")
+          //console.log("Toto")
           this.router.navigate(['/changepw',user.email]);
           return
         }
-        console.log(tmpData.message);
-        console.log(tmpData);
+        // console.log(tmpData.message);
+        // console.log(tmpData);
         this.localstorageService.setToken(tmpData.token);
         this.router.navigate(['/admin'])
       },

@@ -1,6 +1,9 @@
-<section>
+<section class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mb-4">
 
   <div class="">
+    <div class="md:mb-3 mx-auto rounded-md">
+      <app-pub-skyscraper [dimension]="728" />
+    </div>
 
      <p-carousel
         [value]="carouselArticles"
@@ -29,7 +32,8 @@
                 class="object-cover"
                 alt="{{ article.countries.pays }} :: {{article.titre }}"
                 title="{{ article.countries.pays }} ::{{article.titre }}"
-
+                [sizes]="getSizes()"
+                [ngSrcset]="'480w, 768w, 1200w'"
                 />
             </div>
             <p-tag
@@ -60,7 +64,8 @@
         </div>
       </ng-template>
      </p-carousel>
-    
+
 
   </div>
+
 </section>

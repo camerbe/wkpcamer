@@ -1,5 +1,5 @@
-import { Sport } from './../../../../../../libs/common/src/lib/models/sport.model';
-import { AfterViewInit, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Sport } from '@wkpcamer/models';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
@@ -9,13 +9,12 @@ import { ArticleForIndexService } from '../../shared/services/article-for-index.
 import { isPlatformBrowser } from '@angular/common';
 import { SportBehaviorService } from '../../shared/services/sport-behavior.service';
 import { ArticleDetail, SportDetail } from '@wkpcamer/models';
-import { ArticleComponent } from '../article/article.component';
 import { HeaderCarouselComponent } from "../../shared/components/header-carousel/header-carousel.component";
 import { AdMoneytizerComponent } from "../../shared/components/ad-moneytizer/ad-moneytizer.component";
 import { AdsenseComponent } from "../../shared/components/adsense/adsense.component";
 import { AdsenseService } from '../../shared/services/adsense.service';
 import { filter } from 'rxjs';
-import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
+import { PubSkyscraperComponent } from "../../shared/components/pub-skyscraper/pub-skyscraper.component";
 
 @Component({
   selector: 'app-layout',
@@ -47,6 +46,7 @@ export class LayoutComponent implements OnInit ,AfterViewInit{
   sportBehaviorService=inject(SportBehaviorService);
   adsenseService=inject(AdsenseService);
   router=inject(Router);
+  cdr=inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId))
@@ -73,10 +73,18 @@ export class LayoutComponent implements OnInit ,AfterViewInit{
   }
 
   ngAfterViewInit(): void {
+    this.isBrowser.set(isPlatformBrowser(this.platformId))
+    if(!this.isBrowser()) return;
      this.articleItemsService.state$.subscribe({
       next:(data)=>{
-        this.filteredCarouselArticles.set(data.slice(0,20));
-
+        if (data && Array.isArray(data)){
+          this.filteredCarouselArticles.set(data.slice(0, 20));
+        }
+        else{
+           this.filteredCarouselArticles.set([]);
+        }
+        //this.filteredCarouselArticles.set(data.slice(0,20));
+        this.cdr.detectChanges();
       }
      })
   }

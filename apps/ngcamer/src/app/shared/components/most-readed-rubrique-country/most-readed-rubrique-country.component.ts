@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { Component, inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ArticleDetail } from '@wkpcamer/models';
@@ -52,4 +52,5 @@ export class MostReadedRubriqueCountryComponent implements OnInit{
       this.router.navigate(['/'+this.slugifyService.slugify(rubrique)+'/'+this.slugifyService.slugify(sousrubrique),slug]);
     });
   }
+  
 }

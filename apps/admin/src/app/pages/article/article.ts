@@ -66,6 +66,7 @@ export class ArticleListComponent implements OnInit {
     this.activatedRoute.data.subscribe({
       next:(data)=>{
         this.articles=data["ArticleItem"];
+        //console.log(this.articles);
       }
     })
 

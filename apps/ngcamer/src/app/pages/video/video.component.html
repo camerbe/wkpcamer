@@ -1,20 +1,29 @@
   <section class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-5">
     <div class="col-span-1 md:col-span-8">
       <app-video-list [indexVideos]="listVideos" [label]="label"></app-video-list>
+      <p-divider></p-divider>
+      <div
+      id="taboola-below-article-thumbnails"></div>
     </div>
     <div class="col-span-1 md:col-span-4">
       <app-sport [sportArticles]="sports()" />
       <p-divider></p-divider>
-       <app-adsense
-        [adClient]="'ca-pub-8638642715460968'"
-        [adSlot]="'6927429462'"
-        [adFormat]="'auto'"
-        [fullWidthResponsive]="true"
-        class="p-3 bg-white border-round"
-      >
+      <p-card>
+        <ng-template pTemplate="content">
+          <div class="p-2">
+            <app-adsense
+            [adClient]="'ca-pub-8638642715460968'"
+            [adSlot]="'6927429462'"
+            [adFormat]="'auto'"
+            [fullWidthResponsive]="true"
+            class="p-3 bg-white border-round"
+          ></app-adsense>
 
-      </app-adsense>
-      <p-divider></p-divider>
+          </div>
+        </ng-template>
+      </p-card>
+
+      <app-debat-droit />
       <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'"/>
     </div>
   </section>

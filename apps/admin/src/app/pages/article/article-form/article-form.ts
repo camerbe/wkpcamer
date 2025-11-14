@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -7,20 +7,22 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { DatePickerModule } from 'primeng/datepicker';
-import { Router, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
-import { ArticleService } from '@wkpcamer/services/articles';
-import { PaysDetail, SousRubriqueDetail, Pays,SousRubrique, ArticleDetail, Article } from '@wkpcamer/models';
+import { PaysDetail, SousRubriqueDetail, Pays,SousRubrique, ArticleDetail } from '@wkpcamer/models';
 import { SelectModule } from 'primeng/select';
+// Update the import path to the correct location of ArticleService
+import { ArticleService } from '@wkpcamer/services/articles';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { SelectChangeEvent } from 'primeng/select';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { KeywordAndHashtagService, LocalstorageService, IsExpiredService } from '@wkpcamer/users';
 import { CONFIG } from '@wkpcamer/config';
 import tinymce from 'tinymce';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'admin-article-form',
@@ -46,77 +48,82 @@ import tinymce from 'tinymce';
   templateUrl: './article-form.html',
   styleUrl: './article-form.css'
 })
-export class ArticleFormComponent implements OnInit {
+export class ArticleFormComponent implements OnInit,AfterViewInit {
 
 
-  init: EditorComponent['init'] = {
 
-    path_absolute: "/",
-    relative_urls: false,
-    base_url: '/tinymce',
-    suffix: '.min',
-    height: 450,
-    menubar: 'file edit view insert format tools table help',
-    toolbar_sticky: false,
-    images_upload_credentials: true,
-    file_picker_callback: function (callback, value, meta) {
+  // init: EditorComponent['init'] = {
 
-    const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-		const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
-    const fieldname=meta['fieldname'];
-    const filetype=meta['filetype'];
-		let cmsURL = `${CONFIG.apiUrl}/laravel-filemanager?editor=${fieldname}`;
-		cmsURL += (filetype == 'image') ? '&type=Images' : '&type=Files';
+  //   path_absolute: "/",
+  //   relative_urls: false,
+  //   base_url: '/tinymce',
+  //   //suffix: '.min',
+  //   height: 450,
+  //   menubar: 'file edit view insert format tools table help',
+  //   toolbar_sticky: false,
+  //   //images_upload_credentials: true,
+  //   file_picker_callback: function (callback, value, meta) {
 
-			tinymce?.activeEditor?.windowManager.openUrl({
-			  url: cmsURL,
-			  title: 'Camer.be',
-			  width: x * 0.8,
-			  height: y * 0.8,
+  //   const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+	// 	const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+  //   const fieldname=meta['fieldname'];
+  //   const filetype=meta['filetype'];
+	// 	let cmsURL = `${CONFIG.siteUrl}/laravel-filemanager?editor=${fieldname}`;
+	// 	cmsURL += (filetype == 'image') ? '&type=Images' : '&type=Files';
+  //   //const token = (document.querySelector('input[name="_token"]') as HTMLInputElement)?.value;
+  //   //console.log(token);
+  //   //cmsURL += `&_token=${token}`;
+	// 		tinymce?.activeEditor?.windowManager.openUrl({
+	// 		  url: cmsURL,
+	// 		  title: 'Camer.be',
+	// 		  width: x * 0.8,
+	// 		  height: y * 0.8,
 
-			  onMessage: (api: any, message: any) => {
-          callback(message.content);
-          api.close();
-			  }
-
-
-		});
-	},
-    plugins: [
-        'image', 'media', 'tools', 'link', 'advlist',
-        'autolink', 'lists', 'table', 'wordcount', 'code', 'searchreplace'
-    ],
-    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table mergetags blockquote'
-  };
+	// 		  onMessage: (api: any, message: any) => {
+  //         callback(message.content);
+  //         api.close();
+	// 		  }
 
 
-  initImage: EditorComponent['init'] = {
-    menubar: false,
-    plugins: ['image', 'media'],
-    toolbar: 'image media',
-    file_picker_callback: function (callback, value, meta) {
-
-    const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-		const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
-    const fieldname=meta['fieldname'];
-    const filetype=meta['filetype'];
-		let cmsURL = `${CONFIG.siteUrl}/laravel-filemanager?editor=${fieldname}`;
-		cmsURL += (filetype == 'image') ? '&type=Images' : '&type=Files';
-
-			tinymce?.activeEditor?.windowManager.openUrl({
-			  url: cmsURL,
-			  title: 'Camer.be',
-			  width: x * 0.8,
-			  height: y * 0.8,
-			  onMessage: (api: any, message: any) => {
-				callback(message.content);
-				api.close();
+	// 	});
+	// },
 
 
-			  }
-		});
-	}
-  };
+  //   plugins: [
+  //       'image', 'media', 'tools', 'link', 'advlist',
+  //       'autolink', 'lists', 'table', 'wordcount', 'code', 'searchreplace'
+  //   ],
+  //   toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table mergetags blockquote'
+  // };
+
+
+  // initImage: EditorComponent['init'] = {
+  //   menubar: false,
+  //   plugins: ['image', 'media'],
+  //   toolbar: 'image media',
+  //   file_picker_callback: function (callback, value, meta) {
+
+  //   const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+	// 	const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+  //   const fieldname=meta['fieldname'];
+  //   const filetype=meta['filetype'];
+	// 	let cmsURL = `${CONFIG.siteUrl}/laravel-filemanager?editor=${fieldname}`;
+	// 	cmsURL += (filetype == 'image') ? '&type=Images' : '&type=Files';
+
+	// 		tinymce?.activeEditor?.windowManager.openUrl({
+	// 		  url: cmsURL,
+	// 		  title: 'Camer.be',
+	// 		  width: x * 0.8,
+	// 		  height: y * 0.8,
+	// 		  onMessage: (api: any, message: any) => {
+	// 			callback(message.content);
+	// 			api.close();
+
+
+	// 		  }
+	// 	});
+	// }
+  // };
 
   articleForm!: FormGroup;
   countries:PaysDetail[]=[];
@@ -124,7 +131,10 @@ export class ArticleFormComponent implements OnInit {
   userId!:number;
   id!:number;
   isAddMode!:boolean;
-
+  tinymce: any;
+  isTinyMceLoaded = false;
+  init: any= {};
+  initImage: any= {};
 
 
   fb = inject(FormBuilder);
@@ -138,13 +148,14 @@ export class ArticleFormComponent implements OnInit {
   isExpiredService=inject(IsExpiredService)
 
 
-  private loadCountries(): void {
-    this.articleService.getCountries().subscribe({
-      next: (data) => {
+
+  loadCountries() {
+    return this.articleService.getCountries().subscribe({
+      next: (data:Pays[]) => {
         const tmpData = data as unknown as Pays;
         this.countries = tmpData["data"] as unknown as PaysDetail[];
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Error fetching countries', err);
         this.messageService.add({
           severity: 'error',
@@ -155,13 +166,13 @@ export class ArticleFormComponent implements OnInit {
     });
   }
 
-  private loadSousRubriques(): void {
-    this.articleService.getRubriques().subscribe({
-      next: (data) => {
+  loadSousRubriques() {
+    return this.articleService.getRubriques().subscribe({
+      next: (data:SousRubrique[]) => {
         const tmpData = data as unknown as SousRubrique;
         this.sousRubriques = tmpData["data"] as unknown as SousRubriqueDetail[];
       },
-      error: (err) => {
+      error: (err:HttpErrorResponse) => {
         console.error('Error fetching sous rubriques', err);
         this.messageService.add({
           severity: 'error',
@@ -196,6 +207,7 @@ export class ArticleFormComponent implements OnInit {
     this.id=this.activatedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
 
+    this.initTinyMceConfig();
     this.initializeForm();
     this.loadCountries();
     this.loadSousRubriques()
@@ -206,38 +218,25 @@ export class ArticleFormComponent implements OnInit {
 
           const tmpData=data["article"];
           const resData=tmpData["data"]  as ArticleDetail;
-          //console.log(resData);
-          //console.log(tmpData);
+
           resData.dateparution=new Date(this.datePipe.transform(resData.dateparution,'yyyy-MM-dd HH:mm:ss') || '');
-          const hashtags=this.hashtagService.extractHashtags(resData.keyword);
-          const motclef=this.hashtagService.removeHashtags(resData.keyword);
-          this.articleForm.patchValue({hashtags:hashtags});
+
           this.articleForm.patchValue(resData);
+          this.articleForm.patchValue({
+            hashtags:this.hashtagService.extractHashtags(resData.keyword),
+            keyword:this.hashtagService.removeHashtags(resData.keyword)
+          });
         }
       });
 
-      // this.articleService.show(this.id).subscribe({
-      //   next:(data)=>{
-      //     const resData=data["data"] as ArticleDetail
-      //     resData.dateparution=new Date(this.datePipe.transform(resData.dateparution,'yyyy-MM-dd HH:mm:ss') || '');
-      //     const hashtags=this.hashtagService.extractHashtags(resData.keyword);
-      //     const motclef=this.hashtagService.removeHashtags(resData.keyword);
-      //     /*console.log(`resdate ${resData.keyword}`);
-      //     console.log(`motclef ${motclef}`);*/
-      //     resData.keyword=motclef;
-      //     this.articleForm.patchValue({
-      //       hashtags:hashtags
-      //     })
-      //     this.articleForm.patchValue(resData);
-      //   }
-      // });
+
     }
   }
 
   onSubmit() {
 
     if (this.articleForm.invalid) {
-      //console.log('Form is invalid', this.articleForm.errors);
+      
       this.articleForm.markAllAsTouched();
       this.messageService.add({
         severity: 'error',
@@ -274,6 +273,7 @@ export class ArticleFormComponent implements OnInit {
     }
     else {
       this.articleForm.patchValue({dateparution: this.datePipe.transform(this.articleForm.value.dateparution,'yyyy-MM-dd HH:mm:ss')});
+      //console.log(this.articleForm.value);
       this.articleService.patch(this.id,this.articleForm.value).subscribe({
         next:(data)=>{
           this.messageService.add({
@@ -390,24 +390,81 @@ export class ArticleFormComponent implements OnInit {
       return null;
     }
   }
-filePickerHandler(callback: any, value: any, meta: any,tinymce:any) {
+filePickerHandler(callback: any, value: any, meta: any) {
     const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
     const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
 
-    let cmsURL = `${CONFIG.siteUrl}/laravel-filemanager?editor=${meta.fieldname}`;
-    cmsURL += (meta.filetype == 'image') ? '&type=Images' : '&type=Files';
+    let cmsURL = `${CONFIG.apiUrl}/laravel-filemanager?editor=${meta.fieldname}`;
 
-    tinymce.activeEditor.windowManager.openUrl({
+    if (meta.filetype === 'image') {
+      cmsURL += '&type=Images';
+    } else if (meta.filetype === 'media') {
+      cmsURL += '&type=Medias';
+    } else {
+      cmsURL += '&type=Files';
+    }
+
+
+    this.tinymce.activeEditor.windowManager.openUrl({
       url: cmsURL,
       title: 'Camer.be',
       width: x * 0.8,
       height: y * 0.8,
 
       onMessage: (api: any, message: any) => {
-        callback(message.content);
+
+        let currentUrl = message.content;
+        if (currentUrl.includes('/api/storage')) {
+          currentUrl = currentUrl.replace('/api/storage', '/storage');
+        }
+        callback(currentUrl);
         api.close();
+      },
+      headers: {
+        Authorization: `Bearer ${this.localstorageService.getToken()}`,
       }
     });
+  }
+
+  initTinyMceConfig() {
+    const baseConfig = {
+      path_absolute: "/",
+      relative_urls: false,
+      base_url: '/tinymce',
+      suffix: '.min',
+      height: 450,
+      file_picker_callback: (callback: any, value: any, meta: any) => {
+        this.filePickerHandler(callback, value, meta);
+      }
+    };
+    this.initImage = {
+      ...baseConfig,
+      menubar: false,
+      plugins: ['image', 'media'],
+      toolbar: 'image media'
+    };
+    this.init = {
+      ...baseConfig,
+      menubar: 'file edit view insert format tools table tc help',
+      toolbar_sticky: false,
+      plugins: [
+        'image', 'media', 'tools', 'link', 'advlist',
+        'autolink', 'lists', 'table', 'wordcount', 'code', 'searchreplace'
+      ],
+      toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table mergetags blockquote'
+    };
+  };
+  async ngAfterViewInit(): Promise<void> {
+    try{
+      const tinymceModule = await import('tinymce');
+      this.tinymce = tinymceModule.default;
+      this.isTinyMceLoaded = true;
+    }
+    catch (error){
+      console.error('Error loading tinymce:', error);
+      this.isTinyMceLoaded = false;
+    }
+
   }
 
 }

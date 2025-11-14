@@ -20,4 +20,7 @@ export class VideoService extends DataService<Video>{
   public getVideos(resource :string){
     return this.httpClient.get<Video[]>(CONFIG.apiUrl+`/videos/videofind/${resource}`);
   }
+  public getOneVideos(resource :string){
+    return this.httpClient.get<Video>(CONFIG.apiUrl+`/videos/${resource}`);
+  }
 }

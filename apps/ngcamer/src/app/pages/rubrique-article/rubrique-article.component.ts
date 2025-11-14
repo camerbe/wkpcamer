@@ -2,7 +2,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UrlMapperService } from './../../shared/services/url-mapper.service';
 import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ArticleService } from '@wkpcamer/services/articles';
-import { CommonModule, DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Article, ArticleDetail, SportDetail } from '@wkpcamer/models';
 import { SlugifyService } from '../../shared/services/slugify.service';
 import { Meta, Title } from '@angular/platform-browser';
@@ -16,6 +16,8 @@ import { DividerModule } from 'primeng/divider';
 import { SportBehaviorService } from '../../shared/services/sport-behavior.service';
 import { SportComponent } from "../../shared/components/sport/sport.component";
 import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
+import { PubSkyscraperComponent } from "../../shared/components/pub-skyscraper/pub-skyscraper.component";
+import { DebatDroitComponent } from "../../shared/components/debat-droit/debat-droit.component";
 
 @Component({
   selector: 'app-rubrique-article',
@@ -29,7 +31,8 @@ import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viraliz
     SousrubriqueArticleComponent,
     DividerModule,
     SportComponent,
-    ViralizeAdComponent
+    ViralizeAdComponent,
+    DebatDroitComponent
 ],
   templateUrl: './rubrique-article.component.html',
   styleUrl: './rubrique-article.component.css'
@@ -76,11 +79,10 @@ export class RubriqueArticleComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
-    
+
     this.activatedRoute.data.subscribe({
       next:data=>{
         this.rubriqueArticles.set(data['menuList']);
-        //console.log(this.rubriqueArticles());
         this.label.set(this.rubriqueArticles()[0].sousrubrique.sousrubrique);
         this.cdr.detectChanges();
       }

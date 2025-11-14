@@ -2,8 +2,11 @@
 
   <p-card>
     <ng-template #header>
-        <h1 class="uppercase p-3 rounded-t-md md:font-semibold text-teal-700 border-b border-b-gray-200"><i class="pi pi-trophy mr-2"></i>sport</h1>
-      </ng-template>
+      <div class="bg-teal-900 p-2">
+          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>sport</h3>
+        </div>
+
+    </ng-template>
      <p-carousel
         [value]="sportArticles"
         [numVisible]="1"
@@ -18,7 +21,7 @@
 
 
      >
-      
+
       <ng-template let-article pTemplate="item">
         <div class="m-2 p-4">
           <div class="mb-2 relative">

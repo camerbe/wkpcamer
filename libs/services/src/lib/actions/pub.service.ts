@@ -2,7 +2,7 @@ import { TypePub } from './../../../../common/src/lib/models/type-pub.model';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CONFIG } from '@wkpcamer/config';
-import { Pub, PubDimension } from '@wkpcamer/models';
+import { Pub, PubDetail, PubDimension } from '@wkpcamer/models';
 import { DataService } from '@wkpcamer/services';
 
 @Injectable({
@@ -17,5 +17,8 @@ export class PubService extends DataService<Pub> {
   }
   getPubType(){
     return this.httpClient.get<TypePub[]>(CONFIG.apiUrl+`/pubs/pubtype/list`);
+  }
+  public getRandomPub(dimension:number){
+      return this.httpClient.get<Pub>(CONFIG.apiUrl+`/pubs/pubcached/${dimension}`);
   }
 }

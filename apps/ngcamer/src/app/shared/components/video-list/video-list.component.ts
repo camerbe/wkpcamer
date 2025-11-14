@@ -32,7 +32,8 @@ export class VideoListComponent implements OnInit {
   isBrowser=signal(false);
   dateModif=signal('');
   displayVideo =signal(false);
-  selectedVideo: { titre: string; videoUrl: SafeResourceUrl } | null = null;
+  selectedVideo: any;
+  safeVideoUrl = signal<SafeResourceUrl | null>(null);
 
   platformId = inject(PLATFORM_ID);
   activatedRoute = inject(ActivatedRoute);
@@ -43,9 +44,9 @@ export class VideoListComponent implements OnInit {
 
   gotoVideo(url: string, titre: string): void {
     if(!this.isBrowser()) return;
-    this.selectedVideo = {
-      titre,
-      videoUrl: this.sanitizer.bypassSecurityTrustResourceUrl(url)}
+   const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.selectedVideo = { titre, url };
+    this.safeVideoUrl.set(safeUrl);
     this.displayVideo.set(true);
   }
   ngOnInit(): void {

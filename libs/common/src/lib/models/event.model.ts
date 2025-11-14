@@ -1,4 +1,4 @@
 import { EventDetail } from "./event-detail.model";
 import { IRepository } from "./irepository.model";
 
-export type Event = IRepository<EventDetail>
+export type Evenement = IRepository<EventDetail>

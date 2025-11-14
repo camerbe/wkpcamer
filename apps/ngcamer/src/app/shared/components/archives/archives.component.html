@@ -1,0 +1,120 @@
+<div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 items-stretch">
+@if(articleWeekList.length > 0 ){
+<div class="text-white flex-1">
+  <div class="mt-6">
+    <p-card class="bg-green-500 text-white h-full flex flex-col">
+      <ng-template pTemplate="header">
+        <div class="bg-green-600 p-4">
+          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>il y a une semaine</h3>
+        </div>
+      </ng-template>
+    @for(article of articleWeekList; track $index;let first=$first) {
+      <div
+          class="p-2"
+          [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
+      >
+       <a
+        class="cursor-pointer text-justify group flex items-center"
+         (click)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            (keypress)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            tabindex="0"
+      >
+      <div class="relative h-15 w-15 rounded-full overflow-hidden mr-4 flex-shrink-0">
+        <img
+          [ngSrc]="getImageUrl(article)"
+          alt="{{article.countries.pays}} :: {{article.titre}}"
+          title="{{article.countries.pays}} :: {{article.titre}}"
+          priority
+          fill
+          class="object-cover">
+
+      </div>
+         <span class="text-sm text-gray-500 leading-tight group-hover:text-orange-600 group-hover:underline transition-colors duration-200 line-clamp-2">{{ article.titre }}</span>
+      </a>
+      </div>
+    }
+    </p-card>
+  </div>
+
+</div>
+}
+@if(articleMonthkList.length > 0 ){
+<div class="text-white flex-1">
+  <div class="mt-6">
+    <p-card class="bg-green-500 text-white h-full flex flex-col">
+      <ng-template pTemplate="header">
+        <div class="bg-green-600 p-4">
+          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>il y a un mois</h3>
+        </div>
+      </ng-template>
+    @for(article of articleMonthkList; track $index;let first=$first) {
+      <div
+          class="p-2"
+          [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
+      >
+      <a
+        class="cursor-pointer text-justify group flex items-center"
+         (click)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            (keypress)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            tabindex="0"
+      >
+      <div class="relative h-15 w-15 rounded-full overflow-hidden mr-4 flex-shrink-0">
+        <img
+          [ngSrc]="getImageUrl(article)"
+          alt="{{article.countries.pays}} :: {{article.titre}}"
+          title="{{article.countries.pays}} :: {{article.titre}}"
+          priority
+          fill
+          class="object-cover">
+
+      </div>
+         <span class="text-sm text-gray-500 leading-tight group-hover:text-orange-600 group-hover:underline transition-colors duration-200 line-clamp-2">{{ article.titre }}</span>
+      </a>
+      </div>
+
+    }
+    </p-card>
+  </div>
+
+</div>
+}
+@if(articleYearList.length > 0 ){
+<div class="text-white flex-1 w-full">
+  <div class="mt-6">
+    <p-card class="bg-green-500 text-white h-full flex flex-col">
+      <ng-template pTemplate="header">
+        <div class="bg-green-600 p-4">
+          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>il y a un an</h3>
+        </div>
+      </ng-template>
+    @for(article of articleYearList; track $index;let first=$first) {
+      <div
+          class="p-2"
+          [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
+      >
+      <a
+        class="cursor-pointer text-justify group flex items-center"
+         (click)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            (keypress)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            tabindex="0"
+      >
+      <div class="relative h-15 w-15 rounded-full overflow-hidden mr-4 flex-shrink-0">
+        <img
+          [ngSrc]="getImageUrl(article)"
+          alt="{{article.countries.pays}} :: {{article.titre}}"
+          title="{{article.countries.pays}} :: {{article.titre}}"
+          priority
+          fill
+          class="object-cover">
+
+      </div>
+         <span class="text-sm text-gray-500 leading-tight group-hover:text-orange-600 group-hover:underline transition-colors duration-200 line-clamp-2">{{ article.titre }}</span>
+      </a>
+      </div>
+    }
+    </p-card>
+  </div>
+
+</div>
+}
+</div>

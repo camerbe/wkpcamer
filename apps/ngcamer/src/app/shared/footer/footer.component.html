@@ -1,19 +1,13 @@
 <footer class="bg-teal-900 text-white">
   <div class="container mx-auto px-4 py-12">
-   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-       <div class="lg:col-span-1">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-              <i class="pi pi-globe text-white text-xl"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold">CamerInfo</h3>
-              <p class="text-red-500 text-sm">Actualités du Cameroun</p>
-            </div>
-            <p class="text-gray-300 text-sm mb-6 leading-relaxed">
-              Votre source d'information de référence pour l'actualité camerounaise et internationale.
-              Nous nous engageons à vous fournir une information fiable et de qualité.
-            </p>
+   <div class="grid grid-cols-1">
+       <div class="flex flex-col w-full">
+          <app-archives [articleWeekList]="articleWeekList" [articleMonthkList]="articleMonthkList" [articleYearList]="articleYearList">
+
+          </app-archives>
+          <div class="border-t border-gray-700 mt-4 pt-4 text-center">
+              <p class="text-gray-400">©2005 - {{ currentYear }}
+                <a routerLink="/accueil" tabindex="0" (click)="gotoHome()"  class="text-teal-600 hover:none cursor-pointer" >Camer.be</a> Tous droits réservés.</p>
           </div>
        </div>
    </div>

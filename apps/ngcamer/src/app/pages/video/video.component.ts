@@ -13,6 +13,7 @@ import { VideoListComponent } from "../../shared/components/video-list/video-lis
 import { AdsenseComponent } from "../../shared/components/adsense/adsense.component";
 import { SportComponent } from "../../shared/components/sport/sport.component";
 import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
+import { DebatDroitComponent } from "../../shared/components/debat-droit/debat-droit.component";
 
 @Component({
   selector: 'app-video',
@@ -22,7 +23,8 @@ import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viraliz
     VideoListComponent,
     AdsenseComponent,
     SportComponent,
-    ViralizeAdComponent
+    ViralizeAdComponent,
+    DebatDroitComponent
 ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.css'

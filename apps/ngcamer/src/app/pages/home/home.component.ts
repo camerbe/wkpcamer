@@ -1,5 +1,5 @@
 import { SportBehaviorService } from './../../shared/services/sport-behavior.service';
-import { Component, inject, LOCALE_ID, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { afterRenderEffect, ChangeDetectorRef, Component, inject, LOCALE_ID, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ArticleDetail, SportDetail } from '@wkpcamer/models';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -18,12 +18,14 @@ import { SportComponent } from "../../shared/components/sport/sport.component";
 import { AdsenseComponent } from "../../shared/components/adsense/adsense.component";
 import { DividerModule } from 'primeng/divider';
 import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
+import { PubSkyscraperComponent } from "../../shared/components/pub-skyscraper/pub-skyscraper.component";
+import { DebatDroitComponent } from "../../shared/components/debat-droit/debat-droit.component";
 
 registerLocaleData(localeFr);
 @Component({
   selector: 'app-home',
   imports: [DataViewModule, CardModule, RouterModule, CommonModule, ButtonModule,
-    DividerModule, TagModule, IndexComponent, SportComponent, AdsenseComponent, ViralizeAdComponent],
+    DividerModule, TagModule, IndexComponent, SportComponent, AdsenseComponent, DebatDroitComponent],
   providers: [
 
     { provide: LOCALE_ID, useValue: 'fr-FR' },
@@ -52,14 +54,21 @@ export class HomeComponent implements OnInit{
   deviceDetectorService=inject(DeviceDetectorService);
   sportBehaviorService=inject(SportBehaviorService);
   platformId = inject(PLATFORM_ID);
-  articleIndex=inject(ArticleForIndexService)
+  articleIndex=inject(ArticleForIndexService);
+  cdr=inject(ChangeDetectorRef);
 
-  ngOnInit(): void {
-    this.isBrowser.set(isPlatformBrowser(this.platformId))
-    if(!this.isBrowser()) return;
-    this.isDesktop.set(this.deviceDetectorService.checkDesktop());
+  /**
+   *
+   */
+  constructor() {
+    afterRenderEffect(() => {
+      this.getIndex();
+    });
 
-    this.articleIndex.state$.subscribe({
+  }
+
+  getIndex(){
+    return this.articleIndex.state$.subscribe({
       next:(data:ArticleDetail[])=>{
         if(!data || data.length===0) {
           this.isData.set(false);
@@ -67,11 +76,22 @@ export class HomeComponent implements OnInit{
         }
         //console.log(data);
         this.listIndex.set(data);
-
+        this.cdr.detectChanges();
       }
     })
+  }
+
+  ngOnInit(): void {
+    this.isBrowser.set(isPlatformBrowser(this.platformId))
+    if(!this.isBrowser()) return;
+    this.isDesktop.set(this.deviceDetectorService.checkDesktop());
+
+
     if(!this.isData()){
-      this.listIndex.set(this.activatedRoute.snapshot.data['accueilList']);
+
+      this.listIndex.set(
+        this.activatedRoute.snapshot.data['accueilList']
+      );
       this.articleIndex.updateState(this.listIndex());
 
     }

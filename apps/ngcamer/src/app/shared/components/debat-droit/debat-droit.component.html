@@ -1,0 +1,255 @@
+<app-pub-skyscraper [dimension]="300"/>
+@if(debat){
+  <p-divider></p-divider>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="bg-teal-900 p-2">
+          <h3 class="text-xl font-semibold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>{{ this.debat.sousrubrique.sousrubrique}}</h3>
+        </div>
+     </ng-template>
+      <ng-template pTemplate="content">
+         <div class="mx-auto card-image-container relative">
+          <a
+            [routerLink]="['/'+slugifyService.slugify(debat.rubrique.rubrique)+'/'+slugifyService.slugify(debat.sousrubrique.sousrubrique),debat.slug]"
+           >
+          <img
+             [ngSrc]="debat.image_url"
+             alt="{{debat.countries.pays}} :: {{debat.titre}}"
+             title="{{debat.countries.pays}} :: {{debat.titre}}"
+             fill
+
+             class="object-cover"
+           />
+            </a>
+          </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="p-2 text-center">
+          <a
+            pButton
+            [routerLink]="['/'+slugifyService.slugify(debat.rubrique.rubrique)+'/'+slugifyService.slugify(debat.sousrubrique.sousrubrique)]"
+            class="p-button-rounded p-button-outlined p-button-success w-full uppercase"
+          >
+            rubrique  <i class="pi pi-arrow-right ml-2 mr-2"></i> {{debat.sousrubrique.sousrubrique}}
+          </a>
+        </div>
+      </ng-template>
+  </p-card>
+}
+<p-divider></p-divider>
+<p-card>
+  <ng-template pTemplate="content">
+    <div class="p-2">
+      <h3>moneytizer</h3>
+      <app-ad-moneytizer
+        [appId]="'9307'"
+        [zoneId]="'3'"
+      />
+    </div>
+  </ng-template>
+</p-card>
+@if(droit){
+  <p-divider></p-divider>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="bg-teal-900 p-2">
+          <h3 class="text-xl font-semibold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>{{ this.droit.sousrubrique.sousrubrique}}</h3>
+        </div>
+     </ng-template>
+      <ng-template pTemplate="content">
+         <div class="mx-auto card-image-container relative">
+           <a
+            [routerLink]="['/'+slugifyService.slugify(droit.rubrique.rubrique)+'/'+slugifyService.slugify(droit.sousrubrique.sousrubrique),droit.slug]"
+           >
+          <img
+             [ngSrc]="droit.image_url"
+             alt="{{droit.countries.pays}} :: {{droit.titre}}"
+             title="{{droit.countries.pays}} :: {{droit.titre}}"
+             fill
+             class="object-cover"
+           />
+           </a>
+          </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="p-2 text-center">
+          <a
+            pButton
+            [routerLink]="['/'+slugifyService.slugify(droit.rubrique.rubrique)+'/'+slugifyService.slugify(droit.sousrubrique.sousrubrique)]"
+            class="p-button-rounded p-button-outlined p-button-success w-full uppercase"
+          >
+            rubrique  <i class="pi pi-arrow-right ml-2 mr-2"></i> {{droit.sousrubrique.sousrubrique}}
+          </a>
+        </div>
+      </ng-template>
+  </p-card>
+}
+<p-divider></p-divider>
+<p-card>
+  <ng-template pTemplate="content">
+    <div class="p-2">
+      <h3>Google Adsense</h3>
+      <app-adsense
+        [adClient]="'ca-pub-8638642715460968'"
+        [adSlot]="'6927429462'"
+        [adFormat]="'auto'"
+        [fullWidthResponsive]="true"
+      />
+
+    </div>
+  </ng-template>
+</p-card>
+@if(sopie){
+  <p-divider></p-divider>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="bg-teal-900 p-2">
+          <h3 class="text-xl font-semibold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>vidéo de la semaine</h3>
+        </div>
+     </ng-template>
+      <ng-template pTemplate="content">
+         <div class="mx-auto card-image-container relative relative
+          bottom-0 left-0 right-0
+                          flex flex-col items-center justify-center bg-gradient-to-t from-black/80 to-transparent p-2 transition-opacity duration-500 opacity-100 group-hover:opacity-100">
+          <a
+            (keydown)="gotoVideo(sopie.video_url,camer.titre)"
+            (click)="gotoVideo(sopie.video_url,sopie.titre)"
+            tabindex="0"
+            class="text-white text-center text-sm md:text-base font-semibold uppercase cursor-pointer"
+           >
+          <img
+             [ngSrc]="sopie.cover_image"
+             alt="{{sopie.titre}}"
+             title="{{sopie.titre}}"
+             fill
+             class="object-cover"
+           />
+           <span class="absolute bottom-2 left-2 text-sm">{{ sopie.titre }}</span>
+            </a>
+            <i class="pi pi-youtube text-white text-6xl md:text-8xl absolute font-bold"></i>
+          </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="p-2 text-center">
+          <a
+            pButton
+            [routerLink]="['/video/'+ sopie.typevideo]"
+            class="p-button-rounded p-button-outlined p-button-success w-full uppercase"
+          >
+            vidéo  <i class="pi pi-arrow-right ml-2 mr-2"></i> {{sopie.typevideo}}
+          </a>
+        </div>
+      </ng-template>
+  </p-card>
+}
+<p-divider></p-divider>
+<p-card>
+  <ng-template pTemplate="content">
+    <div class="p-2">
+      <h3>moneytizer 250</h3>
+      <app-ad-moneytizer
+        [appId]="'9307'"
+        [zoneId]="'2'"
+      />
+    </div>
+  </ng-template>
+</p-card>
+@if(camer){
+  <p-divider></p-divider>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="bg-teal-900 p-2">
+          <h3 class="text-xl font-semibold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>vidéo {{ camer.typevideo }}</h3>
+        </div>
+     </ng-template>
+      <ng-template pTemplate="content">
+         <div class="mx-auto card-image-container relative
+          bottom-0 left-0 right-0
+                          flex flex-col items-center justify-center bg-gradient-to-t from-black/80 to-transparent p-2 transition-opacity duration-500 opacity-100 group-hover:opacity-100
+         ">
+          <a
+            (keydown)="gotoVideo(camer.video_url,camer.titre)"
+            (click)="gotoVideo(camer.video_url,camer.titre)"
+            tabindex="0"
+            class="text-white text-center text-sm md:text-base font-semibold uppercase cursor-pointer"
+           >
+          <img
+             [ngSrc]="camer.cover_image"
+             alt="{{camer.titre}}"
+             title="{{camer.titre}}"
+             fill
+             class="object-cover "
+           />
+           <span class="absolute bottom-2 left-2 text-sm">{{ camer.titre }}</span>
+            </a>
+            <i class="pi pi-youtube text-white text-6xl md:text-8xl absolute font-bold"></i>
+          </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <div class="p-2 text-center">
+          <a
+            pButton
+            [routerLink]="['/video/'+ camer.typevideo]"
+            class="p-button-rounded p-button-outlined p-button-success w-full uppercase"
+          >
+            vidéo  <i class="pi pi-arrow-right ml-2 mr-2"></i> {{camer.typevideo}}
+          </a>
+        </div>
+      </ng-template>
+  </p-card>
+}
+<p-dialog
+      header="{{ selectedVideo?.titre }}"
+      [(visible)]="displayVideo"
+      [style]="{width: '80vw', height: '80vh'}"
+      modal="true"
+      closable="true"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      draggable="false"
+      resizable="false"
+      >
+      @if(safeVideoUrl()){
+      <iframe
+        width="100%"
+        height="315"
+        [src]="safeVideoUrl()"
+        title="{{ selectedVideo?.titre }}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+        }
+     </p-dialog>
+     <p-divider></p-divider>
+     <p-card>
+      <ng-template pTemplate="content">
+        <div class="p-2">
+          <h3>Viralize</h3>
+        </div>
+      </ng-template>
+    </p-card>
+@if(evt){
+  <p-divider></p-divider>
+  <p-card>
+      <ng-template pTemplate="header">
+      <div class="bg-teal-900 p-2">
+          <h3 class="text-xl font-semibold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>évènement</h3>
+        </div>
+     </ng-template>
+      <ng-template pTemplate="content">
+         <div class="mx-auto card-image-container relative">
+
+          <img
+             [ngSrc]="evt.image_url"
+             alt="{{evt.eventdate}}"
+             title="{{evt.eventdate}}"
+             fill
+             class="object-cover"
+           />
+
+          </div>
+      </ng-template>
+
+  </p-card>
+}

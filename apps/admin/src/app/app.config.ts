@@ -57,7 +57,7 @@ export const appConfig: ApplicationConfig = {
         firstDayOfWeek: 1
       }
     }),
-    
+
     provideStore({}),
     provideEffects([]),
     provideHttpClient(withInterceptors([(req, next) => {

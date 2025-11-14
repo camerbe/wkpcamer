@@ -1,13 +1,14 @@
 <div class="fixed-megamenu">
-  <p-megamenu [model]="items" [class]="'bg-teal-700 text-white'">
+  <p-megamenu [model]="items">
     <ng-template pTemplate="start">
       <a
+        [routerLink]="['/']"
         (click)="gotoHome()"
         tabindex="0"
         (keypress)="gotoHome()"
         class="inline-flex items-center no-underline bg-transparent border-0 cursor-pointer"
       >
-        <img src="/assets/images/logo.png" alt="Camer.be" class="mr-2" width="182" height="61">
+        <img src="/assets/images/camer-logo.png" alt="Camer.be" class="mr-2" width="190" height="52">
         <span class="sr-only">Accueil Camer.be</span>
       </a>
     </ng-template>
