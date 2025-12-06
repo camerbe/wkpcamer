@@ -170,6 +170,7 @@ export class MenuComponent implements OnInit,AfterViewInit {
       {
         label: 'Contact',
         icon: 'pi pi-fw pi-briefcase',
+        command: () => this.navigateTo("/contact/contact"),
         styleClass: 'text-white'
 
       }

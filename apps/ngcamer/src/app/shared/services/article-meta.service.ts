@@ -19,7 +19,8 @@ export class ArticleMetaService {
     if(!this.isBrowser()) return;
     const date = new Date().toISOString().slice(0, 19) + '+00:00';
     const articleDate = new Date(article.dateparution).toISOString().slice(0, 19) + '+00:00';
-    const titre=this.appendCountryIfFound(article.titre,article.countries.country)+' - Camer.be';
+    //const titre=this.appendCountryIfFound(article.titre,article.countries.country)+' - Camer.be';
+    const titre=ArticleMetaService.getTitle(article.countries.pays,article.titre,article.countries.country,)+' - Camer.be';
     this.title.setTitle(titre);
 
     this.meta.updateTag({
@@ -40,6 +41,29 @@ export class ArticleMetaService {
         return `${country} :: ${title} `;
       }
       return title;
+  }
+  private static getTitle(pays: string, titre: string, country: string): string {
+    // On convertit tout en lowercase pour la comparaison, comme stripos en PHP
+    const titreLower = titre.toLowerCase();
+    const paysLower = pays.toLowerCase();
+    const countryLower = country.toLowerCase();
+
+    if (pays === country) {
+      return titreLower.includes(paysLower) ? titre : `${pays} :: ${titre}`;
+    }
+
+    const hasPays = titreLower.includes(paysLower);
+    const hasCountry = titreLower.includes(countryLower);
+
+    if (hasPays) {
+      return `${titre} :: ${country}`;
+    }
+
+    if (hasCountry) {
+      return `${pays} :: ${titre}`;
+    }
+
+    return `${pays} :: ${titre} :: ${country}`;
   }
   private updateOpenGraphTags(article:ArticleDetail){
 

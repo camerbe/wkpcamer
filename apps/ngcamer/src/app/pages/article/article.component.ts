@@ -1,7 +1,7 @@
 import { JsonLdService } from './../../shared/services/json-ld.service';
 import { KeywordAndHashtagService } from '@wkpcamer/users';
 import { Article, ArticleDetail, SportDetail } from '@wkpcamer/models';
-import { AfterViewInit, Component, ElementRef, inject, Injector, OnInit, PLATFORM_ID, signal, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, Injector, OnDestroy, OnInit, PLATFORM_ID, signal, ViewChild, ViewContainerRef } from '@angular/core';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -22,7 +22,6 @@ import { TaboolaService } from '../../shared/services/taboola.service';
 import { filter } from 'rxjs';
 import { AdMoneytizerComponent } from "../../shared/components/ad-moneytizer/ad-moneytizer.component";
 import { AdsenseComponent } from '../../shared/components/adsense/adsense.component';
-import { PubSkyscraperComponent } from "../../shared/components/pub-skyscraper/pub-skyscraper.component";
 import { DebatDroitComponent } from "../../shared/components/debat-droit/debat-droit.component";
 import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
 
@@ -47,7 +46,8 @@ registerLocaleData(localeFr);
   templateUrl: './article.component.html',
   styleUrl: './article.component.css'
 })
-export class ArticleComponent implements OnInit,AfterViewInit{
+export class ArticleComponent implements OnInit,AfterViewInit,OnDestroy{
+
 
 
   @ViewChild('articleContentContainer', { static: false })
@@ -62,7 +62,8 @@ export class ArticleComponent implements OnInit,AfterViewInit{
   sports=signal<SportDetail[]>([]);
   keyWord=signal('');
   dateModif=signal('');
-
+  articleUrl=signal('');
+  logoUrl =signal<string | null>(null);
   articleService=inject(ArticleService);
   activatedRoute=inject(ActivatedRoute);
   sanitizer=inject(DomSanitizer);
@@ -83,18 +84,18 @@ export class ArticleComponent implements OnInit,AfterViewInit{
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
     this.slug=this.activatedRoute.snapshot.params["slug"];
-    //this.article=this.activatedRoute.snapshot.data['articleSlug'] ;
+
     this.activatedRoute.data.subscribe({
       next:(data)=>{
         this.article=data['articleSlug'] as ArticleDetail;
       }
     });
-    //console.log(`onInit :${this.article.hit}`);
+
     this.articleMetaService.updateArticleMeta(this.article);
     this.keyWord.set(this.keywordAndHashtagService.removeHashtags(this.article.keyword));
     this.canonicalService.setCanonicalURL(`${window.location.protocol}//${window.location.host}${this.router.url}`)
-
-     this.articleService.getSameRubrique(this.article.fksousrubrique).subscribe({
+    this.articleUrl.set(`${window.location.protocol}//${window.location.host}${this.router.url}`);
+    this.articleService.getSameRubrique(this.article.fksousrubrique).subscribe({
         next:(data)=>{
           const tmpData=data as unknown as Article;
           const filteredTmpData=tmpData["data"] as unknown as ArticleDetail[];
@@ -108,7 +109,7 @@ export class ArticleComponent implements OnInit,AfterViewInit{
         //console.log(this.mostReadeArticles());
       }
      });
-
+     this.logoUrl.set(`${window.location.protocol}//${window.location.host}/assets/images/camer-logo.png`);
      this.sportBehaviorService.state$.subscribe({
       next:(data:SportDetail[])=>{
         this.sports.set(data.slice(0,10));
@@ -124,7 +125,7 @@ export class ArticleComponent implements OnInit,AfterViewInit{
   loadTaboolaWidget(url: string) {
     this.taboolaService.setPageDetails(
       'article',
-      `${window.location.protocol}//${window.location.host}${url}`
+      `${url}`
     );
     this.taboolaService.loadWidget(
       'thumbnails-a',
@@ -133,13 +134,23 @@ export class ArticleComponent implements OnInit,AfterViewInit{
       'mix'
     );
 
+
+  }
+  ngOnDestroy(): void {
     this.taboolaService.flush();
+    if (this.mutationObserver) {
+      this.mutationObserver.disconnect();
+    }
   }
   ngAfterViewInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
+     if (typeof window !== 'undefined') {
+      //this.logoUrl = `${window.location.protocol}//${window.location.host}/assets/images/camer-logo.png`;
+    }
     this.setupAdAfterFirstParagraph();
-    this.loadTaboolaWidget(this.router.url);
+
+    this.loadTaboolaWidget(this.articleUrl());
     const articleDate = new Date(this.article.dateparution).toISOString().slice(0, 19) + '+00:00';
     const date =new Date(Date.now());
      const today=date.toISOString().slice(0, 19) + '+00:00';
@@ -216,10 +227,7 @@ export class ArticleComponent implements OnInit,AfterViewInit{
       ],
     }
     this.jsonLdService.setJsonLd(jsonLd);
-    // setTimeout(() => {
-    //   this.setupAdAfterFirstParagraph();
-    // }, 300);
-    //this.setupAdAfterFirstParagraph();
+
   }
   setupAdAfterFirstParagraph() {
     const container = this.articleContentContainer?.nativeElement;
@@ -284,4 +292,6 @@ export class ArticleComponent implements OnInit,AfterViewInit{
     ? article.image_url
     : `https://www.camer.be${article.image_url}`;
   }
+
+
 }

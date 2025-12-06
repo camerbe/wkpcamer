@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, ViewportScroller } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { Article, ArticleDetail } from '@wkpcamer/models';
 import { ArticleService } from '@wkpcamer/services/articles';
@@ -30,6 +30,7 @@ export class FooterComponent implements OnInit {
   articleYearList: ArticleDetail[] = [];
 
   router=inject(Router)
+  scroller=inject(ViewportScroller)
   ngOnInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
@@ -57,6 +58,7 @@ export class FooterComponent implements OnInit {
    gotoHome() {
     this.router.navigateByUrl('/',{ skipLocationChange: true }).then(()=>{
       this.router.navigate(['/accueil']);
+      this.scroller.scrollToPosition([0, 10]);
     })
   }
 

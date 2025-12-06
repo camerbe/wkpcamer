@@ -189,13 +189,13 @@
 .card-info {
   line-height: 1.6;
   text-align:justify;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 .card-info p{
   white-space: pre-line;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  margin-bottom: 1em;
+  margin-bottom: 0.9em;
 }
 .card-chapeau {
   font-size: 0.95rem;
@@ -547,39 +547,5 @@
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
 }
 
-/******************************************************/
-/* ✅ Appliquer un fond vert et texte blanc au premier niveau */
-:host ::ng-deep .p-megamenu {
-  background-color: #16a34a; /* équivalent Tailwind: bg-green-600 */
-}
-
-:host ::ng-deep .p-megamenu .p-menuitem-link {
-  color: #ffffff !important; /* texte blanc au premier niveau */
-}
-
-:host ::ng-deep .p-megamenu .p-menuitem-icon {
-  color: #ffffff !important; /* icônes blanches aussi */
-}
-
-/* ✅ Effet au survol (plus clair) */
-:host ::ng-deep .p-megamenu .p-menuitem-link:hover {
-  background-color: #15803d; /* bg-green-700 */
-  color: #ffffff !important;
-}
-
-/* ⚠️ Les sous-menus (dropdowns) restent avec texte noir */
-:host ::ng-deep .p-megamenu .p-megamenu-panel {
-  background-color: #ffffff; /* fond blanc */
-}
-
-:host ::ng-deep .p-megamenu .p-megamenu-panel .p-menuitem-link {
-  color: #000000 !important; /* texte noir pour les sous-menus */
-}
-
-/* Optionnel : survol sous-menu */
-:host ::ng-deep .p-megamenu .p-megamenu-panel .p-menuitem-link:hover {
-  background-color: #f1f5f9; /* gris clair */
-  color: #16a34a !important; /* vert sur survol */
-}
 
 

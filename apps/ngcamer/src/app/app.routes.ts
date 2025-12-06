@@ -24,6 +24,11 @@ export const appRoutes: Route[] = [
         runGuardsAndResolvers: 'always'
       },
       {
+        path: 'contact/:contact',
+        loadComponent:()=>import('./pages/contact/contact.component').then((m)=>m.ContactComponent),
+
+      },
+      {
         path: ':rubrique/:sousrubrique/:slug',
         loadComponent:()=>import('./pages/article/article.component').then((m)=>m.ArticleComponent),
         resolve:{articleSlug:slugResolver},
