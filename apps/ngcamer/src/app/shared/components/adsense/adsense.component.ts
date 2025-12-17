@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, inject, Input, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { AdsenseService } from '../../services/adsense.service';
-import { error } from 'console';
+
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -19,8 +19,8 @@ export class AdsenseComponent implements OnInit,AfterViewInit{
    isBrowser=signal(false);
   adsenseService=inject(AdsenseService)
   platformId = inject(PLATFORM_ID);
- 
-  
+
+
 
   ngAfterViewInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
@@ -30,7 +30,7 @@ export class AdsenseComponent implements OnInit,AfterViewInit{
         //   this.adsenseService.pushAd();
         // }, 100);
     //  }
-    
+
   }
   ngOnInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));

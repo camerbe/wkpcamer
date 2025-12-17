@@ -1,13 +1,13 @@
 import { ResolveFn } from '@angular/router';
 import { Article, ArticleDetail } from '@wkpcamer/models';
-import { SlugifyService } from '../services/slugify.service';
+
 import { inject } from '@angular/core';
 import { UrlMapperService } from '../services/url-mapper.service';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { map } from 'rxjs';
 
-export const sousrubriqueRubriqueResolver: ResolveFn<ArticleDetail[]|null> = (route, state) => {
-  
+export const sousrubriqueRubriqueResolver: ResolveFn<ArticleDetail[]|null> = (route) => {
+
   const urlMapperService=inject(UrlMapperService);
   const rubrique= route.params["rubrique"];
   const sousrubrique= route.params["sousrubrique"];

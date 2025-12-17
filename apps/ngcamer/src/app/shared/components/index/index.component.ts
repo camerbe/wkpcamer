@@ -1,4 +1,4 @@
-import { ArticleMetaService } from './../../services/article-meta.service';
+
 import { CommonModule, DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { AfterViewInit, Component, inject, Input, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
@@ -11,7 +11,7 @@ import { SlugifyService } from '../../services/slugify.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { KeywordAndHashtagService } from '@wkpcamer/users';
 import { JsonLdService } from '../../services/json-ld.service';
-import { BreakpointObserver, Breakpoints, LayoutModule } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -37,7 +37,7 @@ export class IndexComponent implements OnInit,AfterViewInit,OnDestroy{
   listCamer: ArticleDetail[] = [];
   listOther: ArticleDetail[] = [];
   jsonLdArticles: ArticleDetail[] = [];
-  jsonLdObjects: any[] = [];
+  jsonLdObjects: unknown[] = [];
   combinedList: { item1: ArticleDetail; item2: ArticleDetail; }[] = [];
   isBrowser = signal(false);
   imageSize = 'medium';
@@ -159,9 +159,7 @@ getSizes(): string {
 
   }
 
-  gotoArticle(slug: string) {
-    throw new Error('Method not implemented.');
-  }
+
   wordCount(info:string): number {
     // Remove HTML tags and count words
     const text =info.replace(/<[^>]+>/g, ' ').trim();
@@ -253,9 +251,10 @@ getSizes(): string {
   ngOnDestroy(): void {
     this.breakpointSubscription.unsubscribe();
   }
-  getKeywordsArray(item: any): string {
-    return item.keyword
-      ? item.keyword.split(',').map((k: string) => k.trim()).join(', ')
+  getKeywordsArray(item: unknown): string {
+    const data = item as { keyword?: string };
+    return data.keyword
+      ? data.keyword.split(',').map((k: string) => k.trim()).join(', ')
       : '';
   }
 }

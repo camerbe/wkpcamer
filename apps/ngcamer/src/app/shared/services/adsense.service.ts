@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 
-declare let adsbygoogle: any[];
+declare let adsbygoogle: unknown[];
 
 @Injectable({
   providedIn: 'root'

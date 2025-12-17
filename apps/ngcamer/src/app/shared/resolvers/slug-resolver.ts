@@ -4,7 +4,7 @@ import { Article, ArticleDetail } from '@wkpcamer/models';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { map } from 'rxjs';
 
-export const slugResolver: ResolveFn< ArticleDetail | null> = (route, state) => {
+export const slugResolver: ResolveFn< ArticleDetail | null> = (route) => {
   const slug= route.params["slug"];
   if (!slug) return  null;
   return inject(ArticleService).getArticleBySlug(slug).pipe(map((data)=>{

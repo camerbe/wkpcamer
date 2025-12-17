@@ -14,7 +14,7 @@ import { AdMoneytizerComponent } from "../../shared/components/ad-moneytizer/ad-
 import { AdsenseComponent } from "../../shared/components/adsense/adsense.component";
 import { AdsenseService } from '../../shared/services/adsense.service';
 import { filter } from 'rxjs';
-import { PubSkyscraperComponent } from "../../shared/components/pub-skyscraper/pub-skyscraper.component";
+
 
 @Component({
   selector: 'app-layout',

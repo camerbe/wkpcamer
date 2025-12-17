@@ -1,12 +1,12 @@
 import { SportBehaviorService } from './../../shared/services/sport-behavior.service';
-import { afterRenderEffect, ChangeDetectorRef, Component, inject, LOCALE_ID, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { afterRenderEffect, ChangeDetectorRef, Component, inject, LOCALE_ID, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ArticleDetail, SportDetail } from '@wkpcamer/models';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { DataViewModule  } from "primeng/dataview";
 import { CardModule } from "primeng/card";
 import { SlugifyService } from '../../shared/services/slugify.service';
-import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { DeviceDetectorService } from '@wkpcamer/services';
 import { ButtonModule } from "primeng/button";
@@ -17,8 +17,6 @@ import { ArticleForIndexService } from '../../shared/services/article-for-index.
 import { SportComponent } from "../../shared/components/sport/sport.component";
 import { AdsenseComponent } from "../../shared/components/adsense/adsense.component";
 import { DividerModule } from 'primeng/divider';
-import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
-import { PubSkyscraperComponent } from "../../shared/components/pub-skyscraper/pub-skyscraper.component";
 import { DebatDroitComponent } from "../../shared/components/debat-droit/debat-droit.component";
 
 registerLocaleData(localeFr);

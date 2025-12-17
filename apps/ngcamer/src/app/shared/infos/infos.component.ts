@@ -1,7 +1,7 @@
 import { SlugifyService } from './../services/slugify.service';
 
 import { ArticleService } from '@wkpcamer/services/articles';
-import { ArticleDetail,Article } from '@wkpcamer/models';
+import { ArticleDetail } from '@wkpcamer/models';
 import { Component, LOCALE_ID, OnInit, inject, signal } from '@angular/core';
 import { DataViewModule } from 'primeng/dataview';
 import { CardModule } from 'primeng/card';

@@ -4,7 +4,7 @@ import { Article, ArticleDetail } from '@wkpcamer/models';
 import { inject } from '@angular/core';
 import { map } from 'rxjs';
 
-export const accueilResolver: ResolveFn< ArticleDetail[]|null > = (route, state) => {
+export const accueilResolver: ResolveFn< ArticleDetail[]|null > = () => {
   //const articleService = inject(ArticleService);
    return  inject(ArticleService).getArticle().pipe(map((data)=>{
     const tmpData = data as unknown as Article;

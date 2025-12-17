@@ -1,5 +1,5 @@
 import { ButtonModule } from 'primeng/button';
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ArticleDetail } from '@wkpcamer/models';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';

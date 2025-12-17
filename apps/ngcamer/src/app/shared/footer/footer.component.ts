@@ -1,5 +1,5 @@
 import { isPlatformBrowser, ViewportScroller } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { Article, ArticleDetail } from '@wkpcamer/models';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { ScrollTopModule } from 'primeng/scrolltop';

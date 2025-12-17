@@ -1,6 +1,6 @@
-import { ArticleService } from '@wkpcamer/services/articles';
+
 import { Component, OnInit, AfterViewInit, inject, signal, PLATFORM_ID, Input } from '@angular/core';
-import { Article, ArticleDetail } from '@wkpcamer/models';
+import { ArticleDetail } from '@wkpcamer/models';
 import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';

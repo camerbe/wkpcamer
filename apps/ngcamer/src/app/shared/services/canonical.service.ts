@@ -1,4 +1,4 @@
-import { DOCUMENT, inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'

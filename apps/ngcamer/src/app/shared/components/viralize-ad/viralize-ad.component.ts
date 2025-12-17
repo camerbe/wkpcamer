@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, OnInit, PLATFORM_ID, Renderer2, signal, ViewChild } from '@angular/core';
-import { ScriptLoaderService } from '../../services/script-loader.service';
+import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, PLATFORM_ID, Renderer2, signal, ViewChild } from '@angular/core';
+
 import { isPlatformBrowser } from '@angular/common';
 
-declare let Viralize: any;
+//declare let Viralize: any;
 @Component({
   selector: 'app-viralize-ad',
   imports: [],
@@ -23,7 +23,7 @@ export class ViralizeAdComponent implements  AfterViewInit, OnDestroy {
    */
   constructor() {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
-    
+
   }
   ngOnDestroy(): void {
     if(this.isBrowser()){
@@ -46,6 +46,6 @@ export class ViralizeAdComponent implements  AfterViewInit, OnDestroy {
     this.renderer.setAttribute(script, 'src', scriptSrc);
     this.renderer.appendChild(parentElement, script);
   }
-  
+
 
 }

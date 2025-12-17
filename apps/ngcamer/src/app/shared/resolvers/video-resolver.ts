@@ -4,7 +4,7 @@ import { ResolveFn } from '@angular/router';
 import { Video, VideoDetail } from '@wkpcamer/models';
 import { catchError, map, of } from 'rxjs';
 
-export const videoResolver: ResolveFn<VideoDetail[]|null> = (route, state) => {
+export const videoResolver: ResolveFn<VideoDetail[]|null> = (route) => {
   const video= route.params["video"];
   if(!video) return null;
 

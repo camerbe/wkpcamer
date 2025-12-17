@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, inject, Input, OnDestroy, PLATFORM_ID, signal } from '@angular/core';
 import { ArticleDetail } from '@wkpcamer/models';
 import { SlugifyService } from '../../services/slugify.service';
 import { Router, RouterModule } from '@angular/router';
@@ -29,7 +29,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './header-carousel.component.css'
 })
 export class HeaderCarouselComponent implements OnDestroy   {
-  
+
 
   @Input() carouselArticles: ArticleDetail[] = [];
    isBrowser=signal(false);

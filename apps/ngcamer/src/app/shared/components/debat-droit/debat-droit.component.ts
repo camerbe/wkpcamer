@@ -39,7 +39,7 @@ export class DebatDroitComponent implements AfterViewInit {
   camer!:VideoDetail;
   evt!:EventDetail;
   isBrowser=signal(false);
-  selectedVideo: any;
+  selectedVideo: unknown;
   safeVideoUrl = signal<SafeResourceUrl | null>(null);
   displayVideo =signal(false);
 

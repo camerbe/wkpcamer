@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { Component, inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { DomSanitizer, Meta, SafeResourceUrl, Title } from '@angular/platform-browser';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
@@ -32,7 +32,7 @@ export class VideoListComponent implements OnInit {
   isBrowser=signal(false);
   dateModif=signal('');
   displayVideo =signal(false);
-  selectedVideo: any;
+  selectedVideo: unknown;
   safeVideoUrl = signal<SafeResourceUrl | null>(null);
 
   platformId = inject(PLATFORM_ID);

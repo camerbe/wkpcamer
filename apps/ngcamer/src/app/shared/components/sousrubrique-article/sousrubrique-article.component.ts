@@ -1,6 +1,6 @@
 import localeFr from '@angular/common/locales/fr';
 import { CommonModule, DatePipe, isPlatformBrowser, NgOptimizedImage, registerLocaleData } from '@angular/common';
-import { afterRenderEffect, AfterViewInit, ChangeDetectorRef, Component, inject, Input, LOCALE_ID, OnChanges, OnInit, PLATFORM_ID, signal, SimpleChanges } from '@angular/core';
+import { afterRenderEffect, AfterViewInit, ChangeDetectorRef, Component, inject, Input, LOCALE_ID, OnChanges, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ArticleDetail } from '@wkpcamer/models';
 import { ButtonModule } from 'primeng/button';
@@ -163,7 +163,7 @@ export class SousrubriqueArticleComponent implements OnInit,AfterViewInit,OnChan
     return text.split(/\s+/).filter(w => w.length > 0).length;
   }
   loadJsonLd(){
-    const tmpTitre='Actualités Cameroun, Info & Analyse – Politique, Sport, Diaspora | Camer.be';
+    //const tmpTitre='Actualités Cameroun, Info & Analyse – Politique, Sport, Diaspora | Camer.be';
         //let dynamicDescription = 'Camer.be: Info claire et nette sur le Cameroun et la Diaspora. ';
 
         const listElements = this.jsonLdArticles.map((article, index) => {
@@ -245,8 +245,8 @@ export class SousrubriqueArticleComponent implements OnInit,AfterViewInit,OnChan
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
 
-    const subCategoryPath = this.router.url.substring(this.router.url.lastIndexOf("/") + 1) ;
-    const thematicKeywords = this.getThematicKeywords(subCategoryPath);
+    //const subCategoryPath = this.router.url.substring(this.router.url.lastIndexOf("/") + 1) ;
+    //const thematicKeywords = this.getThematicKeywords(subCategoryPath);
 
     // console.log(thematicKeywords);
     // console.log(this.router.url);
@@ -275,9 +275,10 @@ export class SousrubriqueArticleComponent implements OnInit,AfterViewInit,OnChan
     // 4. Retourne la liste séparée par des virgules
     return finalKeywords.join(', ');
   }
-  getKeywordsArray(item: any): string {
-    return item.keyword
-      ? item.keyword.split(',').map((k: string) => k.trim()).join(', ')
+  getKeywordsArray(item: unknown): string {
+    const data = item as { keyword?: string };
+    return data.keyword
+      ? data.keyword.split(',').map((k: string) => k.trim()).join(', ')
       : '';
   }
   ngOnChanges(): void {

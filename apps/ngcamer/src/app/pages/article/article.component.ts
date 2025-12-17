@@ -232,7 +232,7 @@ export class ArticleComponent implements OnInit,AfterViewInit,OnDestroy{
   setupAdAfterFirstParagraph() {
     const container = this.articleContentContainer?.nativeElement;
     if (!container) return;
-    this.mutationObserver = new MutationObserver((mutations) => {
+    this.mutationObserver = new MutationObserver(() => {
       const hasParagraphs = container.querySelectorAll('p').length > 0;
       if (hasParagraphs) {
         this.insertAdAfterFirstParagraph();

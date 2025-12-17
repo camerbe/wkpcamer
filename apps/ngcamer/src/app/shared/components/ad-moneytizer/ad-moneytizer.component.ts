@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, Input, OnDestroy, OnInit, PLATFORM_ID, Renderer2, signal, ViewChild } from '@angular/core';
-import { AdScriptService } from '../../services/ad-script.service';
+
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
