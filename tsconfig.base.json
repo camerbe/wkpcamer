@@ -22,6 +22,7 @@
       "@wkpcamer/services": ["libs/common/services/src/index.ts"],
       "@wkpcamer/services/articles": ["libs/articles/src/index.ts"],
       "@wkpcamer/shared": ["shared/src/index.ts"],
+      "@wkpcamer/storage": ["libs/shared/src/lib/src/index.ts"],
       "@wkpcamer/ui": ["libs/ui/src/index.ts"],
       "@wkpcamer/users": ["libs/src/index.ts"]
     }

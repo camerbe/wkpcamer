@@ -1,4 +1,4 @@
-import { LocalstorageService } from '@wkpcamer/users';
+import { LocalstorageService } from '../src/lib/storage/localstorage.service';
 import { CONFIG } from '@wkpcamer/config';
 import { Credentials, LoggedUser } from '@wkpcamer/models';
 import { Router } from '@angular/router';
