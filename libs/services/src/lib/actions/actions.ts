@@ -4,11 +4,11 @@ import { createAction, props } from '@ngrx/store';
 
 export const loadArticles= createAction(
   '[Article] Load Articles',
-  props<{ params?: any }>()
+  props<{ params?: unknown }>()
 );
 export const loadArticlesSuccess = createAction(
   '[Article] Load Articles Success',
-  props<{ articles: any[] }>()
+  props<{ articles: unknown[] }>()
 );
 export const selectArticle = createAction(
   '[Article] Select Article',
@@ -19,11 +19,11 @@ export const clearSelectedArticle = createAction(
 );
 export const createArticle = createAction(
   '[Article] Create Article',
-  props<{ article: any }>()
+  props<{ article: unknown }>()
 );
 export const updateArticle = createAction(
   '[Article] Update Article',
-  props<{ articleId: number; changes: any }>()
+  props<{ articleId: number; changes: unknown }>()
 );
 export const deleteArticle = createAction(
   '[Article] Delete Article',

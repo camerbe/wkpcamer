@@ -1,4 +1,4 @@
-import { TypePub } from './../../../../common/src/lib/models/type-pub.model';
+import { TypePub } from '@wkpcamer/models';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CONFIG } from '@wkpcamer/config';
