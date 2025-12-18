@@ -9,7 +9,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { LocalstorageService } from '../../../../../shared/src/lib/src/lib/storage/localstorage.service';
+import { LocalstorageService } from '@wkpcamer/storage';
 import { Router } from '@angular/router';
 @Component({
   selector: 'lib-user-login',
