@@ -10,7 +10,7 @@ export class JsonLdService {
    doc = inject(DOCUMENT);
    meta = inject(Meta);
 
-   setJsonLd(data: any): void {
+   setJsonLd(data: unknown): void {
     if(isPlatformBrowser(this.platformId)) {
       const json = JSON.stringify(data);
       let script = this.doc.querySelector('script[type="application/ld+json"]');

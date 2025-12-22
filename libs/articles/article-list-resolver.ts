@@ -1,11 +1,11 @@
 import { Article, ArticleDetail } from '@wkpcamer/models';
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { LocalstorageService } from '@wkpcamer/users';
+import { LocalstorageService } from '@wkpcamer/storage';
 import { ArticleService } from './src';
 import { map } from 'rxjs';
 
-export const articleListResolver: ResolveFn<ArticleDetail[]|null> = (route, state) => {
+export const articleListResolver: ResolveFn<ArticleDetail[]|null> = () => {
   const localstorageService=inject(LocalstorageService);
   const token=localstorageService.getToken();
   if(token){

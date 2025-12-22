@@ -3,8 +3,13 @@ import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 
 declare global {
   interface Window {
-  _taboola: any[];
+  _taboola: unknown[];
   }
+}
+
+interface TaboolaPageDetails {
+  url: string;
+  [key: string]: string;
 }
 @Injectable({
   providedIn: 'root'
@@ -17,7 +22,7 @@ export class TaboolaService {
     if(this.isBrowser()){
       window._taboola = window._taboola || [];
     }
-    
+
   }
 
   newPageLoad() {
@@ -39,9 +44,11 @@ export class TaboolaService {
   }
 
   setPageDetails(pageType: string, url: string) {
-    const pageDetails: any = {};
+    const pageDetails: TaboolaPageDetails = {
+    url
+  };
     pageDetails[pageType] = 'auto';
-    pageDetails.url = url;
+    //pageDetails.url = url;
     window._taboola.push(pageDetails);
   }
 

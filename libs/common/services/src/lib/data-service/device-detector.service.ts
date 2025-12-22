@@ -1,10 +1,11 @@
 import { isPlatformBrowser } from '@angular/common';
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, signal,OnDestroy } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeviceDetectorService {
+export class DeviceDetectorService implements OnDestroy {
+
 
   platformId = inject(PLATFORM_ID);
   private isBrowser=signal(isPlatformBrowser(this.platformId));

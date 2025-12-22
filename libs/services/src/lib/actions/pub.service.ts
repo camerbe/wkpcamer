@@ -2,7 +2,7 @@ import { TypePub } from '@wkpcamer/models';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CONFIG } from '@wkpcamer/config';
-import { Pub, PubDetail, PubDimension } from '@wkpcamer/models';
+import { Pub, PubDimension } from '@wkpcamer/models';
 import { DataService } from '@wkpcamer/services';
 
 @Injectable({

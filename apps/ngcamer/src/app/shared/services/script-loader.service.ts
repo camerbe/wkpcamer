@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class ScriptLoaderService {
   renderer!: Renderer2;
-  scripts: { [key: string]: Observable<any> } = {};
+  scripts: { [key: string]: Observable<unknown> } = {};
   isBrowser=signal(false);
 
   rendererFactory=inject(RendererFactory2) ;
@@ -21,7 +21,7 @@ export class ScriptLoaderService {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
 
   }
-  loadScript(name: string, src: string): Observable<any> {
+  loadScript(name: string, src: string): Observable<unknown> {
 
     if (!this.isBrowser()) {
       // Si on n’est pas dans le navigateur, on ne fait rien
@@ -41,14 +41,14 @@ export class ScriptLoaderService {
     script.async = true;
     script.defer = true;
 
-    const loadSubject = new Subject<any>();
+    const loadSubject = new Subject<unknown>();
     this.scripts[name] = loadSubject.asObservable();
 
     script.onload = () => {
       loadSubject.next(true);
       loadSubject.complete();
     };
-    script.onerror = (error: any) => {
+    script.onerror = (error: unknown) => {
       loadSubject.error(error);
       loadSubject.complete();
     };

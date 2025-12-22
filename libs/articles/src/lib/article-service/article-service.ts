@@ -4,7 +4,7 @@ import { DataService } from '@wkpcamer/services'; // Update the path as needed
 import { Article, SousRubrique,Pays, Sport, CacheEntry } from '@wkpcamer/models'; // Update the path
 import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Observable, shareReplay, switchMap, tap } from 'rxjs';
+import { Observable, shareReplay, tap } from 'rxjs';
 
 // @Component({
 //   selector: 'lib-article-service',

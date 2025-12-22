@@ -31,6 +31,6 @@ export const deleteArticle = createAction(
 );
 export const loadArticlesFailure = createAction(
   '[Article] Load Articles Failure',
-  props<{ error: any }>()
+  props<{ error: unknown }>()
 );
 
