@@ -17,7 +17,7 @@ export class KeywordAndHashtagService {
   }
   removeHashtags(text: string): string {
     if (!text || text.indexOf('#') === -1) return text;
-    const noTags = text.replace(/[#＃](?:[\p{L}\p{M}\p{N}\p{Pc}\-]|['’])+/gu, "");
+    const noTags = text.replace(/[#＃](?:[\p{L}\p{M}\p{N}\p{Pc}-]|['’])+/gu, "");
     let s = noTags;
     s = s.replace(/\s*,\s*/g, ", ");
     s = s.replace(/(?:,\s*){2,}/g, ", ");

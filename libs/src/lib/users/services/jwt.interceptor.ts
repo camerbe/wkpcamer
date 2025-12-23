@@ -1,5 +1,5 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { LocalstorageService } from '../../../../shared/src/lib/src/lib/storage/localstorage.service';
+import { LocalstorageService } from '@wkpcamer/localstorage';
 import { inject } from '@angular/core';
 import { CONFIG } from '@wkpcamer/config';
 

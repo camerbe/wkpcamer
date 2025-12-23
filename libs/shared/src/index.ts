@@ -1,3 +1,6 @@
-export * from './lib/auth/auth';
-export * from './lib/guards/auth-guard-guard';
-export * from './lib/src/lib/storage/storage'
+//export * from './lib/auth-utils';
+//export * from './lib/guards';
+export * from '@wkpcamer/shared/auth-utils';
+export * from '@wkpcamer/shared/guards';
+
+

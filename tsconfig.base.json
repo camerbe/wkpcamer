@@ -15,16 +15,18 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@wkpcamer/actions": ["libs/actions/src/index.ts"],
-      "@wkpcamer/auth": ["libs/shared/src/lib/auth/index.ts"],
+      "@wkpcamer/actions": ["libs/services/src/index.ts"],
+      "@wkpcamer/auth": ["libs/shared/src/lib/auth-utils/index.ts"],
       "@wkpcamer/config": ["libs/config/src/index.ts"],
+      "@wkpcamer/localstorage": ["libs/localstorage/src/index.ts"],
       "@wkpcamer/models": ["libs/common/src/index.ts"],
       "@wkpcamer/services": ["libs/common/services/src/index.ts"],
       "@wkpcamer/services/articles": ["libs/articles/src/index.ts"],
       "@wkpcamer/shared": ["libs/shared/src/index.ts"],
-      "@wkpcamer/storage": ["libs/storage/src/index.ts"],
+      "@wkpcamer/shared/*": ["libs/shared/src/lib/*"],
+
       "@wkpcamer/ui": ["libs/ui/src/index.ts"],
-      "@wkpcamer/users": ["libs/users/src/index.ts"]
+      "@wkpcamer/users": ["libs/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

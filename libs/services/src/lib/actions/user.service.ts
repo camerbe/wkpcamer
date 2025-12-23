@@ -11,7 +11,7 @@ export class UserService extends DataService<User> {
   constructor() {
     super(inject(HttpClient), CONFIG.apiUrl + `/users`);
   }
-  activeUser(resource:any){
+  activeUser(resource:unknown){
       return this.httpClient.post<User>(CONFIG.apiUrl+`/users/activate/user/`,JSON.stringify(resource));
   }
   getUserByEmail(email:string){

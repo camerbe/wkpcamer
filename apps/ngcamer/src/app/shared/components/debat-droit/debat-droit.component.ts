@@ -16,6 +16,7 @@ import { PubSkyscraperComponent } from "../pub-skyscraper/pub-skyscraper.compone
 
 @Component({
   selector: 'app-debat-droit',
+  standalone: true,
   imports: [
     CardModule,
     NgOptimizedImage,
@@ -28,7 +29,8 @@ import { PubSkyscraperComponent } from "../pub-skyscraper/pub-skyscraper.compone
     PubSkyscraperComponent
 ],
   templateUrl: './debat-droit.component.html',
-  styleUrl: './debat-droit.component.css'
+  //styleUrl: './debat-droit.component.css'
+  styleUrls: ['./debat-droit.component.css']
 })
 export class DebatDroitComponent implements AfterViewInit {
 

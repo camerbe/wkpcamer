@@ -9,7 +9,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { LocalstorageService } from '@wkpcamer/storage';
+import { LocalstorageService } from '@wkpcamer/localstorage';
 import { Router } from '@angular/router';
 @Component({
   selector: 'lib-user-login',
@@ -38,7 +38,8 @@ export class LoginComponent implements OnInit  {
     this.authService.login(this.loginForm.value).subscribe({
       next:(result)=>{
         const tmpData =result
-        const { user, ...rest } = result;
+       // const { user, ...rest } = result;
+        const user = result.user;
         //console.log(tmpData.success);
         //console.log(tmpData.token);
         //console.log(tmpData.user);

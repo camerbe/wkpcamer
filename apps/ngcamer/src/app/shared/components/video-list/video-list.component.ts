@@ -22,7 +22,8 @@ import { DialogModule } from 'primeng/dialog';
     DialogModule
 ],
   templateUrl: './video-list.component.html',
-  styleUrl: './video-list.component.css'
+  //styleUrl: './video-list.component.css'
+  styleUrls: ['./video-list.component.css']
 })
 export class VideoListComponent implements OnInit {
 
