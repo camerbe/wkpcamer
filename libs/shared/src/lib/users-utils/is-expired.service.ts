@@ -1,7 +1,7 @@
 import { LocalstorageService } from '@wkpcamer/localstorage';
 import { inject, Injectable } from '@angular/core';
 
-import { AuthenticationService } from '@wkpcamer/auth';
+import { AuthenticationService } from './../auth-utils/auth';
 
 @Injectable({
   providedIn: 'root'
