@@ -9,6 +9,10 @@ import { DataViewModule } from 'primeng/dataview';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 
+interface SelectedVideo {
+  titre: string;
+  url: string;
+}
 @Component({
   selector: 'app-video-list',
   imports: [
@@ -33,7 +37,7 @@ export class VideoListComponent implements OnInit {
   isBrowser=signal(false);
   dateModif=signal('');
   displayVideo =signal(false);
-  selectedVideo: unknown;
+  selectedVideo: SelectedVideo | null = null ;
   safeVideoUrl = signal<SafeResourceUrl | null>(null);
 
   platformId = inject(PLATFORM_ID);

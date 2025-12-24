@@ -14,6 +14,10 @@ import { DialogModule } from 'primeng/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PubSkyscraperComponent } from "../pub-skyscraper/pub-skyscraper.component";
 
+interface SelectedVideo {
+  titre: string;
+  url: string;
+}
 @Component({
   selector: 'app-debat-droit',
   standalone: true,
@@ -41,7 +45,7 @@ export class DebatDroitComponent implements AfterViewInit {
   camer!:VideoDetail;
   evt!:EventDetail;
   isBrowser=signal(false);
-  selectedVideo: unknown;
+  selectedVideo: SelectedVideo | null = null;
   safeVideoUrl = signal<SafeResourceUrl | null>(null);
   displayVideo =signal(false);
 
