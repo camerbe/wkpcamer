@@ -6,7 +6,7 @@ import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { PubService } from '@wkpcamer/actions';
 import { CONFIG } from '@wkpcamer/config';
 import { PubDimension, PubDimensionDetail, TypePub, TypePubDetail } from '@wkpcamer/models';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';

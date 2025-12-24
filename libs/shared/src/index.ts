@@ -2,5 +2,6 @@
 //export * from './lib/guards';
 export * from '@wkpcamer/shared/auth-utils';
 export * from '@wkpcamer/shared/guards';
+export * from '@wkpcamer/shared/users-utils';
 
 

@@ -4,7 +4,7 @@ import { EventService } from '@wkpcamer/actions';
 import { EventDetail, Evenement} from '@wkpcamer/models';
 import { map } from 'rxjs';
 
-export const eventListResolver: ResolveFn<EventDetail[]| null> = (route, state) => {
+export const eventListResolver: ResolveFn<EventDetail[]| null> = () => {
   return  inject(EventService).getAll().pipe(map((data)=>{
     const tmpData = data as unknown as Evenement;
       const events = tmpData['data'] as unknown as  EventDetail[];

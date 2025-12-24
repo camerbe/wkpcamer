@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { VideoService } from '@wkpcamer/actions';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -16,8 +16,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TINYMCE_SCRIPT_SRC, EditorComponent } from '@tinymce/tinymce-angular';
 import { CONFIG } from '@wkpcamer/config';
 import tinymce from 'tinymce';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TooltipModule } from 'primeng/tooltip';
+
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -92,7 +91,7 @@ export class VideoFormComponent implements OnInit {
     }
     if (this.isAddMode){
       this.videoService.create(this.videoForm.value).subscribe({
-        next:(data)=>{
+        next:()=>{
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',
@@ -113,7 +112,7 @@ export class VideoFormComponent implements OnInit {
     else{
 
        this.videoService.patch(this.id,this.videoForm.value).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.messageService.add({
             severity: 'success',
             summary: 'Succès',

@@ -1,10 +1,10 @@
-import { inject, TemplateRef } from '@angular/core';
+import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { DimensionsService } from '@wkpcamer/actions';
 import { PubDimension,PubDimensionDetail } from '@wkpcamer/models';
 import { map } from 'rxjs';
 
-export const dimensionListResolver: ResolveFn<PubDimensionDetail[]| null> = (route, state) => {
+export const dimensionListResolver: ResolveFn<PubDimensionDetail[]| null> = () => {
 
   return  inject(DimensionsService).getAll().pipe(map((data)=>{
     const tmpData = data as unknown as PubDimension;

@@ -19,9 +19,10 @@ import { MessageService } from 'primeng/api';
 import { SelectChangeEvent } from 'primeng/select';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { KeywordAndHashtagService, LocalstorageService, IsExpiredService } from '@wkpcamer/users';
+import { KeywordAndHashtagService, IsExpiredService } from '@wkpcamer/shared';
+import { LocalstorageService } from '@wkpcamer/localstorage';
 import { CONFIG } from '@wkpcamer/config';
-import tinymce from 'tinymce';
+
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -236,7 +237,7 @@ export class ArticleFormComponent implements OnInit,AfterViewInit {
   onSubmit() {
 
     if (this.articleForm.invalid) {
-      
+
       this.articleForm.markAllAsTouched();
       this.messageService.add({
         severity: 'error',
@@ -253,7 +254,7 @@ export class ArticleFormComponent implements OnInit,AfterViewInit {
 
       //this.articleForm?.patchValue({ keyword: this.keyword+', '+this.hashtags});
       this.articleService.create(this.articleForm.value).subscribe({
-        next: (data) => {
+        next: () => {
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',
@@ -275,7 +276,7 @@ export class ArticleFormComponent implements OnInit,AfterViewInit {
       this.articleForm.patchValue({dateparution: this.datePipe.transform(this.articleForm.value.dateparution,'yyyy-MM-dd HH:mm:ss')});
       //console.log(this.articleForm.value);
       this.articleService.patch(this.id,this.articleForm.value).subscribe({
-        next:(data)=>{
+        next:()=>{
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',

@@ -1,8 +1,8 @@
 import { Article, ArticleDetail } from '@wkpcamer/models';
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { LocalstorageService } from '@wkpcamer/storage';
-import { ArticleService } from './src';
+import { LocalstorageService } from '@wkpcamer/localstorage';
+import { ArticleService } from '../..';
 import { map } from 'rxjs';
 
 export const articleListResolver: ResolveFn<ArticleDetail[]|null> = () => {

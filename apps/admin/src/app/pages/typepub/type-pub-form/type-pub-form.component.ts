@@ -3,8 +3,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PubTypeService } from '@wkpcamer/actions';
-import { TypePubDetail } from '@wkpcamer/models';
-import { IsExpiredService } from '@wkpcamer/users';
+
+import { IsExpiredService } from '@wkpcamer/shared';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -98,7 +98,7 @@ export class TypePubFormComponent implements OnInit {
 
       //this.articleForm?.patchValue({ keyword: this.keyword+', '+this.hashtags});
       this.pubtypeService.create(this.typepubForm.value).subscribe({
-        next: (data) => {
+        next: () => {
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',
@@ -118,7 +118,7 @@ export class TypePubFormComponent implements OnInit {
     }
     else {
       this.pubtypeService.patch(this.id,this.typepubForm.value).subscribe({
-        next:(data)=>{
+        next:()=>{
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',

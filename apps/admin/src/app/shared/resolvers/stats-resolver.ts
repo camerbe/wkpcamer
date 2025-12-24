@@ -4,7 +4,7 @@ import { StatsService } from '@wkpcamer/actions';
 import { Stats } from '@wkpcamer/models';
 import { map } from 'rxjs';
 
-export const statsResolver: ResolveFn<Stats|null> = (route, state) => {
+export const statsResolver: ResolveFn<Stats|null> = () => {
   return  inject(StatsService).getStats().pipe(map((data)=>{
     const tmpData = data as unknown as Stats;
     return tmpData ?? null;

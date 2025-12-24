@@ -4,7 +4,7 @@ import { SousRubriqueService } from '@wkpcamer/actions';
 import { SousRubrique, SousRubriqueDetail } from '@wkpcamer/models';
 import { map } from 'rxjs';
 
-export const sousRubriqueListResolver: ResolveFn<SousRubriqueDetail[]|null> = (route, state) => {
+export const sousRubriqueListResolver: ResolveFn<SousRubriqueDetail[]|null> = () => {
   return  inject(SousRubriqueService).getAll().pipe(map((data)=>{
     const tmpData = data as unknown as SousRubrique;
       const rubs = tmpData['data'] as unknown as  SousRubriqueDetail[];

@@ -1,5 +1,6 @@
 
-import { LocalstorageService, IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
+import { LocalstorageService } from '@wkpcamer/localstorage';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { Component, OnInit, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
@@ -81,7 +82,7 @@ export class ArticleListComponent implements OnInit {
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
         this.articleService.delete(id).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.articles.filter((a)=>a.idarticle!=id)
             this.load(this.userId)
             this.messageService.add({
@@ -91,7 +92,7 @@ export class ArticleListComponent implements OnInit {
             })
             //this.route.navigate(['/admin/article'])
           },
-           error:(err)=>{
+           error:()=>{
             this.messageService.add({
               severity: 'error',
               summary: 'Erreur',

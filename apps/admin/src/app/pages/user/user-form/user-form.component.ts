@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EditorComponent } from '@tinymce/tinymce-angular';
+
 import { UserService } from '@wkpcamer/actions';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -104,7 +104,7 @@ export class UserFormComponent implements OnInit {
     }
     if (this.isAddMode){
       this.userService.create(this.userForm.value).subscribe({
-        next:(data)=>{
+        next:()=>{
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',
@@ -125,7 +125,7 @@ export class UserFormComponent implements OnInit {
     else{
 
        this.userService.patch(this.id,this.userForm.value).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.messageService.add({
             severity: 'success',
             summary: 'Succès',

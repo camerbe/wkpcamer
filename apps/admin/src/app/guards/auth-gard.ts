@@ -1,6 +1,6 @@
-import { LocalstorageService } from '@wkpcamer/users';
+import { LocalstorageService } from '@wkpcamer/localstorage';
 import { inject, Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, GuardResult, MaybeAsync, Router, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, GuardResult, MaybeAsync, Router } from '@angular/router';
 //import { LocalstorageService } from 'libs/src/lib/users/services/localstorage.service';
 
 
@@ -12,7 +12,7 @@ export class AuthGard implements CanActivate {
   router=inject(Router);
   localstorageService=inject(LocalstorageService)
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
+  canActivate(): MaybeAsync<GuardResult> {
     const token=this.localstorageService.getToken();
     if(token){
       const decodedToken=JSON.parse(atob(token.split('.')[1] )) ;

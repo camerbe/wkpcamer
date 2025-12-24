@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { EventService } from '@wkpcamer/actions';
 import { CONFIG } from '@wkpcamer/config';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -156,7 +156,7 @@ export class EventFormComponent implements OnInit {
     }
     if (this.isAddMode){
       this.eventService.create(this.eventForm.value).subscribe({
-        next:(data)=>{
+        next:()=>{
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',
@@ -177,7 +177,7 @@ export class EventFormComponent implements OnInit {
     else{
        this.eventForm.patchValue({eventdate: this.datePipe.transform(this.eventForm.value.eventdate,'yyyy-MM-dd')});
        this.eventService.patch(this.id,this.eventForm.value).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.messageService.add({
             severity: 'success',
             summary: 'Succès',

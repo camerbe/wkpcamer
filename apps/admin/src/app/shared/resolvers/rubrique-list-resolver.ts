@@ -4,7 +4,7 @@ import { Rubrique, RubriqueDetail } from '@wkpcamer/models';
 import { inject } from '@angular/core';
 import { map } from 'rxjs';
 
-export const rubriqueListResolver: ResolveFn<RubriqueDetail[]|null> = (route, state) => {
+export const rubriqueListResolver: ResolveFn<RubriqueDetail[]|null> = () => {
   return  inject(RubriqueService).getAll().pipe(map((data)=>{
     const tmpData = data as unknown as Rubrique;
       const rubs = tmpData['data'] as unknown as  RubriqueDetail[];

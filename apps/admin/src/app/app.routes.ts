@@ -1,5 +1,5 @@
 import { articleResolver } from './shared/resolvers/article-resolver';
-import { articleListResolver } from './../../../../libs/articles/article-list-resolver';
+import { articleListResolver } from '@wkpcamer/services/articles';
 import { Route } from '@angular/router';
 import { adminGuard } from './guards/admin-guard';
 import { dimensionListResolver } from './shared/resolvers/dimension-list-resolver';
@@ -18,9 +18,9 @@ import { sousRubriqueResolver } from './shared/resolvers/sous-rubrique-resolver'
 import { videoListResolver } from './shared/resolvers/video-list-resolver';
 import { videoResolver } from './shared/resolvers/video-resolver';
 import { userResolver } from './shared/resolvers/user-resolver';
-import { userListResolver } from './shared/resolvers/user-list-resolver';
-import { changePasswordResolver } from '@wkpcamer/users';
-import { authGuard } from '@wkpcamer/auth';
+import { userListResolver, } from './shared/resolvers/user-list-resolver';
+import { changePasswordResolver } from './shared/resolvers/change-password-resolver';
+import { authGuard } from '@wkpcamer/shared/guards';
 
 
 export const appRoutes: Route[] = [

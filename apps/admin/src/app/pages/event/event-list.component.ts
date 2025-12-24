@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EventService } from '@wkpcamer/actions';
 import { EventDetail, Evenement } from '@wkpcamer/models';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -71,7 +71,7 @@ export class EventListComponent implements OnInit{
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
         this.eventService.delete(id).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.events.filter((d)=>d.idevent!=id)
             this.load()
             this.messageService.add({
@@ -81,7 +81,7 @@ export class EventListComponent implements OnInit{
             })
 
           },
-           error:(err)=>{
+           error:()=>{
             this.messageService.add({
               severity: 'error',
               summary: 'Erreur',

@@ -3,8 +3,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { PubTypeService } from '@wkpcamer/actions';
 import { TypePub, TypePubDetail } from '@wkpcamer/models';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { IsExpiredService } from '@wkpcamer/users';
-import { DatePipe } from '@angular/common';
+import { IsExpiredService } from '@wkpcamer/shared';
+
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -56,7 +56,7 @@ export class TypePubListComponent implements OnInit {
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
         this.pubtypeService.delete(id).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.typepubs.filter((d)=>d.idpubtype!=id)
             this.load()
             this.messageService.add({
@@ -66,7 +66,7 @@ export class TypePubListComponent implements OnInit {
             })
 
           },
-           error:(err)=>{
+           error:()=>{
             this.messageService.add({
               severity: 'error',
               summary: 'Erreur',

@@ -15,7 +15,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import { provideEffects } from '@ngrx/effects'; // Import providePrimeNG from PrimeNG
 import { provideStore } from '@ngrx/store';
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { from, switchMap } from 'rxjs';
 import {registerLocaleData} from '@angular/common'
 import localeFr from '@angular/common/locales/fr';

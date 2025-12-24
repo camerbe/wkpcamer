@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@wkpcamer/actions';
 import { User, UserDetail } from '@wkpcamer/models';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -53,7 +53,7 @@ export class UserListComponent implements OnInit {
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
         this.userService.delete(id).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.users.filter((d)=>d.id!=id)
             this.load()
             this.messageService.add({
@@ -63,7 +63,7 @@ export class UserListComponent implements OnInit {
             })
 
           },
-           error:(err)=>{
+           error:()=>{
             this.messageService.add({
               severity: 'error',
               summary: 'Erreur',

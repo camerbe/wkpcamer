@@ -4,7 +4,8 @@ import { Sidebar } from "../sidebar/sidebar";
 import { RouterOutlet } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
-import { LocalstorageService, IsExpiredService } from '@wkpcamer/users';
+import {IsExpiredService } from '@wkpcamer/shared';
+import { LocalstorageService } from '@wkpcamer/localstorage';
 
 
 @Component({

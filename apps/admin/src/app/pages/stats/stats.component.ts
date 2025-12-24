@@ -4,7 +4,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Stats } from '@wkpcamer/models';
 import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 
 @Component({
   selector: 'admin-stats',

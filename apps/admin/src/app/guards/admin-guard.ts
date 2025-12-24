@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { LocalstorageService } from '@wkpcamer/users';
+import { LocalstorageService } from '@wkpcamer/localstorage';
 
-export const adminGuard: CanActivateFn = (route, state) => {
+export const adminGuard: CanActivateFn = () => {
   const router = inject(Router);
   const localstorageService=inject(LocalstorageService)
   const token=localstorageService.getToken();

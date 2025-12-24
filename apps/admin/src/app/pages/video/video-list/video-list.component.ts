@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { VideoService } from '@wkpcamer/actions';
 import { Video, VideoDetail } from '@wkpcamer/models';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -53,7 +53,7 @@ export class VideoListComponent implements OnInit{
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
         this.videoService.delete(id).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.videos.filter((d)=>d.idvideo!=id)
             this.load()
             this.messageService.add({
@@ -63,7 +63,7 @@ export class VideoListComponent implements OnInit{
             })
 
           },
-           error:(err)=>{
+           error:()=>{
             this.messageService.add({
               severity: 'error',
               summary: 'Erreur',

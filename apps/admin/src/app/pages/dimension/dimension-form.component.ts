@@ -1,6 +1,6 @@
-import { DimensionListComponent } from './dimension.component';
+//import { DimensionListComponent } from './dimension.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { DimensionsService } from '@wkpcamer/actions';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
@@ -14,7 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { PubDimensionDetail } from '@wkpcamer/models';
+
 
 @Component({
   selector: 'admin-dimension-form',
@@ -104,7 +104,7 @@ export class DimensionFormComponent implements OnInit{
 
       //this.articleForm?.patchValue({ keyword: this.keyword+', '+this.hashtags});
       this.dimensionService.create(this.dimensionForm.value).subscribe({
-        next: (data) => {
+        next: () => {
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',
@@ -124,7 +124,7 @@ export class DimensionFormComponent implements OnInit{
     }
     else {
       this.dimensionService.patch(this.id,this.dimensionForm.value).subscribe({
-        next:(data)=>{
+        next:()=>{
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',

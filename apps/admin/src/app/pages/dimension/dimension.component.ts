@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { PubDimension, PubDimensionDetail } from '@wkpcamer/models';
-import { IsExpiredService } from '@wkpcamer/users';
+import { IsExpiredService } from '@wkpcamer/shared';
 import { DimensionsService } from '@wkpcamer/actions';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -68,7 +68,7 @@ export class DimensionListComponent implements OnInit {
       icon:"pi pi-exclamation-triangle",
       accept:()=>{
         this.dimensionService.delete(id).subscribe({
-          next:(data)=>{
+          next:()=>{
             this.dimensions.filter((d)=>d.idpubdimension!=id)
             this.load()
             this.messageService.add({
@@ -78,7 +78,7 @@ export class DimensionListComponent implements OnInit {
             })
 
           },
-           error:(err)=>{
+           error:()=>{
             this.messageService.add({
               severity: 'error',
               summary: 'Erreur',
