@@ -1,3 +1,4 @@
+import { CanonicalService } from './../../services/canonical.service';
 
 import { CommonModule, DatePipe, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { AfterViewInit, Component, inject, Input, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
@@ -53,6 +54,7 @@ export class IndexComponent implements OnInit,AfterViewInit,OnDestroy{
   keywordAndHashtagService=inject(KeywordAndHashtagService);
   jsonLdService=inject(JsonLdService);
   breakpointObserver=inject(BreakpointObserver);
+  canonicalService=inject(CanonicalService);
   //breakpointSubscription=inject(Subscription);
 
   /**
@@ -127,6 +129,8 @@ getSizes(): string {
           item2: this.listOther[index]
         };
       });
+      this.canonicalService.setCanonicalURL(`${window.location.protocol}//${window.location.host}${this.router.url}`);
+      this.canonicalService.setAmpCanonicalURL(`${window.location.protocol}//${window.location.host}/amp${this.router.url}`);
       this.jsonLdArticles=this.indexArticles.slice(0,10);
       this.titleService.setTitle(`${tmpTitre}`);
       this.metaService.updateTag({ name: 'description', content: `${finalDescription}` });

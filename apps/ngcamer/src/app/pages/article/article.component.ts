@@ -24,6 +24,7 @@ import { AdMoneytizerComponent } from "../../shared/components/ad-moneytizer/ad-
 import { AdsenseComponent } from '../../shared/components/adsense/adsense.component';
 import { DebatDroitComponent } from "../../shared/components/debat-droit/debat-droit.component";
 import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
+import { DisqusComponent } from '../../shared/components/disqus/disqus.component';
 
 registerLocaleData(localeFr);
 
@@ -41,7 +42,8 @@ registerLocaleData(localeFr);
     SportComponent,
     AdMoneytizerComponent,
     DebatDroitComponent,
-    ViralizeAdComponent
+    ViralizeAdComponent,
+    DisqusComponent
 ],
   templateUrl: './article.component.html',
   styleUrl: './article.component.css'
@@ -79,6 +81,11 @@ export class ArticleComponent implements OnInit,AfterViewInit,OnDestroy{
   viewContainerRef=inject(ViewContainerRef);
   injector=inject(Injector);
 
+
+  /**
+   *
+   */
+
   ngOnInit(): void {
     this.dateModif.set(new Date().toISOString().slice(0, 19) + '+00:00') ;
     this.isBrowser.set(isPlatformBrowser(this.platformId));
@@ -95,6 +102,7 @@ export class ArticleComponent implements OnInit,AfterViewInit,OnDestroy{
     this.keyWord.set(this.keywordAndHashtagService.removeHashtags(this.article.keyword));
     this.canonicalService.setCanonicalURL(`${window.location.protocol}//${window.location.host}${this.router.url}`)
     this.articleUrl.set(`${window.location.protocol}//${window.location.host}${this.router.url}`);
+    this.canonicalService.setAmpCanonicalURL(`${window.location.protocol}//${window.location.host}/amp${this.router.url}`);
     this.articleService.getSameRubrique(this.article.fksousrubrique).subscribe({
         next:(data)=>{
           const tmpData=data as unknown as Article;
@@ -137,7 +145,10 @@ export class ArticleComponent implements OnInit,AfterViewInit,OnDestroy{
 
   }
   ngOnDestroy(): void {
-    this.taboolaService.flush();
+    if (isPlatformBrowser(this.platformId)){
+        this.taboolaService.flush();
+    }
+
     if (this.mutationObserver) {
       this.mutationObserver.disconnect();
     }
@@ -145,7 +156,7 @@ export class ArticleComponent implements OnInit,AfterViewInit,OnDestroy{
   ngAfterViewInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
-     if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined') {
       //this.logoUrl = `${window.location.protocol}//${window.location.host}/assets/images/camer-logo.png`;
     }
     this.setupAdAfterFirstParagraph();

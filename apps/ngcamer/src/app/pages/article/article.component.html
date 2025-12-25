@@ -76,8 +76,15 @@
           <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'"
           />
          </div>
+
          @defer (on idle) {
+           <app-disqus
+            [identifier]="article.slug"
+            [title]="article.titre"
+            [url]="articleUrl()">
+          </app-disqus>
           <app-related-articles [relatedArticles]="relatedArticles()"></app-related-articles>
+
           <p-divider></p-divider>
           <div id="taboola-below-article-thumbnails"></div>
          }

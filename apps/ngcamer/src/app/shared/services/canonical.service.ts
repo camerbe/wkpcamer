@@ -17,4 +17,17 @@ export class CanonicalService {
     }
     this.document.head.appendChild(link);
    }
+
+   setAmpCanonicalURL(url?: string){
+    const canURL = url === undefined ? this.document.URL : url;
+    const link: HTMLLinkElement = this.document.createElement('link');
+    link.setAttribute('rel', 'amphtml');
+    link.setAttribute('href', canURL);
+    // Remove existing amphtml
+    const existing = this.document.querySelector('link[rel="amphtml"]');
+    if (existing) {
+      existing.remove();
+    }
+    this.document.head.appendChild(link);
+   }
 }
