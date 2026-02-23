@@ -1,16 +1,82 @@
-<footer class="bg-teal-900 text-white">
+<footer class="bg-black text-white">
   <div class="container mx-auto px-4 py-12">
    <div class="grid grid-cols-1">
        <div class="flex flex-col w-full">
-          <app-archives [articleWeekList]="articleWeekList" [articleMonthkList]="articleMonthkList" [articleYearList]="articleYearList">
+        @defer (on viewport; prefetch on idle){
+          <!-- <app-archives [articleWeekList]="articleWeekList()" [articleMonthList]="articleMonthkList()" [articleYearList]="articleYearList()"></app-archives> -->
+          <app-archives [articleWeekListInput]="articleWeekList()"  [articleMonthListInput]="articleMonthList()" [articleYearListInput]="articleYearList()"></app-archives>
+        }@placeholder {
+          <div>Chargement des archives...</div>
+        }
 
-          </app-archives>
-          <div class="border-t border-gray-700 mt-4 pt-4 text-center">
-              <p class="text-gray-400">©2005 - {{ currentYear }}
-                <a routerLink="/accueil" tabindex="0" (click)="gotoHome()"  class="text-teal-600 hover:none cursor-pointer" >Camer.be</a> Tous droits réservés.</p>
+
+
+          <!-- <div class="max-w-7xl mx-auto px-4 text-sm pt-3 flex flex-col md:flex-row md:justify-between">
+             <p class="mb-4">
+              <span class="font-semibold text-white">Camer.be</span> est un site d’information
+              et de contenu numérique dédié à l’actualité et aux sujets d’intérêt général liés
+              au Cameroun et à l’Afrique.
+            </p>
+            <ul class="flex flex-wrap gap-4 mb-4">
+              <li><a href="/qui-sommes-nous" class="hover:text-white">Qui sommes-nous</a></li>
+              <li><a href="/contact" class="hover:text-white">Contact</a></li>
+              <li><a href="/politique-de-confidentialite" class="hover:text-white">Politique de confidentialité</a></li>
+            </ul>
           </div>
+         <a routerLink="/accueil" tabindex="0" (click)="gotoHome()"  class="text-teal-600 hover:none c <div class="border-t border-gray-700 mt-4 pt-4 text-center">
+              <p class="text-gray-400">©2005 - {{ currentYear }}
+                ursor-pointer" >Camer.be</a> Tous droits réservés.</p>
+          </div> -->
        </div>
    </div>
+   <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-4">
+                    <div class="col-span-1 md:col-span-2">
+                        <div class="flex items-center space-x-2 mb-4">
+                            <i class="pi pi-globe text-2xl text-emerald-400"></i>
+                            <span class="text-2xl font-bold uppercase">Camer.be</span>
+                        </div>
+                        <p class="text-gray-400 mb-4 max-w-md"><span class="font-semibold text-white">Camer.be</span> est un site d’information
+              et de contenu numérique dédié à l’actualité et aux sujets d’intérêt général liés
+              au Cameroun et à l’Afrique.</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <i class="pi pi-facebook text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <i class="pi pi-twitter text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <i class="pi pi-youtube text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <i class="pi pi-instagram text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold mb-4 uppercase">Navigation</h3>
+                        <ul class="space-y-2">
+                            <li><a [routerLink]="['/']" class="text-gray-400 hover:text-white transition-colors">Accueil</a></li>
+                            <li><a [routerLink]="['/actualites/religion']" class="text-gray-400 hover:text-white transition-colors">Réligion</a></li>
+                            <li><a [routerLink]="['/actualites/societe']" class="text-gray-400 hover:text-white transition-colors">Société</a></li>
+                            <li><a  [routerLink]="['/actualites/sport']"class="text-gray-400 hover:text-white transition-colors">Sport</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold mb-4 uppercase">Informations</h3>
+                        <ul class="space-y-2">
+                            <li><a [routerLink]="['/contact/contact#a-propos']" class="text-gray-400 hover:text-white transition-colors">À propos</a></li>
+                            <li><a [routerLink]="['/contact/contact#coordonnees']" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-200 mt-4 pt-8 text-center">
+                    <p class="text-gray-400 text-sm">© 2005 - {{ currentYear }} <a routerLink="/accueil" tabindex="0" (click)="gotoHome()" class="text-emerald-400 hover:text-emerald-600 transition-colors">Camer.be</a>. Tous droits réservés.</p>
+                </div>
   </div>
   <p-scrolltop />
 </footer>

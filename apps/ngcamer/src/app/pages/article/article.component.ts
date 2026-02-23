@@ -1,12 +1,12 @@
 import { JsonLdService } from './../../shared/services/json-ld.service';
 import { KeywordAndHashtagService } from '@wkpcamer/users';
 import { Article, ArticleDetail, SportDetail } from '@wkpcamer/models';
-import { AfterViewInit, Component, ElementRef, inject, Injector, OnDestroy, OnInit, PLATFORM_ID, signal, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, LOCALE_ID, OnDestroy, OnInit, PLATFORM_ID, signal, viewChild, ViewChild, ViewContainerRef,afterNextRender  } from '@angular/core';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DatePipe, isPlatformBrowser, NgOptimizedImage, registerLocaleData } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { DividerModule } from 'primeng/divider';
 import localeFr from '@angular/common/locales/fr';
@@ -19,12 +19,13 @@ import { TagModule } from 'primeng/tag';
 import { SportBehaviorService } from '../../shared/services/sport-behavior.service';
 import { SportComponent } from "../../shared/components/sport/sport.component";
 import { TaboolaService } from '../../shared/services/taboola.service';
-import { filter } from 'rxjs';
+import { filter, shareReplay, switchMap, tap } from 'rxjs';
 import { AdMoneytizerComponent } from "../../shared/components/ad-moneytizer/ad-moneytizer.component";
 import { AdsenseComponent } from '../../shared/components/adsense/adsense.component';
 import { DebatDroitComponent } from "../../shared/components/debat-droit/debat-droit.component";
 import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
 import { DisqusComponent } from '../../shared/components/disqus/disqus.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 registerLocaleData(localeFr);
 
@@ -33,108 +34,290 @@ registerLocaleData(localeFr);
   imports: [
     CardModule,
     NgOptimizedImage,
-    DatePipe,
     ScrollTopModule,
     DividerModule,
     RelatedArticlesComponent,
     MostReadedRubriqueCountryComponent,
     TagModule,
-    SportComponent,
     AdMoneytizerComponent,
     DebatDroitComponent,
     ViralizeAdComponent,
     DisqusComponent
 ],
+providers: [
+    DatePipe, // ✅ CRITIQUE: Fournir DatePipe
+    { provide: LOCALE_ID, useValue: 'fr-FR' } // ✅ Optionnel: définir la locale
+],
   templateUrl: './article.component.html',
-  styleUrl: './article.component.css'
+  styleUrl: './article.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ArticleComponent implements OnInit,AfterViewInit,OnDestroy{
+export class ArticleComponent implements OnInit,AfterViewInit{
 
 
 
-  @ViewChild('articleContentContainer', { static: false })
-  articleContentContainer!: ElementRef<HTMLDivElement>;
-  mutationObserver!: MutationObserver;
-  article!:ArticleDetail;
+  //@ViewChild('articleContentContainer', { static: false })
+
+  articleContentContainer = viewChild<ElementRef<HTMLDivElement>>('articleContentContainer');
+
+  //articleContentContainer!: ElementRef<HTMLDivElement>;
+
+  // ✅ Signals pour réactivité optimale
+  readonly article = signal<ArticleDetail | null>(null);
+  readonly relatedArticles = signal<ArticleDetail[]>([]);
+  readonly mostReadeArticles = signal<ArticleDetail[]>([]);
+  readonly sports = signal<SportDetail[]>([]);
+  readonly isBrowser = signal(false);
+  readonly keyWord = signal('');
+  readonly articleUrl = signal('');
+  readonly logoUrl = signal<string | null>(null);
+  readonly dateModif = signal('');
+
+  // ✅ Computed pour wordCount (mise en cache automatique)
+  readonly wordCount = computed(() => this.calculateWordCount(this.article()));
+
+  readonly articleSection = computed(() => {
+    const article = this.article();
+    return article
+      ? `${article.rubrique.rubrique} / ${article.sousrubrique.sousrubrique}`
+      : '';
+  });
+
+  // ✅ Sanitized content avec mise en cache
+  readonly sanitizedContent = computed<SafeHtml>(() => {
+    const article = this.article();
+    return article?.info
+      ? this.sanitizer.bypassSecurityTrustHtml(article.info)
+      : '';
+  });
+ // ✅ Image URL optimisée
+  readonly imageUrl = computed(() => {
+    const article = this.article();
+    if (!article) return '';
+
+    return article.image_url.startsWith('http')
+      ? article.image_url
+      : `https://www.camer.be${article.image_url}`;
+  });
+
+  // ✅ Image alt text
+  readonly imageAlt = computed(() => {
+    const article = this.article();
+    return article
+      ? `${article.countries.pays} :: ${article.titre}`
+      : '';
+  });
+
+  // ✅ Country flag URL
+  readonly countryFlagUrl = computed(() => {
+    const countryCode = this.article()?.fkpays?.toLowerCase();
+
+    if (!countryCode) {
+      return ''; // or a default flag URL if preferred
+    }
+
+    const code = countryCode === 'f' ? 'au' : countryCode;
+    return `https://flagcdn.com/16x12/${code}.png`;
+  });
+
+  // ✅ Responsive image sizes
+  readonly imageSizes = computed(() => {
+    return '(max-width: 768px) 100vw, (max-width: 1200px) 66vw';
+  });
+
+  // ✅ Formatted date avec pipe
+  readonly formattedDate = computed(() => {
+    const article = this.article();
+    return article
+      ? this.datePipe.transform(article.dateparution, 'dd MMM yyyy HH:mm:ss', undefined, 'fr-FR')
+      : '';
+  });
+
+
+
+  private mutationObserver!: MutationObserver;
+  //article!:ArticleDetail;
   slug!:string;
-  relatedArticles=signal<ArticleDetail[]>([]);
+  //relatedArticles=signal<ArticleDetail[]>([]);
   articles=signal<ArticleDetail[]>([]);
-  mostReadeArticles=signal<ArticleDetail[]>([]);
-  isBrowser=signal(false);
-  sports=signal<SportDetail[]>([]);
-  keyWord=signal('');
-  dateModif=signal('');
-  articleUrl=signal('');
-  logoUrl =signal<string | null>(null);
-  articleService=inject(ArticleService);
-  activatedRoute=inject(ActivatedRoute);
-  sanitizer=inject(DomSanitizer);
-  articleMetaService=inject(ArticleMetaService);
-  canonicalService=inject(CanonicalService)
-  router=inject(Router);
-  slugifyService=inject(SlugifyService);
-  platformId = inject(PLATFORM_ID);
-  taboolaService=inject(TaboolaService)
-  keywordAndHashtagService=inject(KeywordAndHashtagService);
-  jsonLdService=inject(JsonLdService);
-  sportBehaviorService=inject(SportBehaviorService);
-  viewContainerRef=inject(ViewContainerRef);
-  injector=inject(Injector);
+
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly articleService=inject(ArticleService);
+  private readonly activatedRoute=inject(ActivatedRoute);
+  readonly sanitizer=inject(DomSanitizer);
+  private readonly articleMetaService=inject(ArticleMetaService);
+  private readonly canonicalService=inject(CanonicalService)
+  private readonly router=inject(Router);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly taboolaService=inject(TaboolaService)
+  private readonly keywordAndHashtagService=inject(KeywordAndHashtagService);
+  private readonly jsonLdService=inject(JsonLdService);
+  private readonly sportBehaviorService=inject(SportBehaviorService);
+  private readonly viewContainerRef=inject(ViewContainerRef);
+  private readonly injector=inject(Injector);
+  private readonly datePipe = inject(DatePipe);
 
 
+  private makeVideosResponsive(): void {
+    const container = this.articleContentContainer()?.nativeElement;
+    if (!container) return;
+
+    const iframes = container.querySelectorAll<HTMLIFrameElement>(
+      'iframe[src*="youtube.com"], iframe[src*="youtu.be"]'
+    );
+
+    iframes.forEach((iframe) => {
+      // Éviter le double wrapping
+      if (iframe.parentElement?.classList.contains('yt-wrapper')) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.classList.add(
+        'yt-wrapper',
+        'aspect-video',   // ← ratio 16:9 natif CSS
+        'w-full',
+        'relative',
+        'overflow-hidden',
+        'bg-black',
+        'my-4',
+        'rounded-lg'
+      );
+      wrapper.style.paddingBottom = '56.25%'; // fallback si aspect-video non dispo
+
+      iframe.classList.add(
+        'absolute',
+        'inset-0',        // ← top-0 left-0 right-0 bottom-0 en une classe
+        'w-full',
+        'h-full'
+      );
+      iframe.removeAttribute('width');
+      iframe.removeAttribute('height');
+      iframe.setAttribute('allowfullscreen', 'true');
+
+      iframe.parentNode?.insertBefore(wrapper, iframe);
+      wrapper.appendChild(iframe);
+    });
+  }
   /**
    *
    */
 
-  ngOnInit(): void {
-    this.dateModif.set(new Date().toISOString().slice(0, 19) + '+00:00') ;
+  constructor() {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
-    if(!this.isBrowser()) return;
-    this.slug=this.activatedRoute.snapshot.params["slug"];
 
-    this.activatedRoute.data.subscribe({
-      next:(data)=>{
-        this.article=data['articleSlug'] as ArticleDetail;
+    effect(() => {
+      const article = this.article();
+      if (article && this.isBrowser()) {
+        afterNextRender(
+          () => this.makeVideosResponsive(),
+          { injector: this.injector }
+        );
       }
     });
 
-    this.articleMetaService.updateArticleMeta(this.article);
-    this.keyWord.set(this.keywordAndHashtagService.removeHashtags(this.article.keyword));
-    this.canonicalService.setCanonicalURL(`${window.location.protocol}//${window.location.host}${this.router.url}`)
-    this.articleUrl.set(`${window.location.protocol}//${window.location.host}${this.router.url}`);
-    this.canonicalService.setAmpCanonicalURL(`${window.location.protocol}//${window.location.host}/amp${this.router.url}`);
-    this.articleService.getSameRubrique(this.article.fksousrubrique).subscribe({
-        next:(data)=>{
-          const tmpData=data as unknown as Article;
-          const filteredTmpData=tmpData["data"] as unknown as ArticleDetail[];
-          this.relatedArticles.set(filteredTmpData.filter(f=>f.slug!==this.article.slug));
+    this.activatedRoute.params
+    .pipe(
+      tap(() => {
+        // 🔥 Réinitialiser immédiatement
+        this.article.set(null);
+        this.relatedArticles.set([]);
+        this.mostReadeArticles.set([]);
+      }),
+      switchMap(() => this.activatedRoute.data),
+      takeUntilDestroyed()
+    )
+    .subscribe({
+      next: (data) => {
+        const article = data['articleSlug'] as ArticleDetail;
+        if (article) {
+          this.article.set(article);
         }
-     });
-     this.articleService.getMostReadRubriqueByCountry(this.article.fksousrubrique,this.article.fkpays).subscribe({
-      next:(data)=>{
-        const tmpData=data as unknown as Article;
-        this.mostReadeArticles.set(tmpData["data"] as unknown as ArticleDetail[]);
-        //console.log(this.mostReadeArticles());
-      }
-     });
-     this.logoUrl.set(`${window.location.protocol}//${window.location.host}/assets/images/camer-logo.png`);
-     this.sportBehaviorService.state$.subscribe({
-      next:(data:SportDetail[])=>{
-        this.sports.set(data.slice(0,10));
+      },
+      error: (err) => console.error('Error loading article:', err)
+    });
 
-      }
-    })
+    // 2. Sports data
+    // this.sportBehaviorService.state$
+    //   .pipe(takeUntilDestroyed())
+    //   .subscribe({
+    //     next: (data: SportDetail[]) => {
+    //       this.sports.set(data.slice(0, 10));
+    //     }
+    //   });
 
-    this.router.events.pipe(filter(event=>event instanceof NavigationEnd)).subscribe((event:NavigationEnd)=>{
+    // 3. Router events
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntilDestroyed()
+      )
+      .subscribe((event: NavigationEnd) => {
         this.taboolaService.newPageLoad();
         this.loadTaboolaWidget(event.urlAfterRedirects);
+      });
+
+
+    effect(() => {
+      const article = this.article();
+      if (article && this.isBrowser()) {
+        this.updateMetaAndCanonical(article);
+        this.loadRelatedContent(article);
+      }
     });
   }
-  loadTaboolaWidget(url: string) {
-    this.taboolaService.setPageDetails(
-      'article',
-      `${url}`
-    );
+  private  loadRelatedContent(article: ArticleDetail) {
+    this.articleService.getSameRubrique(article.fksousrubrique)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        shareReplay(1) // ✅ Cache le résultat
+      )
+      .subscribe({
+        next: (data) => {
+          const tmpData = data as unknown as Article;
+          const filteredTmpData = tmpData["data"] as unknown as ArticleDetail[];
+          this.relatedArticles.set(
+            filteredTmpData.filter(f => f.slug !== article.slug)
+          );
+        }
+      });
+
+    // Articles les plus lus
+    this.articleService.getMostReadRubriqueByCountry(
+      article.fksousrubrique,
+      article.fkpays
+    )
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        shareReplay(1) // ✅ Cache le résultat
+      )
+      .subscribe({
+        next: (data) => {
+          const tmpData = data as unknown as Article;
+          this.mostReadeArticles.set(tmpData["data"] as unknown as ArticleDetail[]);
+        }
+      });
+  }
+  private updateMetaAndCanonical(article: ArticleDetail) {
+    this.articleMetaService.updateArticleMeta(article);
+    this.keyWord.set(this.keywordAndHashtagService.removeHashtags(article.keyword));
+
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const currentUrl = `${baseUrl}${this.router.url}`;
+
+    this.articleUrl.set(currentUrl);
+    this.canonicalService.setCanonicalURL(currentUrl);
+    this.canonicalService.setAmpCanonicalURL(`${baseUrl}/amp${this.router.url}`);
+    this.logoUrl.set(`${baseUrl}/assets/images/camer-logo.png`);
+  }
+   /**
+   *
+   */
+  ngOnInit(): void {
+
+     if (!this.isBrowser()) return;
+
+  }
+  private loadTaboolaWidget(url: string) {
+    this.taboolaService.setPageDetails('article', url);
     this.taboolaService.loadWidget(
       'thumbnails-a',
       'taboola-below-article-thumbnails',
@@ -142,163 +325,161 @@ export class ArticleComponent implements OnInit,AfterViewInit,OnDestroy{
       'mix'
     );
 
-
   }
-  ngOnDestroy(): void {
-    if (isPlatformBrowser(this.platformId)){
-        this.taboolaService.flush();
-    }
 
-    if (this.mutationObserver) {
-      this.mutationObserver.disconnect();
-    }
-  }
   ngAfterViewInit(): void {
-    this.isBrowser.set(isPlatformBrowser(this.platformId));
-    if(!this.isBrowser()) return;
-    if (typeof window !== 'undefined') {
-      //this.logoUrl = `${window.location.protocol}//${window.location.host}/assets/images/camer-logo.png`;
-    }
-    this.setupAdAfterFirstParagraph();
+    if (!this.isBrowser()) return;
 
+    this.setupAdAfterFirstParagraph();
     this.loadTaboolaWidget(this.articleUrl());
-    const articleDate = new Date(this.article.dateparution).toISOString().slice(0, 19) + '+00:00';
-    const date =new Date(Date.now());
-     const today=date.toISOString().slice(0, 19) + '+00:00';
-     const year = new Date(this.article.dateparution).getFullYear();
-    const jsonLd={
+    this.updateJsonLd();
+
+
+  }
+  private updateJsonLd() {
+    const article = this.article();
+    if (!article) return;
+
+    const articleDate = new Date(article.dateparution).toISOString().slice(0, 19) + '+00:00';
+    const today = new Date().toISOString().slice(0, 19) + '+00:00';
+    const year = new Date(article.dateparution).getFullYear();
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+
+    const jsonLd = {
       "@context": "https://schema.org",
       "@type": "NewsArticle",
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": `${window.location.protocol}//${window.location.host}${this.router.url}`
+        "@id": `${baseUrl}${this.router.url}`
       },
-      "headline": this.article.titre,
-       "description": this.article.chapeau,
-       "articleSection":{
-        "@value": `${this.article.rubrique.rubrique} / ${this.article.sousrubrique.sousrubrique}`,
+      "headline": article.titre,
+      "description": article.chapeau,
+      "articleSection": {
+        "@value": `${article.rubrique.rubrique} / ${article.sousrubrique.sousrubrique}`,
         "@language": "fr-FR"
-       },
-       "keywords": this.article.keyword.split(',').map(k => k.trim()),
-       "inLanguage": "fr-FR",
-       "url": `${window.location.protocol}//${window.location.host}${this.router.url}`,
-       "datePublished": articleDate,
-       "dateModified": today,
-       "isAccessibleForFree": "True",
-       "copyrightYear": year,
-       "author": {
-        "@type": "Person",
-        "name": this.article.auteur,
-       },
-       "editor": {
-          "@type": "Person",
-          "name": this.article.source
-       },
-       "publisher": {
-          "@type": "Organization",
-          "name": "camer.be",
-          "url": "https://www.camer.be",
-          "logo": {
-            "@type": "ImageObject",
-            "url":`${window.location.protocol}//${window.location.host}/assets/images/camer-logo.png`,
-            "width": 190,
-            "height": 52
-          }
-        },
-        "image": [
-        {
-          "@type": "ImageObject",
-          "url": this.article.image_url,
-          "width": this.article.image_width,
-          "height": this.article.image_height,
-          "caption": `${this.article.countries.pays} :: ${this.article.titre} - Camer.be`
-        }
-      ],
-      "contentLocation":{
-        "@type": "Place",
-        "name": this.article.countries.pays
       },
-      "articleBody":this.article.info,
+      "keywords": article.keyword.split(',').map(k => k.trim()),
+      "inLanguage": "fr-FR",
+      "url": `${baseUrl}${this.router.url}`,
+      "datePublished": articleDate,
+      "dateModified": today,
+      "isAccessibleForFree": "True",
+      "copyrightYear": year,
+      "author": {
+        "@type": "Person",
+        "name": article.auteur,
+      },
+      "editor": {
+        "@type": "Person",
+        "name": article.source
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "camer.be",
+        "url": "https://www.camer.be",
+        "logo": {
+          "@type": "ImageObject",
+          "url": this.logoUrl(),
+          "width": 190,
+          "height": 52
+        }
+      },
+      "image": [{
+        "@type": "ImageObject",
+        "url": article.image_url,
+        "width": article.image_width,
+        "height": article.image_height,
+        "caption": `${article.countries.pays} :: ${article.titre} - Camer.be`
+      }],
+      "contentLocation": {
+        "@type": "Place",
+        "name": article.countries.pays
+      },
+      "articleBody": article.info,
       "wordCount": {
         "@type": "QuantitativeValue",
-        "value": this.wordCount,
+        "value": this.wordCount(),
         "unitText": "Words"
-
       },
-      "interactionStatistic": [
-        {
-          "@type": "InteractionCounter",
-          "interactionType": { "@type": "ReadAction" },
-          "userInteractionCount": this.article.hit
-        }
-      ],
+      "interactionStatistic": [{
+        "@type": "InteractionCounter",
+        "interactionType": { "@type": "ReadAction" },
+        "userInteractionCount": article.hit
+      }],
       "sameAs": [
         "https://www.facebook.com/camergroup",
         "https://x.com/camerbe"
       ],
-    }
-    this.jsonLdService.setJsonLd(jsonLd);
+    };
 
+    this.jsonLdService.setJsonLd(jsonLd);
   }
-  setupAdAfterFirstParagraph() {
-    const container = this.articleContentContainer?.nativeElement;
+
+  private calculateWordCount(article: ArticleDetail | null): number {
+    if (!article?.info) return 0;
+    if (!this.isBrowser) return 0;
+    // Cache le résultat pour éviter les recalculs
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(article.info, 'text/html');
+    const text = doc.body.textContent || '';
+
+    return text
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ')
+      .filter(word => word.length > 0)
+      .length;
+  }
+  protected setupAdAfterFirstParagraph() {
+    const container = this.articleContentContainer()?.nativeElement;
     if (!container) return;
+
+    // Vérification immédiate
+    if (container.querySelectorAll('p').length > 0) {
+      this.insertAdAfterFirstParagraph();
+      return;
+    }
+
+    // ✅ MutationObserver avec auto-cleanup
     this.mutationObserver = new MutationObserver(() => {
-      const hasParagraphs = container.querySelectorAll('p').length > 0;
-      if (hasParagraphs) {
+      if (container.querySelectorAll('p').length > 0) {
         this.insertAdAfterFirstParagraph();
-        this.mutationObserver.disconnect();
+        this.mutationObserver?.disconnect();
       }
     });
-    this.mutationObserver.observe(container, { childList: true, subtree: true });
-    if (container.querySelectorAll('p').length > 0){
-       this.insertAdAfterFirstParagraph();
-       this.mutationObserver.disconnect();
-    }
+
+    this.mutationObserver.observe(container, {
+      childList: true,
+      subtree: true
+    });
   }
-  insertAdAfterFirstParagraph() {
-    const container = this.articleContentContainer?.nativeElement;
-     if (!container) return;
-     const paragraphs = container.querySelectorAll('p');
-     if (paragraphs.length === 0) return;
-     const placeholder = document.createElement('div');
-     paragraphs[0].insertAdjacentElement('afterend', placeholder);
-     const adRef =  this.viewContainerRef.createComponent(AdsenseComponent,{ injector: this.injector });
-      adRef.instance.adClient = 'ca-pub-8638642715460968';
-      adRef.instance.adSlot = '6927429462';
-      adRef.instance.adFormat = 'auto';
-      adRef.instance.fullWidthResponsive = true;
+  private insertAdAfterFirstParagraph() {
+    const container = this.articleContentContainer()?.nativeElement;
+    if (!container) return;
 
-      this.viewContainerRef.insert(adRef.hostView);
-      placeholder.replaceWith(adRef.location.nativeElement);
+    const paragraphs = container.querySelectorAll('p');
 
-  }
-  get wordCount(): number {
-    if (!this.article?.info) return 0;
+    if (paragraphs.length < 2) return;
 
-    // Create a temporary DOM element
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = this.article.info;
+    const placeholder = document.createElement('div');
+    paragraphs[1].insertAdjacentElement('afterend', placeholder);
 
-    // Extract all visible text content
-    let text = tempDiv.textContent || tempDiv.innerText || '';
+    const adRef = this.viewContainerRef.createComponent(AdsenseComponent, {
+      injector: this.injector
+    });
 
-    // Decode common HTML entities
-    text = text.replace(/&nbsp;/g, ' ')
-              .replace(/&amp;/g, '&')
-              .replace(/&quot;/g, '"')
-              .replace(/&#39;/g, "'")
-              .replace(/&lt;/g, '<')
-              .replace(/&gt;/g, '>');
+    adRef.setInput('adClient', 'ca-pub-8638642715460968');
+    adRef.setInput('adSlot', '6927429462');
+    adRef.setInput('adFormat', 'auto');
+    adRef.setInput('fullWidthResponsive', true);
 
-    // Normalize spacing and trim
-    text = text.replace(/\s+/g, ' ').trim();
+    adRef.changeDetectorRef.detectChanges();
+    placeholder.replaceWith(adRef.location.nativeElement);
 
-    // Count words
-    return text ? text.split(' ').length : 0;
   }
 
-  getImageUrl(article: ArticleDetail): string{
+
+  protected getImageUrl(article: ArticleDetail): string{
   return article.image_url.startsWith('http')
     ? article.image_url
     : `https://www.camer.be${article.image_url}`;

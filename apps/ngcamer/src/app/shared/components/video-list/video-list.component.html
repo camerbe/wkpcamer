@@ -3,9 +3,9 @@
       <meta itemprop="name" content="{{ label() }}" />
       <meta itemprop="itemListOrder" content="https://schema.org/ItemListOrderAscending" />
       <p-dataview #dv
-        [value]="indexVideos()"
+        [value]="indexVideos"
         [rows]="10"
-        [paginator]="indexVideos().length > 0"
+        [paginator]="indexVideos.length > 0"
         [layout]="'grid'"
         [rowsPerPageOptions]="[5,10,20]"
         class="px-4"

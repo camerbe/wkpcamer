@@ -25,22 +25,21 @@ import { authGuard } from '@wkpcamer/shared/guards';
 
 export const appRoutes: Route[] = [
   {
-    path:'',
-    loadChildren:()=> import('@wkpcamer/users').then((m) => m.MY_LIB_ROUTES),
+    path: '',
+    loadChildren: () =>
+      import('@wkpcamer/users').then(m => m.MY_LIB_ROUTES),
   },
+
   {
 
     path: 'admin',
     canActivate:[authGuard],
+    canActivateChild: [authGuard],
     loadComponent: () => import('./shared/shell/shell').then((m) => m.Shell),
     children: [
+
       {
         path: '',
-        redirectTo: 'admin',
-        pathMatch: 'full'
-      },
-      {
-        path: 'admin',
         loadComponent: () => import('./pages/stats/stats.component').then((m) => m.StatsComponent),
         resolve: { statistique: statsResolver }
       },
@@ -240,10 +239,10 @@ export const appRoutes: Route[] = [
          ]
 
       },
-      {
-        path: '**',
-        redirectTo: 'login'
-      }
+      // {
+      //   path: '**',
+      //   redirectTo: 'login'
+      // }
     ],
 
   }

@@ -1,8 +1,7 @@
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { DebatDroitComponent } from "../../shared/components/debat-droit/debat-droit.component";
 import { ViralizeAdComponent } from "../../shared/components/viralize-ad/viralize-ad.component";
-import { SportComponent } from "../../shared/components/sport/sport.component";
 import { Divider } from "primeng/divider";
 import { Card } from "primeng/card";
 import { AdsenseComponent } from "../../shared/components/adsense/adsense.component";
@@ -16,12 +15,13 @@ import { InputText } from "primeng/inputtext";
 import { TextareaModule } from 'primeng/textarea';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { CONFIG } from '@wkpcamer/config';
+import { SocialMedia } from "../../shared/components/social-media/social-media";
+import { RouterLink } from "@angular/router";
 @Component({
   selector: 'app-contact',
   imports: [
     DebatDroitComponent,
     ViralizeAdComponent,
-    SportComponent,
     Divider,
     Card,
     AdsenseComponent,
@@ -31,10 +31,13 @@ import { CONFIG } from '@wkpcamer/config';
     ReactiveFormsModule,
     InputText,
     TextareaModule,
-    RecaptchaModule
+    RecaptchaModule,
+    SocialMedia,
+    RouterLink
 ],
   templateUrl: './contact.component.html',
-  styleUrl: './contact.component.css'
+  styleUrl: './contact.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactComponent implements OnInit {
   reCaptcha=''
@@ -114,11 +117,6 @@ export class ContactComponent implements OnInit {
     if(!this.isBrowser()) return;
     this.reCaptcha=CONFIG.siteKeyRecaptchaDev;
     this.initializeForm();
-    this.sportBehaviorService.state$.subscribe({
-      next:(data:SportDetail[])=>{
-        this.sports.set(data.slice(0,10));
-
-      }
-    });
+    
   }
 }

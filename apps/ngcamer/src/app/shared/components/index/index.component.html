@@ -1,219 +1,260 @@
+<div class="grid" itemscope itemtype="https://schema.org/CollectionPage">
+  <p-dataview #dv
+    [value]="combinedList()"
+    [rows]="10"
+    [paginator]="true"
+    [layout]="'grid'"
+    [rowsPerPageOptions]="[5,10,20]"
+    class="px-4"
+    itemprop="mainContentOfPage"
+  >
+    <ng-template #header>
+      <h2 class="md:text-2xl uppercase font-semibold text-teal-700" itemprop="name">
+        <i class="pi pi-check mr-2"></i>actualités récentes
+      </h2>
+    </ng-template>
 
-    <div class="grid"itemscope itemtype="https://schema.org/CollectionPage">
+    <ng-template #grid let-items>
+      @for(pair of items; track trackByCombined($index, pair)) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-      <p-dataview #dv
-        [value]="combinedList"
-        [rows]="10"
-        [paginator]="true"
-        [layout]="'grid'"
-        [rowsPerPageOptions]="[5,10,20]"
-        class="px-4"
-        itemprop="mainContentOfPage"
-      >
-        <ng-template #header>
-          <h2 class="md:text-2xl uppercase font-semibold text-teal-700" itemprop="name"><i class="pi pi-check mr-2"></i>actualités récentes</h2>
-        </ng-template>
-        <ng-template #grid let-items>
-          @for(item of items;track $index){
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div
-              class=""
-              itemprop="itemListElement"
-              itemscope
-              itemtype="https://schema.org/ListItem"
-            >
-              <meta itemprop="position" [content]="($index * 2) + 1" />
+          <!-- Article 1 -->
+          @if (pair.item1; as vm) {
+            <div class="" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <meta itemprop="position" [content]="vm.position" />
+
               <article itemscope itemtype="https://schema.org/NewsArticle" itemprop="item">
-                <meta itemprop="mainEntityOfPage"
-                  [content]="`/` + slugifyService.slugify(item.item1.rubrique.rubrique) + '/' + slugifyService.slugify(item.item1.sousrubrique.sousrubrique) + '/' + item.item1.slug" />
-                <meta itemprop="thumbnailUrl" [content]="item.item1.image_url" />
-                <meta itemprop="description" [content]="item.item1.chapeau" />
+                <meta itemprop="mainEntityOfPage" [content]="vm.navigationPath" />
+                <meta itemprop="thumbnailUrl" [content]="vm.article.image_url" />
+                <meta itemprop="description" [content]="vm.article.chapeau" />
                 <meta itemprop="dateModified" [attr.datetime]="dateModif()" />
-                <meta itemprop="keywords" [content]="getKeywordsArray(item.item1.keyword)" />
-                <meta itemprop="articleSection" content="{{item.item1.rubrique.rubrique}} / {{item.item1.sousrubrique.sousrubrique}}" />
-                <meta itemprop="wordCount" [content]="wordCount(item.item1.info)" />
+                <meta itemprop="keywords" [content]="vm.keywords" />
+                <meta itemprop="articleSection"
+                      [content]="vm.article.rubrique.rubrique + ' / ' + vm.article.sousrubrique.sousrubrique" />
+                <meta itemprop="wordCount" [content]="vm.wordCount" />
+
                 <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
                   <meta itemprop="name" content="Camer.be" />
                   <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-                    <meta itemprop="url" [attr.content]="logoUrl" />
+                    <meta itemprop="url" [content]="logoUrl()" />
                   </span>
                 </span>
+
                 <span itemprop="author" itemscope itemtype="https://schema.org/Person">
-                  <meta itemprop="name" [content]="item.item1.auteur">
+                  <meta itemprop="name" [content]="vm.article.auteur" />
                 </span>
 
                 <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-                  <meta itemprop="url" [content]="item.item1.image_url" />
-                  <meta itemprop="width" content="{{item.item1.image_width}}" />
-                  <meta itemprop="height" content="{{item.item1.image_height}}" />
+                  <meta itemprop="url" [content]="vm.article.image_url" />
+                  <meta itemprop="width" [content]="vm.article.image_width" />
+                  <meta itemprop="height" [content]="vm.article.image_height" />
                 </span>
 
                 <p-card class="list-camer-card my-4">
-
-                    <ng-template pTemplate="header">
-                      <div class="card-image-container relative">
-                        @if (item.item1?.image_width && item.item1?.image_height){
-                          <img
-                          [ngSrc]="item.item1.image_url"
-                          alt="{{ item.item1.countries.pays }} :: {{ item.item1.titre }}"
-                          title="{{ item.item1.countries.pays }} :: {{ item.item1.titre }}"
+                  <ng-template pTemplate="header">
+                    <div class="card-image-container relative">
+                      @if (vm.article.image_width && vm.article.image_height) {
+                        <img
+                          [ngSrc]="vm.article.image_url"
+                          [alt]="vm.imageAlt"
+                          [title]="vm.imageTitle"
                           fill
                           class="object-cover relative"
-                          priority
-                          [sizes]="getSizes()"
+                          [priority]="vm.isPriority"
+                          [sizes]="sizes()"
+                          [attr.fetchpriority]="vm.isPriority ? 'high' : 'auto'"
+                        />
+                      }
 
-
-                          >
-                        }
-                        <p-tag severity="warn"  [rounded]="true" class="bottom-3 right-3 z-5 absolute">
+                      <p-tag
+                        [severity]="vm.severity"
+                        [rounded]="true"
+                        class="bottom-3 right-3 z-5 absolute"
+                      >
                         <div class="flex items-center gap-2 px-1">
-                          <img alt="{{ item.item1.countries.pays}}" src="https://flagcdn.com/16x12/{{ item.item1.fkpays.toLowerCase()}}.webp" />
-                          <span class="text-base">{{item.item2.sousrubrique.sousrubrique }}</span>
+                          <img
+                            [alt]="vm.article.countries.pays"
+                            [src]="vm.flagUrl"
+                            width="16"
+                            height="12"
+                            loading="lazy"
+                          />
+                          <span class="text-base">{{ vm.article.sousrubrique.sousrubrique }}</span>
                         </div>
                       </p-tag>
-                      </div>
-
-                    </ng-template>
-                    <ng-template pTemplate="title">
-                      <h4 class="card-title line-clamp-2" itemprop="headline">{{ item.item1.titre }}</h4>
-                    </ng-template>
-                    <ng-template pTemplate="subheader">
-                      <time itemprop="datePublished" [attr.datetime]="item.item1.dateparution">
-                          <div class="card-subtitle">
-                            <i class="pi pi-calendar"></i><span class="card-date">{{item.item1.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
-                            <span class="card-separator">•</span>
-                            <i class="pi pi-eye"></i><span class="card-author" itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
-                              <meta itemprop="interactionType" content="https://schema.org/ViewAction" />
-                               <span itemprop="userInteractionCount">{{ item.item1.hit }}</span>
-                              </span>
-                          </div>
-                      </time>
-                    </ng-template>
-                    <div class="card-content">
-                      <p itemprop="description" class="card-chapeau line-clamp-4">{{ item.item1.chapeau }}</p>
                     </div>
-                    <ng-template pTemplate="footer">
-                      <!-- <div> -->
+                  </ng-template>
 
-                        <a
-                          pButton
-                          [routerLink]="['/'+slugifyService.slugify(item.item1.rubrique.rubrique)+'/'+slugifyService.slugify(item.item1.sousrubrique.sousrubrique),item.item1.slug]"
-                          class="w-full"
-                          itemprop="url"
-                          >
-                          <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
-                        </a>
-                      <!-- </div> -->
-                    </ng-template>
-                  <!-- -->
+                  <ng-template pTemplate="title">
+                    <a
+                      [routerLink]="vm.navigationPath"
+                      class="no-underline text-inherit"
+                      itemprop="url"
+                      [title]="vm.article.titre"
+                    >
+                      <h4 class="card-title line-clamp-2" itemprop="headline">
+                        {{ vm.article.titre }}
+                      </h4>
+                    </a>
+                  </ng-template>
 
+                  <ng-template pTemplate="subheader">
+                    <time itemprop="datePublished" [attr.datetime]="vm.article.dateparution">
+                      <div class="card-subtitle">
+                        <i class="pi pi-calendar"></i>
+                        <span class="card-date">
+                          {{ vm.article.dateparution | date: 'dd MMM yyyy HH:mm:ss' }}
+                        </span>
+                        <span class="card-separator">•</span>
+                        <i class="pi pi-eye"></i>
+                        <span
+                          class="card-author"
+                          itemprop="interactionStatistic"
+                          itemscope
+                          itemtype="https://schema.org/InteractionCounter"
+                        >
+                          <meta itemprop="interactionType" content="https://schema.org/ViewAction" />
+                          <span itemprop="userInteractionCount">{{ vm.article.hit }}</span>
+                        </span>
+                      </div>
+                    </time>
+                  </ng-template>
+
+                  <div class="card-content">
+                    <a
+                      [routerLink]="vm.navigationPath"
+                      class="no-underline text-inherit"
+                      itemprop="url"
+                      [title]="vm.article.titre"
+                    >
+                      <p itemprop="description" class="card-chapeau line-clamp-4">
+                        {{ vm.article.chapeau }}
+                      </p>
+                    </a>
+                  </div>
+
+                  <ng-template pTemplate="footer">
+                    <a
+                      pButton
+                      [routerLink]="vm.navigationPath"
+                      class="w-full"
+                      itemprop="url"
+                    >
+                      <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
+                    </a>
+                  </ng-template>
                 </p-card>
               </article>
             </div>
-            <div
-              class=""
-              itemprop="itemListElement"
-              itemscope
-              itemtype="https://schema.org/ListItem"
-            >
-              <meta itemprop="position" [content]="($index * 2) + 2" />
-              <article itemscope itemtype="https://schema.org/NewsArticle">
-                <meta itemprop="mainEntityOfPage"
-                  [content]="`/` + slugifyService.slugify(item.item2.rubrique.rubrique) + '/' + slugifyService.slugify(item.item2.sousrubrique.sousrubrique) + '/' + item.item2.slug" />
-                <meta itemprop="thumbnailUrl" [content]="item.item2.image_url" />
-                <meta itemprop="description" [content]="item.item2.chapeau" />
+          }
 
+          <!-- Article 2 (identique mais avec vm du pair.item2) -->
+          @if (pair.item2; as vm) {
+            <div class="" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <!-- Structure identique à Article 1 -->
+              <meta itemprop="position" [content]="vm.position" />
+
+              <article itemscope itemtype="https://schema.org/NewsArticle" itemprop="item">
+                <meta itemprop="mainEntityOfPage" [content]="vm.navigationPath" />
+                <meta itemprop="thumbnailUrl" [content]="vm.article.image_url" />
+                <meta itemprop="description" [content]="vm.article.chapeau" />
                 <meta itemprop="dateModified" [attr.datetime]="dateModif()" />
-                <meta itemprop="keywords" [content]="getKeywordsArray(item.item2.keyword)" />
-                <meta itemprop="articleSection" content="{{item.item2.rubrique.rubrique}} / {{item.item2.sousrubrique.sousrubrique}}" />
-                <meta itemprop="wordCount" [content]="wordCount(item.item2.info)" />
+                <meta itemprop="keywords" [content]="vm.keywords" />
+                <meta itemprop="articleSection"
+                      [content]="vm.article.rubrique.rubrique + ' / ' + vm.article.sousrubrique.sousrubrique" />
+                <meta itemprop="wordCount" [content]="vm.wordCount" />
+
                 <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
                   <meta itemprop="name" content="Camer.be" />
                   <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-                    <meta itemprop="url" [attr.content]="logoUrl" />
+                    <meta itemprop="url" [content]="logoUrl()" />
                   </span>
                 </span>
+
                 <span itemprop="author" itemscope itemtype="https://schema.org/Person">
-                  <meta itemprop="name" [content]="item.item2.auteur">
+                  <meta itemprop="name" [content]="vm.article.auteur" />
                 </span>
 
                 <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-                  <meta itemprop="url" [content]="item.item2.image_url" />
-                  <meta itemprop="width" content="{{item.item2.image_width}}" />
-                  <meta itemprop="height" content="{{item.item2.image_height}}" />
+                  <meta itemprop="url" [content]="vm.article.image_url" />
+                  <meta itemprop="width" [content]="vm.article.image_width" />
+                  <meta itemprop="height" [content]="vm.article.image_height" />
                 </span>
 
-              <p-card  class="list-camer-card my-4">
-
+                <p-card class="list-camer-card my-4">
                   <ng-template pTemplate="header">
-                    <div class="card-image-container">
-                      @if (item.item2?.image_width && item.item2?.image_height){
-                        <!-- <picture>
-                            <source
-                              [attr.srcset]="getWebpUrl(item.item1.image_url)"
-                            /> -->
-                          <img
-                            ngSrc="{{item.item2.image_url}}"
-                            alt="{{ item.item2.countries.pays }} :: {{ item.item2.titre }}"
-                            title="{{ item.item2.countries.pays }} :: {{ item.item2.titre }}"
-                            fill
-                            class="object-cover relative"
-
-                            priority
-                            [sizes]="getSizes()"
-
-                          >
-                        <!-- </picture> -->
+                    <div class="card-image-container relative">
+                      @if (vm.article.image_width && vm.article.image_height) {
+                        <img
+                          [ngSrc]="vm.article.image_url"
+                          [alt]="vm.imageAlt"
+                          [title]="vm.imageTitle"
+                          fill
+                          class="object-cover relative"
+                          [priority]="vm.isPriority"
+                          [sizes]="sizes()"
+                          [attr.fetchpriority]="vm.isPriority ? 'high' : 'auto'"
+                        />
                       }
-                      <p-tag severity="info"  [rounded]="true" class="bottom-3 right-3 z-5 absolute">
+
+                      <p-tag
+                        [severity]="vm.severity"
+                        [rounded]="true"
+                        class="bottom-3 right-3 z-5 absolute"
+                      >
                         <div class="flex items-center gap-2 px-1">
-                          <img alt="{{ item.item2.countries.pays}}" src="https://flagcdn.com/16x12/{{ item.item2.fkpays.toLowerCase()}}.webp" />
-                          <span class="text-base">{{item.item2.sousrubrique.sousrubrique }}</span>
+                          <img
+                            [alt]="vm.article.countries.pays"
+                            [src]="vm.flagUrl"
+                            width="16"
+                            height="12"
+                            loading="lazy"
+                          />
+                          <span class="text-base">{{ vm.article.sousrubrique.sousrubrique }}</span>
                         </div>
                       </p-tag>
                     </div>
-
-
                   </ng-template>
+
                   <ng-template pTemplate="title">
-
-                    <h4 class="card-title line-clamp-2" itemprop="headline">{{item.item2.titre}}</h4>
+                    <a [routerLink]="vm.navigationPath" class="no-underline text-inherit" itemprop="url" [title]="vm.article.titre">
+                      <h4 class="card-title line-clamp-2" itemprop="headline">{{ vm.article.titre }}</h4>
+                    </a>
                   </ng-template>
+
                   <ng-template pTemplate="subheader">
-                    <time itemprop="datePublished" [attr.datetime]="item.item2.dateparution">
-                        <div class="card-subtitle">
-                          <i class="pi pi-calendar"></i><span class="card-date">{{item.item2.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
-                          <span class="card-separator">•</span>
-                          <i class="pi pi-eye"></i><span class="card-author" itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
-                            <meta itemprop="interactionType" content="https://schema.org/ViewAction" />
-                            <span itemprop="userInteractionCount">{{ item.item2.hit }}</span>
-                            </span>
-                        </div>
+                    <time itemprop="datePublished" [attr.datetime]="vm.article.dateparution">
+                      <div class="card-subtitle">
+                        <i class="pi pi-calendar"></i>
+                        <span class="card-date">{{ vm.article.dateparution | date: 'dd MMM yyyy HH:mm:ss' }}</span>
+                        <span class="card-separator">•</span>
+                        <i class="pi pi-eye"></i>
+                        <span class="card-author" itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
+                          <meta itemprop="interactionType" content="https://schema.org/ViewAction" />
+                          <span itemprop="userInteractionCount">{{ vm.article.hit }}</span>
+                        </span>
+                      </div>
                     </time>
                   </ng-template>
-                  <div class="card-content">
-                    <p itemprop="description"  class="card-chapeau line-clamp-4">{{ item.item2.chapeau }}</p>
-                  </div>
-                  <ng-template pTemplate="footer">
-                     <!-- <div class="card-footer"> -->
 
-                      <a
-                        pButton
-                        [routerLink]="['/'+slugifyService.slugify(item.item2.rubrique.rubrique)+'/'+slugifyService.slugify(item.item2.sousrubrique.sousrubrique),item.item2.slug]"
-                        class="w-full"
-                        itemprop="url"
-                        >
-                        <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
-                      </a>
-                    <!-- </div> -->
+                  <div class="card-content">
+                    <a [routerLink]="vm.navigationPath" class="no-underline text-inherit" itemprop="url" [title]="vm.article.titre">
+                      <p itemprop="description" class="card-chapeau line-clamp-4">{{ vm.article.chapeau }}</p>
+                    </a>
+                  </div>
+
+                  <ng-template pTemplate="footer">
+                    <a pButton [routerLink]="vm.navigationPath" class="w-full" itemprop="url">
+                      <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
+                    </a>
                   </ng-template>
-              </p-card>
+                </p-card>
               </article>
             </div>
-          </div>
           }
-        </ng-template>
-      </p-dataview>
 
-    </div>
-
+        </div>
+      }
+    </ng-template>
+  </p-dataview>
+</div>

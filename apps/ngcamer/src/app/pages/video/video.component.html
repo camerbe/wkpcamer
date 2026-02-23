@@ -1,13 +1,19 @@
   <section class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-5">
     <div class="col-span-1 md:col-span-8">
-      <app-video-list [indexVideos]="listVideos" [label]="label"></app-video-list>
+      <app-video-list [indexVideos]="listVideos()" [label]="label"></app-video-list>
       <p-divider></p-divider>
-      <div
+      <p-card>
+        <ng-template pTemplate="content">
+          <div
       id="taboola-below-article-thumbnails"></div>
+        </ng-template>
+      </p-card>
+
     </div>
     <div class="col-span-1 md:col-span-4">
-      <app-sport [sportArticles]="sports()" />
-      <p-divider></p-divider>
+      <app-social-media />
+
+      <p-divider/>
       <p-card>
         <ng-template pTemplate="content">
           <div class="p-2">
@@ -22,7 +28,7 @@
           </div>
         </ng-template>
       </p-card>
-
+      <p-divider/>
       <app-debat-droit />
       <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'"/>
     </div>

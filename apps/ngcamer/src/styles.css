@@ -1,10 +1,18 @@
 /* You can add global styles to this file, and also import other style files*/
 @import 'primeicons/primeicons.css';
 @import "tailwindcss";
-@import "tailwindcss-primeui";
+@source "../**/*.{ts,html}";
+
+/* Safelist des classes dynamiques */
+@layer utilities {
+  .aspect-video {
+    aspect-ratio: 16 / 9;
+  }
+}
 
 
-
+/* Plugins */
+@plugin "@tailwindcss/aspect-ratio";
 
 
 

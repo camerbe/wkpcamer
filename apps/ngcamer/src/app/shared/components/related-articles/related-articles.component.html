@@ -1,74 +1,67 @@
 <section class="related-articles-section">
-    <p-divider align="left" type="solid">
-      <strong class="uppercase text-teal-700"><i class="pi pi-clipboard mr-1 text-red-700"></i>Dans la même rubrique</strong>
-    </p-divider>
-  <div class="">
+  <p-divider align="left" type="solid">
+    <strong class="uppercase text-teal-700">
+      <i class="pi pi-clipboard mr-1 text-red-700"></i>Dans la même rubrique
+    </strong>
+  </p-divider>
 
-     <p-carousel
-        [value]="relatedArticles"
-        [numVisible]="2"
-        [numScroll]="1"
-        [circular]="true"
-        [showIndicators]="true"
-        [showNavigators]="false"
-        [autoplayInterval]="5000"
-        containerClass="shadow-3 border-round"
-        contentClass="bg-white border-round"
-        [responsiveOptions]="responsiveOptions"
-
-
-     >
-      <ng-template #header>
-
-      </ng-template>
-      <ng-template let-article pTemplate="item">
-        <div class="m-2 p-4">
+  <div>
+    <p-carousel
+      [value]="articleViewModels()"
+      [numVisible]="2"
+      [numScroll]="1"
+      [circular]="true"
+      [showIndicators]="true"
+      [showNavigators]="false"
+      [autoplayInterval]="5000"
+      containerClass="shadow-3 border-round"
+      contentClass="bg-white border-round"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-item let-i="index" pTemplate="item">
+        @for (article of [item]; track article.article.slug) {
+          <div class="m-2 p-4">
           <div class="mb-2 relative">
-            <div class=" mx-auto card-image-container">
-              <img
-                [ngSrc]="article.image_url"
+            <div class="mx-auto card-image-container">
+              @if (item.article.image_url) {
+                <img
+                [ngSrc]="item.article.image_url"
                 fill
-                class="object-cover"
-                alt="{{article.countries.pays}} :: {{article.titre }}"
-                title="{{article.countries.pays}} :: {{article.titre }}"
+                class="object-cover w-full h-full"
+                [alt]="item.imageAlt"
+                [title]="item.imageTitle"
+                [priority]="false"
+                [sizes]="'(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'"
+              />
+              }
 
-                 />
+
             </div>
+
             <p-tag
-              [value]="article.sousrubrique.sousrubrique"
-              [severity]="'warn'"
+              [value]="item.article.sousrubrique.sousrubrique"
+              severity="warn"
+              [rounded]="true"
               class="absolute top-3 left-3 z-10"
-
             />
-              <div
-                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 transition-opacity duration-500 opacity-100 group-hover:opacity-100">
-                  <h2
-                    class="text-white text-sm  font-semibold mb-2 uppercase">
-                  {{ article.titre }}
-                </h2>
 
-                <!-- <a
-                    itemprop="url"
-                    rel="noopener noreferrer"
-                    [routerLink]="['/'+slugifyService.slugify(article.rubrique.rubrique)+'/'+slugifyService.slugify(article.sousrubrique.sousrubrique),article.slug]"
-                    class="w-full"
-                  > -->
-                  <p-button
-                    (onClick)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique ,article.slug)"
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 transition-opacity duration-500 opacity-100 group-hover:opacity-100">
+              <h2 class="text-white text-sm font-semibold mb-2 uppercase">
+                {{item.article.titre  }}
+              </h2>
 
-                    label="Lire"
-
-                    icon="pi pi-arrow-right"
-                    styleClass="p-button-rounded p-button-outlined p-button-success w-full"
-                  ></p-button>
-                <!-- </a> -->
-              </div>
+              <p-button
+                (onClick)="gotoArticle(item.navigationPath)"
+                label="Lire"
+                icon="pi pi-arrow-right"
+                styleClass="p-button-rounded p-button-outlined p-button-success w-full"
+              />
+            </div>
           </div>
-
         </div>
-      </ng-template>
-     </p-carousel>
-    <!-- } -->
+        }
 
+      </ng-template>
+    </p-carousel>
   </div>
 </section>

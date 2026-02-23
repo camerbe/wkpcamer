@@ -1,5 +1,5 @@
 import { ButtonModule } from 'primeng/button';
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, Input, OnInit, signal } from '@angular/core';
 import { ArticleDetail } from '@wkpcamer/models';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
@@ -9,6 +9,20 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { SlugifyService } from '../../services/slugify.service';
 
+interface ResponsiveOption {
+  breakpoint: string;
+  numVisible: number;
+  numScroll: number;
+}
+
+interface ArticleViewModel {
+  article: ArticleDetail;
+  navigationPath: string;
+  imageAlt: string;
+  imageTitle: string;
+  imageWidth: number;
+  imageHeight: number;
+}
 @Component({
   selector: 'app-related-articles',
   imports: [
@@ -22,13 +36,28 @@ import { SlugifyService } from '../../services/slugify.service';
     RouterModule
 ],
   templateUrl: './related-articles.component.html',
-  styleUrl: './related-articles.component.css'
+  styleUrl: './related-articles.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RelatedArticlesComponent {
 
-  @Input () relatedArticles: ArticleDetail[] = [];
 
-  responsiveOptions = [
+  relatedArticles = input.required<ArticleDetail[]>();
+
+  // Computed signal pour transformer les données
+  articleViewModels = computed(() => {
+    return this.relatedArticles().map(article => ({
+      article,
+      navigationPath: `/${this.slugifyService.slugify(article.rubrique.rubrique)}/${this.slugifyService.slugify(article.sousrubrique.sousrubrique)}/${article.slug}`,
+      imageAlt: `${article.countries.pays} :: ${article.titre}`,
+      imageTitle: `${article.countries.pays} :: ${article.titre}`,
+      imageWidth: article.image_width || 500,
+      imageHeight: article.image_height || 500
+    }));
+  });
+ // readonly relatedArticles$ = this.relatedArticlesSignal.asReadonly();
+
+  responsiveOptions : ResponsiveOption[] = [
     {
       breakpoint: '1024px',  // tablettes/petits laptops
       numVisible: 2,
@@ -47,13 +76,35 @@ export class RelatedArticlesComponent {
   ];
 
 
+  // *************** INJECTION  ****************
+  private slugifyService=inject(SlugifyService);
+  private router=inject(Router);
 
-  slugifyService=inject(SlugifyService);
-  router=inject(Router);
+  protected async gotoArticle(navigationPath: string) {
 
-  gotoArticle(rubrique:string,sousrubrique:string,slug: string) {
-    this.router.navigateByUrl('/',{ skipLocationChange: true }).then(()=>{
-      this.router.navigate(['/'+this.slugifyService.slugify(rubrique)+'/'+this.slugifyService.slugify(sousrubrique),slug])
-    });
+    try {
+    // Normaliser le chemin (enlever le "/" initial si présent)
+    const cleanPath = navigationPath.startsWith('/')
+      ? navigationPath.slice(1)
+      : navigationPath;
+
+    // Navigation optimisée avec skipLocationChange
+    await this.router.navigateByUrl('/', { skipLocationChange: true });
+    await this.router.navigate([`/${cleanPath}`]);
+    } catch (error) {
+      console.error('Navigation error:', error);
+      // Optionnel : gestion d'erreur avec fallback
+      // this.router.navigate(['/error']);
+    }
+  }
+  // ngOnInit(): void {
+  //   throw new Error('Method not implemented.');
+  // }
+  protected trackByArticleId(_index: number, vm: ArticleViewModel): string {
+    return vm.article.slug || _index.toString();
+  }
+
+  trackByTag(_index: number, tag: string): string {
+    return tag;
   }
 }

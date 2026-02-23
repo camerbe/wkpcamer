@@ -1,5 +1,5 @@
 import { Sport } from '@wkpcamer/models';
-import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import {  ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, OnInit, PLATFORM_ID, signal} from '@angular/core';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
@@ -13,7 +13,10 @@ import { HeaderCarouselComponent } from "../../shared/components/header-carousel
 import { AdMoneytizerComponent } from "../../shared/components/ad-moneytizer/ad-moneytizer.component";
 import { AdsenseComponent } from "../../shared/components/adsense/adsense.component";
 import { AdsenseService } from '../../shared/services/adsense.service';
-import { filter } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CardModule } from "primeng/card";
+
 
 
 @Component({
@@ -26,67 +29,136 @@ import { filter } from 'rxjs';
     RouterOutlet,
     HeaderCarouselComponent,
     AdMoneytizerComponent,
-    AdsenseComponent
+    AdsenseComponent,
+    RouterOutlet,
+    CardModule
 ],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+  styleUrl: './layout.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LayoutComponent implements OnInit ,AfterViewInit{
+export class LayoutComponent implements OnInit,OnDestroy {
+
+  private platformId = inject(PLATFORM_ID);
+  private articleService=inject(ArticleService);
+  private articleItemsService=inject(ArticleForIndexService);
+  private sportBehaviorService=inject(SportBehaviorService);
+  private adsenseService=inject(AdsenseService);
+  private router=inject(Router);
+  private activatedRoute=inject(ActivatedRoute);
 
 
-  isBrowser=signal(false);
+
+  isBrowser=signal(isPlatformBrowser(this.platformId));
+   /**
+   * ⚡ Signal d'état de chargement
+   * Exposé au template pour afficher le skeleton
+   */
+
+
+  /**
+   * ⚡ Signal d'état d'erreur
+   * Exposé au template pour afficher les messages d'erreur
+   */
+  readonly hasError = signal(false);
+  private rawArticles = toSignal(this.articleItemsService.state$, { initialValue: [] });
+  private readonly destroy$ = new Subject<void>();
+
   carouselArticles:ArticleDetail[]=[];
-  filteredCarouselArticles = signal<ArticleDetail[]>([]);
+  //filteredCarouselArticles = signal<ArticleDetail[]>([]);
+  readonly filteredCarouselArticles = computed(() => {
+    const data = this.rawArticles();
+    //console.log('🔍 Raw articles dans computed:', data); // Debug
+    return Array.isArray(data) ? data.slice(0, 20) : [];
+  });
+  readonly isLoading = computed(() => this.rawArticles() === null || this.rawArticles().length === 0);
+  /**
+   * ⚡ Computed signal : vérifie si on a des données carousel
+   * Utilisé dans le template pour la logique conditionnelle
+   */
+  readonly hasCarouselData = computed(() =>
+    this.filteredCarouselArticles().length > 0
+  );
 
-
-  articleService=inject(ArticleService);
-  articleItemsService=inject(ArticleForIndexService);
-  platformId = inject(PLATFORM_ID);
-  activatedRoute=inject(ActivatedRoute);
-  sportBehaviorService=inject(SportBehaviorService);
-  adsenseService=inject(AdsenseService);
-  router=inject(Router);
-  cdr=inject(ChangeDetectorRef);
-
+  /**
+   *
+   */
+  constructor() {
+    this.isBrowser.set(isPlatformBrowser(this.platformId));
+    // effect(() => {
+    //   console.log('Articles:', this.filteredCarouselArticles());
+    //   console.log('Nombre:', this.filteredCarouselArticles().length);
+    //   console.log('✅ Has data:', this.hasCarouselData());
+    // });
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   ngOnInit(): void {
-    this.isBrowser.set(isPlatformBrowser(this.platformId))
-    if(!this.isBrowser()) return;
+    if (!this.isBrowser()) return;
 
-    this.router.events.pipe(filter(event=> event instanceof NavigationEnd)).subscribe(()=>{
-      this.adsenseService.resetAds();
-    });
+    this.setupRouterEvents();
+    this.initData();
+  }
+  private setupRouterEvents() {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.adsenseService.resetAds();
+      });
+  }
+  private initData() {
+    // Charge les articles depuis le resolver
 
-    this.articleItemsService.updateState(this.activatedRoute.snapshot.data['accueilList']);
-    this.articleService.getSportArticle().subscribe({
-      next:(data)=>{
-        const tmpData=data as unknown as Sport[];
+    this.loadInitialArticles();
 
-        const sport=tmpData?.[0]?.data as unknown as SportDetail[];
+    // Charge les sports
+    //this.loadSports();
 
-        if(sport.length>10){
-          sport.slice(0,10)
+  }
+  private loadSports() {
+    this.articleService.getSportArticle()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          const tmpData = data as unknown as Sport[];
+          const allSports = tmpData?.[0]?.data as unknown as SportDetail[] || [];
+
+          // ⚡ Slice immédiat pour limiter les données en mémoire
+          const limitedSports = allSports.length > 10
+            ? allSports.slice(0, 10)
+            : allSports;
+
+          this.sportBehaviorService.updateState(limitedSports);
+          //this.isLoading.set(false);
+          this.hasError.set(false);
+        },
+        error: (err) => {
+          console.error('❌ Erreur chargement sports:', err);
+          this.handleLoadingError(err);
         }
-        this.sportBehaviorService.updateState(sport);
-      },
-      error:(err)=>console.log(err)
-    })
+      });
+  }
+  private handleLoadingError(err: any) {
+    //this.isLoading.set(false);
+    this.hasError.set(true);
+  }
+  private loadInitialArticles() {
+    const initialList = this.activatedRoute.snapshot.data['accueilList'];
+    //console.log('🎯 Initial list from resolver:', initialList); // Debug crucial
+
+    if (initialList && Array.isArray(initialList) && initialList.length > 0) {
+      this.articleItemsService.updateState(initialList);
+      console.log('✅ Articles chargés:', initialList.length);
+    } else {
+      console.warn('⚠️ Pas de données dans le resolver');
+    }
   }
 
-  ngAfterViewInit(): void {
-    this.isBrowser.set(isPlatformBrowser(this.platformId))
-    if(!this.isBrowser()) return;
-     this.articleItemsService.state$.subscribe({
-      next:(data)=>{
-        if (data && Array.isArray(data)){
-          this.filteredCarouselArticles.set(data.slice(0, 20));
-        }
-        else{
-           this.filteredCarouselArticles.set([]);
-        }
-        //this.filteredCarouselArticles.set(data.slice(0,20));
-        this.cdr.detectChanges();
-      }
-     })
-  }
+
 
 }

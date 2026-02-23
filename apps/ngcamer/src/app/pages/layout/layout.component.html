@@ -3,30 +3,75 @@
   <div class="mx-auto px-2 w-full">
     <app-header class="w-full"></app-header>
 
-    <app-ad-moneytizer
-     [appId]="'9307'"
-     [zoneId]="'28'"
-    />
-    <!-- <app-viralize-ad></app-viralize-ad> -->
+   @defer (on viewport) {
+    <p-card>
+       <app-ad-moneytizer
+        [appId]="'9307'"
+        [zoneId]="'28'"
+      />
+    </p-card>
+
+    } @placeholder {
+      <!-- Placeholder léger pendant le chargement -->
+      <div class="h-24 bg-gray-200 animate-pulse"></div>
+    }
+
   </div>
 
   <!-- contenu principal -->
   <main class="flex-1 pt-20 lg:pt-20 bg-gray-100 py-8">
     <div class="mx-auto px-4 list-camer-container">
 
-      <app-header-carousel [carouselArticles]="filteredCarouselArticles()"/>
-      <app-adsense
-        [adClient]="'ca-pub-8638642715460968'"
-        [adSlot]="'6927429462'"
-        [adFormat]="'auto'"
-        [fullWidthResponsive]="true"
-      />
+      <!-- ⚡ OPTIMISATION 2: Gestion des états de chargement du carousel -->
+      @if (isLoading()) {
+        <!-- Skeleton loader pendant le chargement -->
+        <div class="w-full h-96 bg-white rounded-lg shadow-md animate-pulse mb-4">
+          <div class="h-full flex items-center justify-center">
+            <div class="text-gray-400">Chargement du carousel...</div>
+          </div>
+        </div>
+      } @else if (hasError()) {
+        <!-- État d'erreur -->
+        <div class="w-full p-4 bg-red-100 text-red-700 rounded-lg mb-4">
+          Une erreur est survenue lors du chargement des articles.
+        </div>
+      } @else if (hasCarouselData()) {
+        <!-- ⚡ OPTIMISATION 3: Utilisation du signal computed sans () dans le binding -->
+        <!-- Angular évalue automatiquement les signals dans les templates -->
+        <app-header-carousel [carouselArticles]="filteredCarouselArticles()"/>
+      } @else {
+        <!-- État vide -->
+        <div class="w-full p-4 bg-gray-100 text-gray-500 rounded-lg mb-4">
+          Aucun article disponible pour le moment.
+        </div>
+      }
 
+      <!-- ⚡ OPTIMISATION 4: @defer pour Adsense -->
+      <!-- Chargé après 500ms ou quand visible -->
+      @defer (on viewport; on timer(500ms)) {
+        <app-adsense
+          [adClient]="'ca-pub-8638642715460968'"
+          [adSlot]="'6927429462'"
+          [adFormat]="'auto'"
+          [fullWidthResponsive]="true"
+        />
+      } @placeholder {
+        <!-- Placeholder pour éviter le layout shift -->
+        <div class="h-32 bg-gray-100"></div>
+      } @loading (minimum 300ms) {
+        <!-- Loading state pour au moins 300ms -->
+        <div class="h-32 bg-gray-100 animate-pulse"></div>
+      }
 
       <router-outlet></router-outlet>
     </div>
   </main>
 
   <!-- footer -->
-  <app-footer class="w-full"></app-footer>
+  @defer (on viewport) {
+    <app-footer class="w-full"></app-footer>
+  } @placeholder {
+    <!-- Placeholder minimaliste -->
+    <div class="h-32 bg-gray-800"></div>
+  }
 </div>

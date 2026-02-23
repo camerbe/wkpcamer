@@ -197,6 +197,12 @@
   overflow-wrap: break-word;
   margin-bottom: 0.9em;
 }
+.card-info h2{
+  color: #0f766e;
+  font-size: 1.5rem;
+  font-weight:bold;
+  margin-bottom: 0.5em;
+}
 .card-chapeau {
   font-size: 0.95rem;
   line-height: 1.6;

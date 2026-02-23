@@ -1,5 +1,5 @@
 import { isPlatformBrowser, NgOptimizedImage } from '@angular/common';
-import { afterRenderEffect, Component, inject, signal, AfterViewInit, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
+import { afterRenderEffect, Component, inject, signal, AfterViewInit, ChangeDetectorRef, PLATFORM_ID, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { Article, ArticleDetail, Evenement, EventDetail, Video, VideoDetail } from '@wkpcamer/models';
 import { ArticleService } from '@wkpcamer/services/articles';
 import { CardModule } from 'primeng/card';
@@ -13,10 +13,21 @@ import { EventService, VideoService } from '@wkpcamer/actions';
 import { DialogModule } from 'primeng/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PubSkyscraperComponent } from "../pub-skyscraper/pub-skyscraper.component";
-
+import { catchError, forkJoin, of, Subject, takeUntil } from 'rxjs';
+//import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SocialMedia } from "../social-media/social-media";
+import { ViralizeAdComponent } from "../viralize-ad/viralize-ad.component";
 interface SelectedVideo {
   titre: string;
   url: string;
+}
+interface DataLoadResult {
+  debat: Article | null;
+  droit: Article | null;
+  sopieVideo: Video | null;
+  camerVideo: Video | null;
+  event: Evenement | null;
 }
 @Component({
   selector: 'app-debat-droit',
@@ -30,100 +41,134 @@ interface SelectedVideo {
     AdMoneytizerComponent,
     AdsenseComponent,
     DialogModule,
-    PubSkyscraperComponent
+    PubSkyscraperComponent,
+    ProgressSpinnerModule,
+    SocialMedia,
+    ViralizeAdComponent
 ],
   templateUrl: './debat-droit.component.html',
   //styleUrl: './debat-droit.component.css'
-  styleUrls: ['./debat-droit.component.css']
+  styleUrls: ['./debat-droit.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DebatDroitComponent implements AfterViewInit {
+export class DebatDroitComponent implements OnInit,OnDestroy {
 
+  // Signals pour la réactivité optimale
+  readonly debat = signal<ArticleDetail | null>(null);
+  readonly droit = signal<ArticleDetail | null>(null);
+  readonly sopie = signal<VideoDetail | null>(null);
+  readonly camer = signal<VideoDetail | null>(null);
+  readonly evt = signal<EventDetail | null>(null);
 
-  debat!:ArticleDetail;
-  droit!:ArticleDetail;
-  sopie!:VideoDetail;
-  camer!:VideoDetail;
-  evt!:EventDetail;
   isBrowser=signal(false);
-  selectedVideo: SelectedVideo | null = null;
+  selectedVideo = signal<SelectedVideo | null>(null);
   safeVideoUrl = signal<SafeResourceUrl | null>(null);
-  displayVideo =signal(false);
+  displayVideo = signal(false);
+  isLoading = signal(true);
+  hasError = signal(false);
 
-  articleService=inject(ArticleService)
+  private readonly destroy$ = new Subject<void>();
+  private readonly articleService=inject(ArticleService)
   slugifyService=inject(SlugifyService);
-  videoService=inject(VideoService);
-  eventService=inject(EventService);
-  cdr=inject(ChangeDetectorRef);
-  platformId = inject(PLATFORM_ID);
-  sanitizer=inject(DomSanitizer);
+  private readonly videoService=inject(VideoService);
+  private readonly eventService=inject(EventService);
+  //cdr=inject(ChangeDetectorRef);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly sanitizer=inject(DomSanitizer);
 
-  constructor() {
-    afterRenderEffect(() => {
-      this.getDebatArticle();
-      this.getDroitArticle();
-      this.getLatestVideo('Sopie','Sopie');
-      this.getLatestVideo('Camer','Camer');
-      this.getOneEvent();
-    });
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
-    if(!this.isBrowser()) return;
+    if(!this.isBrowser()) {
+      this.isLoading.set(false);
+      return;
+    };
+     this.loadAllData();
+  }
+  private loadAllData() {
+    const requests = {
+      debat: this.articleService.getOneRubriqueArticle(27, 25).pipe(
+        catchError(err => {
+          console.error('❌ Erreur debat:', err);
+          return of(null);
+        })
+      ),
+      droit: this.articleService.getOneRubriqueArticle(33, 30).pipe(
+        catchError(err => {
+          console.error('❌ Erreur droit:', err);
+          return of(null);
+        })
+      ),
+      sopieVideo: this.videoService.getOneVideos('Sopie').pipe(
+        catchError(err => {
+          console.error('❌ Erreur Sopie:', err);
+          return of(null);
+        })
+      ),
+      camerVideo: this.videoService.getOneVideos('Camer').pipe(
+        catchError(err => {
+          console.error('❌ Erreur Camer:', err);
+          return of(null);
+        })
+      ),
+      event: this.eventService.getEvent().pipe(
+        catchError(err => {
+          console.error('❌ Erreur event:', err);
+          return of(null);
+        })
+      )
+    };
 
+    forkJoin(requests)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (results) => this.handleDataLoad(results as DataLoadResult),
+        error: (err) => this.handleLoadError(err)
+      });
   }
-  getOneEvent(){
-    return this.eventService.getEvent().subscribe({
-      next:(event)=>{
-        const tmpData=event as unknown as Evenement;
-        const evtDetail=tmpData['data'] as unknown as EventDetail;
-        this.evt=evtDetail ;
-        this.cdr.detectChanges();
-      },      error:(err)=>{
-        console.error('Error fetching event:', err);
-      }
-    });
+  handleLoadError(err: unknown): void {
+    console.error('❌ Erreur globale de chargement:', err);
+    this.hasError.set(true);
+    this.isLoading.set(false);
   }
-  getLatestVideo(videotype:string,type:'Sopie' | 'Camer'){
-    return this.videoService.getOneVideos(videotype).subscribe({
-      next:(videos)=>{
-        const tmpData=videos as unknown as Video;
-        if(type==='Sopie'){
-          const sopieVideos=tmpData["data"] as unknown as VideoDetail;
-          this.sopie=sopieVideos ;
-        }
-        if(type==='Camer'){
-          const camerVideos=tmpData["data"] as unknown as VideoDetail;
-          this.camer=camerVideos ;
-        }
-        this.cdr.detectChanges();
-      }
-    });
+  private handleDataLoad(results: DataLoadResult): void {
+    this.debat.set(this.extractData<Article, ArticleDetail>(results.debat));
+    this.droit.set(this.extractData<Article, ArticleDetail>(results.droit));
+    this.sopie.set(this.extractData<Video, VideoDetail>(results.sopieVideo));
+    this.camer.set(this.extractData<Video, VideoDetail>(results.camerVideo));
+    this.evt.set(this.extractData<Evenement, EventDetail>(results.event));
+
+    this.isLoading.set(false);
   }
-  getDebatArticle(){
-    return this.articleService.getOneRubriqueArticle(27,25).subscribe({
-      next:(articles)=>{
-        const tmpData=articles as unknown as Article;
-        const debatDroitArticles=tmpData["data"] as unknown as ArticleDetail;
-        this.debat=debatDroitArticles ;
-        this.cdr.detectChanges();
-      }
-    });
+  private extractData<T, D>(data: T | null): D | null {
+    if (!data) return null;
+    return (data as any)['data'] as D;
   }
-  getDroitArticle(){
-    return this.articleService.getOneRubriqueArticle(33,30).subscribe({
-      next:(articles)=>{
-        const tmpData=articles as unknown as Article;
-        const droitArticles=tmpData["data"] as unknown as ArticleDetail;
-        this.droit=droitArticles ;
-        this.cdr.detectChanges();
-      }
-    });
-  }
+
   gotoVideo(url: string,titre: string) {
     if(!this.isBrowser()) return;
-     const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-    this.selectedVideo = { titre, url };
+    const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.selectedVideo.set({ titre, url });
     this.safeVideoUrl.set(safeUrl);
     this.displayVideo.set(true);
+  }
+  protected closeVideo(): void {
+    this.displayVideo.set(false);
+    // Nettoyer après la fermeture pour libérer la mémoire
+    setTimeout(() => {
+      this.selectedVideo.set(null);
+      this.safeVideoUrl.set(null);
+    }, 300); // Attendre la fin de l'animation
+  }
+  protected onDisplayVideoChange(visible: boolean): void {
+    if (!visible) {
+      this.closeVideo();
+    } else {
+      this.displayVideo.set(visible);
+    }
   }
 }

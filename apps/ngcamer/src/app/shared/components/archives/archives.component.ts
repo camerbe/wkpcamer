@@ -1,5 +1,5 @@
 
-import { Component, OnInit, AfterViewInit, inject, signal, PLATFORM_ID, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject, signal, PLATFORM_ID, Input, ChangeDetectionStrategy, computed } from '@angular/core';
 import { ArticleDetail } from '@wkpcamer/models';
 import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { CardModule } from 'primeng/card';
@@ -14,41 +14,82 @@ import { SlugifyService } from '../../services/slugify.service';
     CommonModule
   ],
   templateUrl: './archives.component.html',
-  styleUrls: ['./archives.component.css']
+  styleUrls: ['./archives.component.css'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
-export class ArchivesComponent implements OnInit, AfterViewInit {
+export class ArchivesComponent  {
+
+  private readonly router=inject(Router);
+  private readonly slugifyService=inject(SlugifyService);
 
 
-  @Input () articleWeekList: ArticleDetail[] = [];
-  @Input () articleMonthkList: ArticleDetail[] = [];
-  @Input () articleYearList: ArticleDetail[] = [];
+
+  readonly articleWeekList  = signal<ArticleDetail[]>([]);
+  readonly articleMonthList = signal<ArticleDetail[]>([]);
+  readonly articleYearList = signal<ArticleDetail[]>([]);
+
+  @Input ({ required: true })
+  set articleWeekListInput(value: ArticleDetail[]) {
+    this.articleWeekList.set(value);
+  }
+  @Input ({ required: true })
+  set articleMonthListInput(value: ArticleDetail[]) {
+    this.articleMonthList.set(value);
+  }
+  @Input ({ required: true })
+  set articleYearListInput(value: ArticleDetail[]) {
+    this.articleYearList.set(value);
+  }
+
+  //Computed signals pour vérifier si les listes ont du contenu
+  readonly hasWeekArticles = computed(() => this.articleWeekList().length > 0);
+  readonly hasMonthArticles = computed(() => this.articleMonthList().length > 0);
+  readonly hasYearArticles = computed(() => this.articleYearList().length > 0);
 
   isBrowser = signal(false);
+  readonly platformId = inject(PLATFORM_ID);
 
+  private imageUrlCache = new Map<string, string>();
+  private readonly slugCache = new Map<string, string>();
 
-  platformId = inject(PLATFORM_ID);
-  router=inject(Router);
-  slugifyService=inject(SlugifyService);
-  ngOnInit(): void {
-    this.isBrowser.set(isPlatformBrowser(this.platformId));
-    if(!this.isBrowser()) return;
-  }
-
-  ngAfterViewInit(): void {
-    this.isBrowser.set(isPlatformBrowser(this.platformId));
-    if(!this.isBrowser()) return;
-
-
-  }
   getImageUrl(article: ArticleDetail): string {
+   const cacheKey = article.slug;
 
-    return article.image_url.startsWith('http')
-    ? article.image_url
-    : `https://www.camer.be${article.image_url}`;
+    if (this.imageUrlCache.has(cacheKey)) {
+      return this.imageUrlCache.get(cacheKey)!;
+    }
+    //console.log('Processing image URL for article:', this.imageUrlCache);
+    const url = article.image_url.startsWith('http')
+      ? article.image_url
+      : `https://www.camer.be${article.image_url}`;
+
+
+
+    this.imageUrlCache.set(cacheKey, url);
+    return url;
   }
   gotoArticle(rubrique: string,sousrubrique: string,slug: string) {
-  this.router.navigateByUrl('/',{skipLocationChange: true}).then(()=>{
-      this.router.navigate(['/'+this.slugifyService.slugify(rubrique)+'/'+this.slugifyService.slugify(sousrubrique),slug]);
-    });
+    const cacheKey = `${rubrique}|${sousrubrique}`;
+
+    let slugifiedPath = this.slugCache.get(cacheKey);
+    if (!slugifiedPath) {
+      slugifiedPath = `/${this.slugifyService.slugify(rubrique)}/${this.slugifyService.slugify(sousrubrique)}`;
+      this.slugCache.set(cacheKey, slugifiedPath);
+    }
+
+    this.router.navigateByUrl(`${slugifiedPath}/${slug}`);
+  }
+   trackByArticle(index: number, article: ArticleDetail): string | number {
+    return article.idarticle ?? article.slug ?? index;
+  }
+
+  handleKeypress(event: KeyboardEvent, rubrique: string, sousrubrique: string, slug: string): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.gotoArticle(rubrique, sousrubrique, slug);
+    }
+  }
+  getImageAltText(article: ArticleDetail): string {
+    return `${article.countries.pays} :: ${article.titre}`;
   }
 }

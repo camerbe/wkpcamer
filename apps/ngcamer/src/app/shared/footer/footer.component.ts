@@ -1,59 +1,50 @@
 import { isPlatformBrowser, ViewportScroller } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
-import { Article, ArticleDetail } from '@wkpcamer/models';
-import { ArticleService } from '@wkpcamer/services/articles';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { ArchivesComponent } from "../components/archives/archives.component";
-import { forkJoin } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { FooterService } from '../services/footer.service';
 
 @Component({
   selector: 'app-footer',
   imports: [
     ScrollTopModule,
-    ArchivesComponent
+    ArchivesComponent,
+    RouterLink
 ],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  styleUrl: './footer.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent  {
 
 
   isBrowser = signal(false);
-  platformId = inject(PLATFORM_ID);
-  articleService = inject(ArticleService);
-  cdr=inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
+  private footerService= inject(FooterService);
+  private router=inject(Router);
+  private scroller=inject(ViewportScroller);
+  private destroyRef = inject(DestroyRef);
+
   currentYear = new Date().getFullYear();
 
-  articleWeekList: ArticleDetail[] = [];
-  articleMonthkList: ArticleDetail[] = [];
-  articleYearList: ArticleDetail[] = [];
+  articleWeekList=this.footerService.weekList;
+  articleMonthList=this.footerService.monthList;
+  articleYearList= this.footerService.yearList;
 
-  router=inject(Router)
-  scroller=inject(ViewportScroller)
-  ngOnInit(): void {
+  /**
+   *
+   */
+  constructor() {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
-    if(!this.isBrowser()) return;
 
-    forkJoin({
-      weekData: this.articleService.getArticleByPeriod('week'),
-      monthData: this.articleService.getArticleByPeriod('month'),
-      yearData: this.articleService.getArticleByPeriod('year')
-    }).subscribe({
-      next:(result)=>{
-        const tmpWeek=result.weekData as unknown as Article;
-        this.articleWeekList = tmpWeek["data"] as unknown as ArticleDetail[];
-        const tmpMonth=result.monthData as unknown as Article;
-        this.articleMonthkList = tmpMonth["data"] as unknown as ArticleDetail[];
-        const tmpYear=result.yearData as unknown as Article;
-        this.articleYearList = tmpYear["data"] as unknown as ArticleDetail[];
-        this.cdr.detectChanges();
+    if (this.isBrowser()) {
 
-      }
-    });
-
+     this.footerService.loadFooterData().subscribe();
+    }
 
   }
+
 
    gotoHome() {
     this.router.navigateByUrl('/',{ skipLocationChange: true }).then(()=>{

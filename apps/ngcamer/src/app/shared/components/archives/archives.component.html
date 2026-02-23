@@ -1,14 +1,14 @@
 <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 items-stretch">
-@if(articleWeekList.length > 0 ){
+@if(hasWeekArticles() ){
 <div class="text-white flex-1">
   <div class="mt-6">
-    <p-card class="bg-green-500 text-white h-full flex flex-col">
+    <p-card class=" text-white h-full flex flex-col">
       <ng-template pTemplate="header">
-        <div class="bg-green-600 p-4">
-          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>il y a une semaine</h3>
+        <div class="bg-green-500 rounded-t-lg p-4">
+          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-calendar mr-2"></i>il y a une semaine</h3>
         </div>
       </ng-template>
-    @for(article of articleWeekList; track $index;let first=$first) {
+    @for(article of articleWeekList(); track trackByArticle($index, article);let first=$first) {
       <div
           class="p-2"
           [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
@@ -16,15 +16,16 @@
        <a
         class="cursor-pointer text-justify group flex items-center"
          (click)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
-            (keypress)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            (keypress)="handleKeypress($event, article.rubrique.rubrique, article.sousrubrique.sousrubrique, article.slug)"
             tabindex="0"
+            [attr.aria-label]="getImageAltText(article)"
       >
       <div class="relative h-15 w-15 rounded-full overflow-hidden mr-4 flex-shrink-0">
         <img
           [ngSrc]="getImageUrl(article)"
-          alt="{{article.countries.pays}} :: {{article.titre}}"
-          title="{{article.countries.pays}} :: {{article.titre}}"
-          priority
+          [alt]="getImageAltText(article)"
+          [title]="getImageAltText(article)"
+
           fill
           class="object-cover">
 
@@ -38,16 +39,16 @@
 
 </div>
 }
-@if(articleMonthkList.length > 0 ){
+@if(hasMonthArticles() ){
 <div class="text-white flex-1">
   <div class="mt-6">
-    <p-card class="bg-green-500 text-white h-full flex flex-col">
+    <p-card class=" text-white h-full flex flex-col">
       <ng-template pTemplate="header">
-        <div class="bg-green-600 p-4">
-          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>il y a un mois</h3>
+        <div class="bg-green-500 rounded-t-lg p-4">
+          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-calendar mr-2"></i>il y a un mois</h3>
         </div>
       </ng-template>
-    @for(article of articleMonthkList; track $index;let first=$first) {
+    @for(article of articleMonthList(); track trackByArticle($index, article);let first=$first) {
       <div
           class="p-2"
           [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
@@ -55,15 +56,17 @@
       <a
         class="cursor-pointer text-justify group flex items-center"
          (click)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
-            (keypress)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            (keypress)="handleKeypress($event, article.rubrique.rubrique, article.sousrubrique.sousrubrique, article.slug)"
             tabindex="0"
+            [attr.aria-label]="getImageAltText(article)"
       >
       <div class="relative h-15 w-15 rounded-full overflow-hidden mr-4 flex-shrink-0">
         <img
+
           [ngSrc]="getImageUrl(article)"
-          alt="{{article.countries.pays}} :: {{article.titre}}"
-          title="{{article.countries.pays}} :: {{article.titre}}"
-          priority
+          [alt]="getImageAltText(article)"
+          [title]="getImageAltText(article)"
+
           fill
           class="object-cover">
 
@@ -78,16 +81,16 @@
 
 </div>
 }
-@if(articleYearList.length > 0 ){
+@if(hasYearArticles()){
 <div class="text-white flex-1 w-full">
   <div class="mt-6">
-    <p-card class="bg-green-500 text-white h-full flex flex-col">
+    <p-card class=" text-white h-full flex flex-col">
       <ng-template pTemplate="header">
-        <div class="bg-green-600 p-4">
-          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-check mr-2"></i>il y a un an</h3>
+        <div class="bg-green-500 rounded-t-lg p-4">
+          <h3 class="text-xl font-bold text-white m-0 uppercase"><i class="pi pi-calendar mr-2"></i>il y a un an</h3>
         </div>
       </ng-template>
-    @for(article of articleYearList; track $index;let first=$first) {
+    @for(article of articleYearList(); track trackByArticle($index, article);let first=$first) {
       <div
           class="p-2"
           [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
@@ -95,15 +98,16 @@
       <a
         class="cursor-pointer text-justify group flex items-center"
          (click)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
-            (keypress)="gotoArticle(article.rubrique.rubrique,article.sousrubrique.sousrubrique,article.slug)"
+            (keypress)="handleKeypress($event, article.rubrique.rubrique, article.sousrubrique.sousrubrique, article.slug)"
             tabindex="0"
+            [attr.aria-label]="getImageAltText(article)"
       >
       <div class="relative h-15 w-15 rounded-full overflow-hidden mr-4 flex-shrink-0">
         <img
+
           [ngSrc]="getImageUrl(article)"
-          alt="{{article.countries.pays}} :: {{article.titre}}"
-          title="{{article.countries.pays}} :: {{article.titre}}"
-          priority
+          [alt]="getImageAltText(article)"
+          [title]="getImageAltText(article)"
           fill
           class="object-cover">
 

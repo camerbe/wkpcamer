@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, input, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { AdsenseService } from '../../services/adsense.service';
 
 import { isPlatformBrowser } from '@angular/common';
@@ -7,37 +7,57 @@ import { isPlatformBrowser } from '@angular/common';
   selector: 'app-adsense',
   imports: [],
   templateUrl: './adsense.component.html',
-  styleUrl: './adsense.component.css'
+  styleUrl: './adsense.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AdsenseComponent implements OnInit,AfterViewInit{
+export class AdsenseComponent implements AfterViewInit{
+  // ✅ Utilisation des signal inputs
+  readonly adClient = input<string>('ca-pub-8638642715460968');
+  readonly adSlot = input<string>('6927429462');
+  readonly adFormat = input<string>('auto');
+  readonly fullWidthResponsive = input<boolean>(true);
 
-  @Input() adClient = 'ca-pub-8638642715460968';
-  @Input() adSlot= 'YYYYYYYYYY';
-  @Input() adFormat= 'auto';
-  @Input() fullWidthResponsive= true;
+  isBrowser=signal(false);
+  private readonly adsenseService=inject(AdsenseService)
+  private readonly platformId = inject(PLATFORM_ID);
 
-   isBrowser=signal(false);
-  adsenseService=inject(AdsenseService)
-  platformId = inject(PLATFORM_ID);
-
+  // ✅ Signal pour l'état de chargement (optionnel, pour débugger)
+  protected readonly isLoading = signal<boolean>(false);
+  protected readonly error = signal<string | null>(null);
 
 
   ngAfterViewInit(): void {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
     if(!this.isBrowser()) return;
-    //  if(this.isBrowser()){
-        // setTimeout(() => {
-        //   this.adsenseService.pushAd();
-        // }, 100);
-    //  }
+    this.loadAdsense();
 
   }
-  ngOnInit(): void {
-    this.isBrowser.set(isPlatformBrowser(this.platformId));
-      if(!this.isBrowser()) return;
-    this.adsenseService.loadAdsenseScript(this.adClient).then().catch(error=>{
-      console.error('Failed to load AdSense script:', error);
-    });
+  private async loadAdsense() : Promise<void>{
+    try {
+      this.isLoading.set(true);
+
+      // ✅ Gestion propre des promesses avec async/await
+      await this.adsenseService.loadAdsenseScript(this.adClient());
+
+      // ✅ Optionnel : délai pour s'assurer que le DOM est prêt
+      await this.delay(100);
+      this.adsenseService.pushAd();
+
+    } catch (error) {
+      const errorMessage = error instanceof Error
+        ? error.message
+        : 'Failed to load AdSense script';
+
+      this.error.set(errorMessage);
+      console.error('AdSense loading error:', error);
+
+    } finally {
+      this.isLoading.set(false);
+    }
   }
+  private delay(ms: number): Promise<void> {
+     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 
 }

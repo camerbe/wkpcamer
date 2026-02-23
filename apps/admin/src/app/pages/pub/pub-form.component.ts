@@ -60,7 +60,7 @@ export class PubFormComponent implements OnInit {
 		const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
     const fieldname=meta['fieldname'];
     const filetype=meta['filetype'];
-		let cmsURL = `${CONFIG.apiUrl}/laravel-filemanager?editor=${fieldname}`;
+		let cmsURL = `${CONFIG.siteUrl}/laravel-filemanager?editor=${fieldname}`;
 		if (filetype === 'image') {
       cmsURL += '&type=Images';
     } else if (filetype === 'media') {

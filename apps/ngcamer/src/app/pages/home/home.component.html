@@ -1,45 +1,69 @@
-  <section class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-5">
-    <div class="col-span-1 md:col-span-8">
-      <app-index [indexArticles]="listIndex()"></app-index>
-    </div>
-    <div class="col-span-1 md:col-span-4">
-      @defer(on idle){
-      <app-sport [sportArticles]="sports()" />
-      <p-divider></p-divider>
+<section class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-5">
+  <!-- Colonne principale des articles -->
+  <div class="col-span-1 md:col-span-8">
+    @if (shouldShowContent()) {
+      <app-index [indexArticles]="listIndex()" />
+    } @else if (isLoading()) {
+      <div class="loading-skeleton">
+        <p>Chargement des articles...</p>
+      </div>
+    } @else {
+      <div class="no-content">
+        <p>Aucun article disponible</p>
+      </div>
+    }
+  </div>
+
+  <!-- Colonne latérale -->
+  <div class="col-span-1 md:col-span-4">
+    @defer (on idle) {
+      <!-- Bloc Adsense -->
+
+
+    <app-social-media />
+
+     <p-divider/>
       <p-card>
         <ng-template pTemplate="content">
-
           <div class="p-2">
-            <h3>Adsense</h3>
+
             <app-adsense
-              [adClient]="'ca-pub-8638642715460968'"
-              [adSlot]="'6927429462'"
-              [adFormat]="'auto'"
-              [fullWidthResponsive]="true"
-
-            >
-
-            </app-adsense>
+              [adClient]="adsenseConfig.adClient"
+              [adSlot]="adsenseConfig.adSlot"
+              [adFormat]="adsenseConfig.adFormat"
+              [fullWidthResponsive]="adsenseConfig.fullWidthResponsive"
+            />
           </div>
         </ng-template>
       </p-card>
-<!--
 
-      <p-card>
-        <ng-template pTemplate="content">
-          <div class="p-2">
-            <h3>Viralize</h3>
-           <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'"/>
+      <p-divider />
 
-          </div>
-        </ng-template>
-      </p-card> -->
-
-      <p-divider></p-divider>
-
+      <!-- Débat Droit -->
       <app-debat-droit />
+
+    } @placeholder {
+      <!-- Placeholder pendant le chargement différé -->
+      <div class="sidebar-placeholder">
+        <p-card>
+          <ng-template pTemplate="content">
+            <div class="animate-pulse">
+              <div class="h-64 bg-gray-200 rounded"></div>
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+    } @loading (minimum 500ms) {
+      <!-- État de chargement (optionnel) -->
+      <div class="sidebar-loading">
+        <p-card>
+          <ng-template pTemplate="content">
+            <div class="text-center p-4">
+              <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
     }
-    </div>
-  </section>
-
-
+  </div>
+</section>

@@ -1,121 +1,199 @@
-<section  class="grid grid-cols-1 md:grid-cols-12 gap-5">
+<section class="grid grid-cols-1 md:grid-cols-12 gap-5">
   <div class="md:col-span-8">
-    <article  itemscope itemtype="https://schema.org/NewsArticle">
-      @if(article){
-      <meta itemprop="mainEntityOfPage"
-          [content]="articleUrl()"
-      />
-      <meta itemprop="headline" [content]="article.titre" />
-      <meta itemprop="thumbnailUrl" [content]="article.image_url" />
-      <meta itemprop="description" [content]="article.chapeau" />
-      <meta itemprop="datePublished" [content]="article.dateparution" />
-      <meta itemprop="dateModified" [content]="dateModif()" />
-      <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-        <meta itemprop="name" content="Camer.be" />
-        <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-          <meta itemprop="url" [content]="logoUrl()" />
-          <meta itemprop="width" [content]="190" />
-          <meta itemprop="height" [content]="52" />
+    <article itemscope itemtype="https://schema.org/NewsArticle">
+      <!-- ✅ Bloc conditionnel optimisé -->
+      @if(article(); as currentArticle) {
+
+        <!-- ✅ Meta tags avec signals optimisés -->
+        <meta itemprop="mainEntityOfPage" [attr.content]="articleUrl()" />
+        <meta itemprop="headline" [attr.content]="currentArticle.titre" />
+        <meta itemprop="thumbnailUrl" [attr.content]="currentArticle.image_url" />
+        <meta itemprop="description" [attr.content]="currentArticle.chapeau" />
+        <meta itemprop="datePublished" [attr.content]="currentArticle.dateparution" />
+        <meta itemprop="dateModified" [attr.content]="dateModif()" />
+
+        <!-- ✅ Publisher info -->
+        <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+          <meta itemprop="name" content="Camer.be" />
+          <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" [attr.content]="logoUrl()" />
+            <meta itemprop="width" content="190" />
+            <meta itemprop="height" content="52" />
+          </span>
         </span>
-      </span>
-      <div itemprop="author" itemscope itemtype="https://schema.org/Person">
-        <meta itemprop="name" [content]="article.auteur">
-        <meta itemprop="url" [content]="articleUrl()" />
-      </div>
 
+        <!-- ✅ Author info -->
+        <div itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <meta itemprop="name" [attr.content]="currentArticle.auteur" />
+          <meta itemprop="url" [attr.content]="articleUrl()" />
+        </div>
 
-      <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-        <meta itemprop="url" [content]="article.image_url" />
-        <meta itemprop="width" [content]="article.image_width" />
-        <meta itemprop="height" [content]="article.image_height" />
-      </div>
-      <meta itemprop="articleSection" content="{{article.rubrique.rubrique}} / {{article.sousrubrique.sousrubrique}}" />
-      <meta itemprop="wordCount" [content]="wordCount" />
-      <meta itemprop="keywords" [content]="keyWord()" />
+        <!-- ✅ Image info -->
+        <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+          <meta itemprop="url" [attr.content]="currentArticle.image_url" />
+          <meta itemprop="width" [attr.content]="currentArticle.image_width" />
+          <meta itemprop="height" [attr.content]="currentArticle.image_height" />
+        </div>
 
+        <!-- ✅ Article metadata avec computed -->
+        <meta itemprop="articleSection" [attr.content]="articleSection()" />
+        <meta itemprop="wordCount" [attr.content]="wordCount()" />
+        <meta itemprop="keywords" [attr.content]="keyWord()" />
 
-      <p-card class="list-camer-card">
-        <ng-template pTemplate="header">
-          <a href="">
-          <div class="relative card-image-container-article">
-            <img
+        <!-- ✅ Card optimisée -->
+        <p-card class="list-camer-card">
+          <ng-template pTemplate="header">
+            <a
+              [href]="articleUrl()"
+              [attr.aria-label]="currentArticle.titre">
+              <div class="relative card-image-container-article">
+                <!-- ✅ Image avec dimensions explicites -->
+                <img
+                  [ngSrc]="currentArticle.image_url"
+                  [alt]="imageAlt()"
+                  [title]="imageAlt()"
+                  fill
+                  class="object-cover w-full h-auto"
+                  priority
+                  [sizes]="imageSizes()"
+                />
 
-              [ngSrc]="getImageUrl(article)"
-              alt="{{ article.countries.pays }} :: {{ article.titre }}"
-              title="{{ article.countries.pays }} :: {{ article.titre }}"
-              fill
-              class="object-cover"
-              priority
+                <!-- ✅ Tag optimisé -->
+                <p-tag
+                  severity="warn"
+                  [rounded]="true"
+                  class="top-3 left-3 z-5 absolute"
+                >
+                  <div class="flex items-center gap-2 px-1">
+                    <img
+                      [alt]="currentArticle.countries.pays"
+                      [ngSrc]="countryFlagUrl()"
+                      width="16"
+                      height="12"
+                      loading="lazy"
+                    />
+                    <span class="text-base">{{ currentArticle.sousrubrique.sousrubrique }}</span>
+                  </div>
+                </p-tag>
+              </div>
+            </a>
+          </ng-template>
+
+          <!-- ✅ Title -->
+          <ng-template pTemplate="title">
+            <h1
+              itemprop="headline"
+              class="card-title border-l-4 border-orange-300 !text-teal-700 md:!text-3xl"
             >
-            <p-tag severity="warn"  [rounded]="true" class="top-3 left-3 z-5 absolute">
-                        <div class="flex items-center gap-2 px-1">
-                          <img alt="{{ article.countries.pays}}" src="https://flagcdn.com/16x12/{{ article.fkpays.toLowerCase()}}.webp" />
-                          <span class="text-base">{{article.sousrubrique.sousrubrique }}</span>
-                        </div>
-                      </p-tag>
+              {{ currentArticle.titre }}
+            </h1>
+          </ng-template>
+
+          <!-- ✅ Subtitle avec date optimisée -->
+          <ng-template pTemplate="subtitle">
+            <time
+              itemprop="datePublished"
+              [attr.datetime]="currentArticle.dateparution"
+            >
+              <div class="card-subtitle">
+                <i class="pi pi-user" aria-hidden="true"></i>
+                {{ currentArticle.auteur }}
+
+                <i class="pi pi-calendar" aria-hidden="true"></i>
+                <span class="card-date">
+                  {{ formattedDate() }}
+                </span>
+
+                <span class="card-separator">•</span>
+
+                <i class="pi pi-eye" aria-hidden="true"></i>
+                <span class="card-author">{{ currentArticle.hit }}</span>
+              </div>
+            </time>
+          </ng-template>
+
+          <!-- ✅ Content avec sanitization optimisée -->
+          <div
+            #articleContentContainer
+            itemprop="articleBody"
+            [innerHTML]="sanitizedContent()"
+            class="card-content card-info article-content"
+          ></div>
+
+          <!-- ✅ Ad placement -->
+          <div class="py-3">
+            <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'" />
           </div>
 
-          </a>
-        </ng-template>
-        <ng-template  pTemplate="title">
-          <h3 itemprop="headline" class="card-title border-l-4 border-orange-300 !text-teal-700 md:!text-3xl" >{{ article.titre }}</h3>
-        </ng-template>
-        <ng-template #subtitle>
-          <time itemprop="datePublished" [attr.datetime]="article.dateparution">
-            <div class="card-subtitle">
+          <!-- ✅ Defer optimisé avec viewport + idle -->
+          @defer (on viewport; on idle) {
+            <app-disqus
+              [identifier]="currentArticle.slug"
+              [title]="currentArticle.titre"
+              [url]="articleUrl()"
+            />
 
-              <i class="pi pi-user"></i> {{ article.auteur }}
-              <i class="pi pi-calendar"></i><span class="card-date">{{article.dateparution| date: 'dd MMM yyyy HH:mm:ss'}}</span>
-                <span class="card-separator">•</span>
-              <i class="pi pi-eye"></i><span class="card-author">{{ article.hit }}</span>
+            @if(relatedArticles().length > 0) {
+              <app-related-articles [relatedArticles]="relatedArticles()" />
+            }
+
+            <p-divider />
+
+            <div id="taboola-below-article-thumbnails"></div>
+          }
+          @placeholder {
+            <div class="skeleton-loader" style="height: 400px;">
+              <p class="text-center text-gray-500">Chargement des commentaires...</p>
             </div>
-          </time>
-        </ng-template>
-        <div #articleContentContainer itemprop="articleBody" [innerHTML]="sanitizer.bypassSecurityTrustHtml(article.info || '')" class="card-content card-info video-responsive"></div>
-        <div class="py-3">
-          <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'"
-          />
-         </div>
-
-         @defer (on idle) {
-           <app-disqus
-            [identifier]="article.slug"
-            [title]="article.titre"
-            [url]="articleUrl()">
-          </app-disqus>
-          <app-related-articles [relatedArticles]="relatedArticles()"></app-related-articles>
-
-          <p-divider></p-divider>
-          <div id="taboola-below-article-thumbnails"></div>
-         }
-      </p-card>
-
+          }
+          @loading (minimum 100ms) {
+            <div class="loading-spinner" role="status" aria-live="polite">
+              <span class="sr-only">Chargement...</span>
+            </div>
+          }
+        </p-card>
       }
     </article>
   </div>
-  <div class="md:col-span-4">
-    @defer (on idle) {
-    <app-most-readed-rubrique-country [mostReadedArticles]="mostReadeArticles()" class="pb-3 !rounded-t-md"/>
 
-    <p-divider></p-divider>
-    <p-card>
-      <ng-template pTemplate="content">
-        <div class="p-2">
-          <h3>moneytizer</h3>
-          <app-ad-moneytizer [appId]="'9307-3'" [zoneId]="'AADZ2f-Di1Vp9x2i'" />
-        </div>
-      </ng-template>
-    </p-card>
+  <!-- ✅ Sidebar optimisée -->
+  <aside class="md:col-span-4" aria-label="Sidebar">
+    <!-- ✅ Defer avec prefetch pour le contenu visible -->
+    @defer (on viewport; prefetch on idle) {
+      @if(mostReadeArticles().length > 0) {
+        <app-most-readed-rubrique-country
+          [mostReadedArticles]="mostReadeArticles()"
+          class="pb-3 !rounded-t-md"
+        />
+        <p-divider />
+      }
 
-    <p-divider></p-divider>
-    <app-sport [sportArticles]="sports()" />
-    <p-divider></p-divider>
+      <!-- ✅ Ad Card -->
+      <p-card>
+        <ng-template pTemplate="content">
+          <div class="p-2">
+            <h3 class="sr-only">Publicité</h3>
+            <app-ad-moneytizer
+              [appId]="'9307-3'"
+              [zoneId]="'AADZ2f-Di1Vp9x2i'"
+            />
+          </div>
+        </ng-template>
+      </p-card>
 
-    <app-debat-droit />
+      <p-divider />
 
+      <!-- @if(sports().length > 0) {
+        <app-sport [sportArticles]="sports()" />
+        <p-divider />
+      } -->
+
+      <app-debat-droit />
     }
-
-
-  </div>
-
-</section>
+    @placeholder {
+      <div class="sidebar-skeleton">
+        <div class="skeleton-card" style="height: 300px;"></div>
+      </div>
+    }
+  </aside>
+</section>"

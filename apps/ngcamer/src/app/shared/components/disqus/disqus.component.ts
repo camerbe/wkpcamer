@@ -1,9 +1,10 @@
-import { Component, OnChanges, Input, AfterViewInit, OnDestroy, SimpleChanges, ElementRef, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, OnChanges, Input, AfterViewInit, OnDestroy, SimpleChanges, ElementRef, inject, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
 
 declare global {
   interface Window {
     DISQUS: any;
-    disqus_config: () => void;
+    disqus_config: (() => void) | undefined;
   }
 }
 
@@ -23,43 +24,68 @@ interface DisqusConfig {
 
   ],
   template: `<div id="disqus_thread"></div>`,
-  styleUrl: './disqus.component.css'
+  styleUrl: './disqus.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DisqusComponent implements AfterViewInit, OnChanges, OnDestroy {
 
    @Input() identifier!: string;
    @Input() url!: string;
-   @Input() title!: string;
+   @Input() title?: string;
 
-   observer?: IntersectionObserver;
-   hasLoaded = false;
+   private observer?: IntersectionObserver;
+   private hasLoaded = false;
+   private scriptLoaded = false;
+   private disqusShortname = 'camer-be';
 
+  //************ INJECTION************************/
+  private el = inject(ElementRef);
+  private platformId = inject(PLATFORM_ID);
 
-   el = inject(ElementRef);
-
-   loadDisqus(reload = false): void {
-    if (!this.identifier || !this.url) return;
-
-
-    if (window.DISQUS && reload) {
-      window.DISQUS.reset({
-        reload: true,
-        config:this.getConfig(this.identifier, this.url, this.title)
-
-      });
-       return;
+   private loadDisqus(): void {
+    if (!this.identifier || !this.url) {
+      console.warn('[Disqus] identifier et url sont requis');
+      return;
     }
-    if(!window.DISQUS) {
-      window.disqus_config = () => this.getConfig(this.identifier, this.url, this.title);
 
-      const d = document;
-      const s = d.createElement('script');
-      s.src = 'https://camer-be.disqus.com/embed.js'; //
-      s.async = true;
-      s.setAttribute('data-timestamp', String(new Date().getTime()));
-      (d.head || d.body).appendChild(s);
-      this.hasLoaded = true;
+    this.hasLoaded = true;
+
+    this.configureDisqus();
+
+    this.injectDisqusScript();
+
+  }
+  private injectDisqusScript() {
+    if (this.scriptLoaded || document.querySelector('script[src*="disqus.com/embed.js"]')) {
+      return;
     }
+
+    this.scriptLoaded = true;
+
+    const script = document.createElement('script');
+    script.src = `https://${this.disqusShortname}.disqus.com/embed.js`;
+    script.async = true;
+    script.defer = true;
+    script.setAttribute('data-timestamp', String(new Date().getTime()));
+
+    script.onerror = () => {
+      console.error('[Disqus] Erreur lors du chargement du script');
+      this.scriptLoaded = false;
+    };
+
+    (document.head || document.body).appendChild(script);
+  }
+  private configureDisqus() {
+    window.disqus_config = this.getDisqusConfig();
+  }
+  private getDisqusConfig(): () => void {
+    return () => {
+      (window as any).page = {
+        identifier: this.identifier,
+        url: this.url,
+        title: this.title || ''
+      };
+    };
   }
 
   getConfig(identifier: string, url: string, title?: string){
@@ -71,23 +97,61 @@ export class DisqusComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this.hasLoaded) return;
-    if (changes['identifier'] || changes['url'] || changes['title']) {
-      this.loadDisqus(true);
+    if (!isPlatformBrowser(this.platformId)) return;
+    if (
+      this.hasLoaded &&
+      this.scriptLoaded &&
+      (changes['identifier'] || changes['url'])
+    ) {
+      this.reloadDisqus();
+    }
+  }
+  private reloadDisqus() {
+    if (window.DISQUS?.reset) {
+      window.DISQUS.reset({
+        reload: true,
+        config: this.getDisqusConfig()
+      });
     }
   }
 
   ngOnDestroy(): void {
+    this.cleanup();
+  }
+  private cleanup():void {
+    // Nettoyer l'observer
     this.observer?.disconnect();
+    this.observer = undefined;
+
+    // Nettoyer la configuration globale
+    if (window.disqus_config) {
+      window.disqus_config = undefined;
+    }
+
+    this.hasLoaded = false;
+    this.scriptLoaded = false;
   }
   ngAfterViewInit(): void {
-    if (typeof window === 'undefined') return;
-    this.observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.setupIntersectionObserver();
+  }
+  private setupIntersectionObserver() {
+    if (!this.el?.nativeElement) {
+      return;
+    }
+
+    const options = {
+      rootMargin: '200px',
+      threshold: 0.01
+    };
+
+    this.observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (entry?.isIntersecting && !this.hasLoaded) {
         this.loadDisqus();
         this.observer?.disconnect();
       }
-    }, { rootMargin: '200px' });
+    }, options);
 
     this.observer.observe(this.el.nativeElement);
   }

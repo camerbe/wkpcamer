@@ -1,7 +1,16 @@
+@if (error()) {
+  <div class="ad-error" role="alert">
+    <!-- Message d'erreur pour le dev, invisible en prod -->
+  </div>
+} @else if (isLoading()) {
+  <div class="ad-placeholder">
+    <!-- Skeleton loader optionnel -->
+  </div>
+}
 <ins class="adsbygoogle"
      style="display:block;"
-     [attr.data-ad-client]="adClient"
-     [attr.data-ad-slot]="adSlot"
-     [attr.data-ad-format]="adFormat"
-     [attr.data-full-width-responsive]="fullWidthResponsive ? 'true' : 'false'">
+     [attr.data-ad-client]="adClient()"
+     [attr.data-ad-slot]="adSlot()"
+     [attr.data-ad-format]="adFormat()"
+     [attr.data-full-width-responsive]="fullWidthResponsive() ? 'true' : 'false'">
 </ins>
