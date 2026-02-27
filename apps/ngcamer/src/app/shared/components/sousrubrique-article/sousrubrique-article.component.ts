@@ -73,6 +73,7 @@ interface ArticleWithMetadata extends ArticleDetail {
   wordCount: number;
   slugifiedRubrique: string;
   slugifiedSousRubrique: string;
+  flagUrl: string;
 }
 @Component({
   selector: 'app-sousrubrique-article',
@@ -147,10 +148,20 @@ export class SousrubriqueArticleComponent  {
       keywordsArray: this.formatKeywords(article.keyword),
       wordCount: this.calculateWordCount(article.info),
       slugifiedRubrique: this.slugifyService.slugify(article.rubrique.rubrique),
-      slugifiedSousRubrique: this.slugifyService.slugify(article.sousrubrique.sousrubrique)
+      slugifiedSousRubrique: this.slugifyService.slugify(article.sousrubrique.sousrubrique),
+      flagUrl: this.getFlag(article)
     }))
   );
 
+  private getFlag(article:ArticleDetail): string {
+    const countryCode = article.fkpays.toLowerCase();
+    switch (countryCode) {
+      case 'f': return `https://flagcdn.com/16x12/au.webp`;
+      case 'zz': return `https://flagcdn.com/16x12/un.webp`;
+      default: return `https://flagcdn.com/16x12/${countryCode}.webp`;
+    }
+    
+  }
   /**
    *
    */
@@ -170,53 +181,7 @@ export class SousrubriqueArticleComponent  {
   }
 
 
-  //  ngOnInit(): void {
-  //   this.isBrowser.set(isPlatformBrowser(this.platformId));
-  //   if(!this.isBrowser()) return;
-
-  //   if (typeof window !== 'undefined') {
-  //     this.logoUrl = `${window.location.protocol}//${window.location.host}/assets/images/logo.png`;
-  //   }
-
-  //   this.dateModif.set(new Date().toISOString().slice(0, 19) + '+00:00') ;
-  //   const tmpTitre=`Actualités Cameroun, Info & Analyse – Politique, Sport, ${this.rubriqueArticles[0].sousrubrique.sousrubrique} | Camer.be`;
-  //    let dynamicDescription = 'Camer.be: Info claire et nette sur le Cameroun et la Diaspora. ';
-  //   if(this.rubriqueArticles){
-  //     this.canonicalService.setCanonicalURL(`${window.location.protocol}//${window.location.host}${this.router.url}`);
-  //     this.canonicalService.setAmpCanonicalURL(`${window.location.protocol}//${window.location.host}/amp${this.router.url}`);
-  //     dynamicDescription += `${this.firstArticle.rubrique.rubrique} : ${this.firstArticle.titre}.`;
-
-  //     const finalDescription = dynamicDescription.substring(0, 155).trim();
-
-  //     const subCategoryPath = this.router.url.substring(this.router.url.lastIndexOf("/") + 1) ;
-  //     const thematicKeywords = this.getThematicKeywords(subCategoryPath);
-  //     //console.log(thematicKeywords);
-  //     this.titleService.setTitle(`${tmpTitre}`);
-  //     this.metaService.updateTag({ name: 'description', content: `${finalDescription}` });
-  //     this.metaService.updateTag({ name: 'keywords', content: `${thematicKeywords}`});
-  //     this.metaService.updateTag({ name: 'og:title', content: `${tmpTitre}` });
-  //     this.metaService.updateTag({ name: 'og:description', content: `${finalDescription}` });
-  //     this.metaService.updateTag({ name: 'og:image', content: `${window.location.protocol}//${window.location.host}/assets/images/logo.png` });
-  //     this.metaService.updateTag({ name: 'og:image:alt', content: `${tmpTitre}` });
-  //     this.metaService.updateTag({ name: 'og:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
-  //     this.metaService.updateTag({ name: 'og:type', content: 'article' });
-  //     this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
-  //     this.metaService.updateTag({ name: 'og:locale:alternate', content: 'en-us' });
-  //     this.metaService.updateTag({ name: 'og:site_name', content: 'Camer.be' });
-  //     this.metaService.updateTag({ name: 'twitter:title', content: `${tmpTitre}`})
-  //     this.metaService.updateTag({ name: 'twitter:description', content: `${finalDescription}` });
-  //     this.metaService.updateTag({ name: 'twitter:image', content:  `${window.location.protocol}//${window.location.host}/assets/images/logo.png` });
-  //     this.metaService.updateTag({ name: 'twitter:image:alt', content:  `${tmpTitre}` });
-  //     this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-  //     this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
-  //     this.metaService.updateTag({ name: 'twitter:creator', content: '@camerbe' });
-  //     this.metaService.updateTag({ name: 'twitter:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
-
-  //   }
-
-  // }
-
-  private updateSEO(): void {
+    private updateSEO(): void {
     const first = this.firstArticle();
     if (!first) return;
 
@@ -353,13 +318,7 @@ export class SousrubriqueArticleComponent  {
     this.jsonLdService.setJsonLd([jsonLdGlobal]);
   }
 
-  // ngAfterViewInit(): void {
-  //   this.isBrowser.set(isPlatformBrowser(this.platformId));
-  //   if(!this.isBrowser()) return;
-
-  // }
-
-  private getThematicKeywords(subCategoryPath: string): string {
+   private getThematicKeywords(subCategoryPath: string): string {
     if (!subCategoryPath) {
       return [...THEMATIC_KEYWORDS['defaut'], ...BASE_KEYWORDS].join(', ');
     }
@@ -377,46 +336,5 @@ export class SousrubriqueArticleComponent  {
       ? data.keyword.split(',').map((k: string) => k.trim()).join(', ')
       : '';
   }
-  // ngOnChanges(): void {
-
-  //   if (this.rubriqueArticles?.length > 0) {
-  //     this.firstArticle = this.rubriqueArticles[0];
-  //     this.jsonLdArticles = this.rubriqueArticles.slice(0, 10);
-
-  //     this.loadJsonLd();
-
-  //     this.dateModif.set(new Date().toISOString().slice(0, 19) + '+00:00') ;
-  //     const tmpTitre=`Actualités Cameroun, Info & Analyse – Politique, Sport, ${this.rubriqueArticles[0].sousrubrique.sousrubrique} | Camer.be`;
-  //     let dynamicDescription = 'Camer.be: Info claire et nette sur le Cameroun et la Diaspora. ';
-  //     this.canonicalService.setCanonicalURL(`${window.location.protocol}//${window.location.host}${this.router.url}`);
-  //     this.canonicalService.setAmpCanonicalURL(`${window.location.protocol}//${window.location.host}/amp${this.router.url}`);
-  //     dynamicDescription += `${this.firstArticle.rubrique.rubrique} : ${this.firstArticle.titre}.`;
-
-  //     const finalDescription = dynamicDescription.substring(0, 155).trim();
-
-  //     const subCategoryPath = this.router.url.substring(this.router.url.lastIndexOf("/") + 1) ;
-  //     const thematicKeywords = this.getThematicKeywords(subCategoryPath);
-  //     //console.log(thematicKeywords);
-  //     this.titleService.setTitle(`${tmpTitre}`);
-  //     this.metaService.updateTag({ name: 'description', content: `${finalDescription}` });
-  //     this.metaService.updateTag({ name: 'keywords', content: `${thematicKeywords}`});
-  //     this.metaService.updateTag({ name: 'og:title', content: `${tmpTitre}` });
-  //     this.metaService.updateTag({ name: 'og:description', content: `${finalDescription}` });
-  //     this.metaService.updateTag({ name: 'og:image', content: `${window.location.protocol}//${window.location.host}/assets/images/logo.png` });
-  //     this.metaService.updateTag({ name: 'og:image:alt', content: `${tmpTitre}` });
-  //     this.metaService.updateTag({ name: 'og:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
-  //     this.metaService.updateTag({ name: 'og:type', content: 'article' });
-  //     this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
-  //     this.metaService.updateTag({ name: 'og:locale:alternate', content: 'en-us' });
-  //     this.metaService.updateTag({ name: 'og:site_name', content: 'Camer.be' });
-  //     this.metaService.updateTag({ name: 'twitter:title', content: `${tmpTitre}`})
-  //     this.metaService.updateTag({ name: 'twitter:description', content: `${finalDescription}` });
-  //     this.metaService.updateTag({ name: 'twitter:image', content:  `${window.location.protocol}//${window.location.host}/assets/images/logo.png` });
-  //     this.metaService.updateTag({ name: 'twitter:image:alt', content:  `${tmpTitre}` });
-  //     this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-  //     this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
-  //     this.metaService.updateTag({ name: 'twitter:creator', content: '@camerbe' });
-  //     this.metaService.updateTag({ name: 'twitter:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
-  //   }
-  // }
+  
 }

@@ -198,10 +198,10 @@
   margin-bottom: 0.9em;
 }
 .card-info h2{
-  color: #0f766e;
+  color: rgb(5, 150, 105);
   font-size: 1.5rem;
-  font-weight:bold;
-  margin-bottom: 0.5em;
+  font-weight:700;
+  padding-bottom: 4px;
 }
 .card-chapeau {
   font-size: 0.95rem;

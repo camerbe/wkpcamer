@@ -68,8 +68,6 @@ export class PubSkyscraperComponent  {
         if (dimension) {
           this.loadPub(dimension);
         }
-      }, {
-        allowSignalWrites: true
       });
     }
 

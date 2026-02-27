@@ -24,6 +24,7 @@ export class ArticleService extends DataService<Article> {
   oneRubriqueArticleCache = new Map<string, CacheEntry<Article[]>>();
   rubriqueArticleCache = new Map<string, CacheEntry<Article[]>>();
   newsArticleCache = new Map<string, CacheEntry<Article[]>>();
+  authorArticleCache = new Map<string, CacheEntry<Article[]>>();
   constructor() {
     super(inject(HttpClient), CONFIG.apiUrl + `/articles`);
   }
@@ -90,6 +91,24 @@ export class ArticleService extends DataService<Article> {
   }
   public getArticleBySlug(slug:string){
     return this.httpClient.get<Article>(CONFIG.apiUrl+`/articles/slug/${slug}`);
+  }
+  public getArticleByAuthor(auteur:string){
+    const cacheKey = `${auteur}`;
+
+    const cachedEntry = this.authorArticleCache.get(cacheKey);
+    if(cachedEntry && cachedEntry.timestamp > Date.now()){
+      return cachedEntry.data$;
+    }
+    const data$= this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/auteur/${auteur}`).pipe(
+        shareReplay({ bufferSize: 1, refCount: true })
+    );
+    const newCacheEntry: CacheEntry<Article[]> = {
+      data$: data$,
+      timestamp: Date.now() + CONFIG.cacheTTL.long
+    };
+    this.newsArticleCache.set(cacheKey, newCacheEntry);
+    return  data$;
+
   }
   public getSameRubrique(fksousrubrique:number){
     const cachedEntry = this.relatedArticlesCache.get(fksousrubrique);

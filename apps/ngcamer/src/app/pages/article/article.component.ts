@@ -3,7 +3,7 @@ import { KeywordAndHashtagService } from '@wkpcamer/users';
 import { Article, ArticleDetail, SportDetail } from '@wkpcamer/models';
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, LOCALE_ID, OnDestroy, OnInit, PLATFORM_ID, signal, viewChild, ViewChild, ViewContainerRef,afterNextRender  } from '@angular/core';
 import { ArticleService } from '@wkpcamer/services/articles';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DatePipe, isPlatformBrowser, NgOptimizedImage, registerLocaleData } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -17,7 +17,6 @@ import { RelatedArticlesComponent } from "../../shared/components/related-articl
 import { MostReadedRubriqueCountryComponent } from "../../shared/components/most-readed-rubrique-country/most-readed-rubrique-country.component";
 import { TagModule } from 'primeng/tag';
 import { SportBehaviorService } from '../../shared/services/sport-behavior.service';
-import { SportComponent } from "../../shared/components/sport/sport.component";
 import { TaboolaService } from '../../shared/services/taboola.service';
 import { filter, shareReplay, switchMap, tap } from 'rxjs';
 import { AdMoneytizerComponent } from "../../shared/components/ad-moneytizer/ad-moneytizer.component";
@@ -42,7 +41,8 @@ registerLocaleData(localeFr);
     AdMoneytizerComponent,
     DebatDroitComponent,
     ViralizeAdComponent,
-    DisqusComponent
+    DisqusComponent,
+    RouterModule
 ],
 providers: [
     DatePipe, // ✅ CRITIQUE: Fournir DatePipe
@@ -117,7 +117,7 @@ export class ArticleComponent implements OnInit,AfterViewInit{
     }
 
     const code = countryCode === 'f' ? 'au' : countryCode;
-    return `https://flagcdn.com/16x12/${code}.png`;
+    return `https://flagcdn.com/16x12/${code}.webp`;
   });
 
   // ✅ Responsive image sizes
@@ -235,16 +235,7 @@ export class ArticleComponent implements OnInit,AfterViewInit{
       error: (err) => console.error('Error loading article:', err)
     });
 
-    // 2. Sports data
-    // this.sportBehaviorService.state$
-    //   .pipe(takeUntilDestroyed())
-    //   .subscribe({
-    //     next: (data: SportDetail[]) => {
-    //       this.sports.set(data.slice(0, 10));
-    //     }
-    //   });
-
-    // 3. Router events
+   
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),

@@ -24,7 +24,7 @@ import { LocalstorageService } from '@wkpcamer/localstorage';
 import { CONFIG } from '@wkpcamer/config';
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { combineLatest, forkJoin, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'admin-article-form',
@@ -50,7 +50,7 @@ import { forkJoin, Subject, takeUntil } from 'rxjs';
   templateUrl: './article-form.html',
   styleUrl: './article-form.css'
 })
-export class ArticleFormComponent implements OnInit,AfterViewInit ,OnDestroy{
+export class ArticleFormComponent implements OnInit ,OnDestroy{
 
 
 
@@ -85,39 +85,39 @@ export class ArticleFormComponent implements OnInit,AfterViewInit ,OnDestroy{
   private editorInstance: any = null;
   private imageEditorInstance: any = null;
 
-  loadCountries() {
-    return this.articleService.getCountries().subscribe({
-      next: (data:Pays[]) => {
-        const tmpData = data as unknown as Pays;
-        this.countries = tmpData["data"] as unknown as PaysDetail[];
-      },
-      error: (err: unknown) => {
-        console.error('Error fetching countries', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Impossible de charger les pays'
-        });
-      }
-    });
-  }
+  // loadCountries() {
+  //   return this.articleService.getCountries().subscribe({
+  //     next: (data:Pays[]) => {
+  //       const tmpData = data as unknown as Pays;
+  //       this.countries = tmpData["data"] as unknown as PaysDetail[];
+  //     },
+  //     error: (err: unknown) => {
+  //       console.error('Error fetching countries', err);
+  //       this.messageService.add({
+  //         severity: 'error',
+  //         summary: 'Erreur',
+  //         detail: 'Impossible de charger les pays'
+  //       });
+  //     }
+  //   });
+  // }
 
-  loadSousRubriques() {
-    return this.articleService.getRubriques().subscribe({
-      next: (data:SousRubrique[]) => {
-        const tmpData = data as unknown as SousRubrique;
-        this.sousRubriques = tmpData["data"] as unknown as SousRubriqueDetail[];
-      },
-      error: (err:HttpErrorResponse) => {
-        console.error('Error fetching sous rubriques', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Impossible de charger les rubriques'
-        });
-      }
-    });
-  }
+  // loadSousRubriques() {
+  //   return this.articleService.getRubriques().subscribe({
+  //     next: (data:SousRubrique[]) => {
+  //       const tmpData = data as unknown as SousRubrique;
+  //       this.sousRubriques = tmpData["data"] as unknown as SousRubriqueDetail[];
+  //     },
+  //     error: (err:HttpErrorResponse) => {
+  //       console.error('Error fetching sous rubriques', err);
+  //       this.messageService.add({
+  //         severity: 'error',
+  //         summary: 'Erreur',
+  //         detail: 'Impossible de charger les rubriques'
+  //       });
+  //     }
+  //   });
+  // }
 
   private initializeForm(): void {
     this.articleForm = this.fb.group({
@@ -145,46 +145,71 @@ export class ArticleFormComponent implements OnInit,AfterViewInit ,OnDestroy{
 
     this.initTinyMceConfig();
     this.initializeForm();
-    //this.loadCountries();
-    //this.loadSousRubriques()
 
-     forkJoin({
-        countries: this.articleService.getCountries(),
-        rubriques: this.articleService.getRubriques()
-      }).pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: ({ countries, rubriques }) => {
-            this.countries = (countries as any)['data'] as PaysDetail[];
-            this.sousRubriques = (rubriques as any)['data'] as SousRubriqueDetail[];
-            this.cdr.markForCheck();
-          },
-          error: (err) => {
-            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les données' });
-          }
-    });
-
+     const loaders = [
+      this.articleService.getCountries(),
+      this.articleService.getRubriques()
+    ];
 
     if(!this.isAddMode){
 
-      this.activatedRoute.data
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next:(data)=>{
 
-          const tmpData=data["article"];
-          const resData=tmpData["data"]  as ArticleDetail;
+      combineLatest([
+        this.articleService.getCountries(),
+        this.articleService.getRubriques(),
+        this.activatedRoute.data
+      ])
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: ([countries, rubriques, routeData]) => {
+            // BUG FIX 2: Guard against non-array 'data' property
+            const countriesData = (countries as any)['data'];
+            const rubriquesData = (rubriques as any)['data'];
+            this.countries = Array.isArray(countriesData) ? countriesData : [];
+            this.sousRubriques = Array.isArray(rubriquesData) ? rubriquesData : [];
 
-          resData.dateparution=new Date(this.datePipe.transform(resData.dateparution,'yyyy-MM-dd HH:mm:ss') || '');
-
-          this.articleForm.patchValue(resData);
-          this.articleForm.patchValue({
-            hashtags:this.hashtagService.extractHashtags(resData.keyword),
-            keyword:this.hashtagService.removeHashtags(resData.keyword)
-          });
-          this.cdr.markForCheck();
-        }
-      });
-
+            const tmpData = routeData['article'];
+            const resData = tmpData['data'] as ArticleDetail;
+            resData.dateparution = new Date(
+              this.datePipe.transform(resData.dateparution, 'yyyy-MM-dd HH:mm:ss') || ''
+            );
+            this.articleForm.patchValue(resData);
+            this.articleForm.patchValue({
+              hashtags: this.hashtagService.extractHashtags(resData.keyword),
+              keyword: this.hashtagService.removeHashtags(resData.keyword)
+            });
+            this.cdr.markForCheck();
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Impossible de charger les données'
+            });
+          }
+        });
+    } else {
+      combineLatest([
+        this.articleService.getCountries(),
+        this.articleService.getRubriques()
+      ])
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: ([countries, rubriques]) => {
+            const countriesData = (countries as any)['data'];
+            const rubriquesData = (rubriques as any)['data'];
+            this.countries = Array.isArray(countriesData) ? countriesData : [];
+            this.sousRubriques = Array.isArray(rubriquesData) ? rubriquesData : [];
+            this.cdr.markForCheck();
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Impossible de charger les données'
+            });
+          }
+        });
 
     }
   }
@@ -201,10 +226,27 @@ export class ArticleFormComponent implements OnInit,AfterViewInit ,OnDestroy{
       });
       return;
     }
-    const decodedToken=JSON.parse(atob(this.localstorageService.getToken().split('.')[1] )) ;
-    this.userId=+decodedToken.userId;
-    this.articleForm?.patchValue({ fkuser: this.userId });
-    //console.log(this.articleForm.value);
+
+    try {
+      const rawDate = this.articleForm.value.dateparution;
+      if (rawDate instanceof Date) {
+        const formatted = this.datePipe.transform(rawDate, 'yyyy-MM-dd HH:mm:ss');
+        this.articleForm.patchValue({ dateparution: formatted });
+      }
+      const tokenPayload = this.localstorageService.getToken().split('.')[1];
+      const decodedToken = JSON.parse(atob(tokenPayload));
+      this.userId = +decodedToken.userId;
+      this.articleForm?.patchValue({ fkuser: this.userId });
+
+    } catch (e) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Session invalide. Veuillez vous reconnecter.'
+      });
+      return;
+    }
+
     if (this.isAddMode) {
 
       //this.articleForm?.patchValue({ keyword: this.keyword+', '+this.hashtags});
@@ -279,6 +321,7 @@ export class ArticleFormComponent implements OnInit,AfterViewInit ,OnDestroy{
   get source() { return this.articleForm.get('source'); }
   get dateparution(){ return this.articleForm.get('dateparution');}
   get fksousrubrique() {return this.articleForm.get('fksousrubrique');}
+  get fkrubrique() { return this.articleForm.get('fkrubrique'); }
   get fkpays() { return this.articleForm.get('fkpays');}
   get hashtags() { return this.articleForm.get('hashtags');}
   get titre() { return this.articleForm.get('titre'); }
@@ -329,14 +372,13 @@ export class ArticleFormComponent implements OnInit,AfterViewInit ,OnDestroy{
     }
   }
 
-  private filePickerHandler(callback: any, value: any, meta: any) {
+  private filePickerHandlerWithEditor(editorRef: any, callback: any, value: any, meta: any)
+  {
     const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
     const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
 
-
     const token = this.localstorageService.getToken();
     let cmsURL = `${CONFIG.siteUrl}/laravel-filemanager?editor=${meta.fieldname}`;
-
 
     if (meta.filetype === 'image') {
       cmsURL += '&type=Images';
@@ -346,84 +388,66 @@ export class ArticleFormComponent implements OnInit,AfterViewInit ,OnDestroy{
       cmsURL += '&type=Files';
     }
 
-    const activeEditor = this.editorInstance ?? this.imageEditorInstance;
-    // Vérification de l'existence de tinymce et activeEditor
-    if (!activeEditor?.windowManager) {
-      console.error('TinyMCE windowManager is not available', {
-        editorInstance: this.editorInstance,
-        imageEditorInstance: this.imageEditorInstance,
-        isTinyMceLoaded: this.isTinyMceLoaded,
-      });
+    if (!editorRef?.windowManager) {
+      console.error('TinyMCE windowManager is not available', { editorRef, isTinyMceLoaded: this.isTinyMceLoaded });
       this.messageService.add({
         severity: 'error',
         summary: 'Erreur',
-        detail: 'L\'éditeur n\'est pas encore prêt. Veuillez réessayer.'
+        detail: "L'éditeur n'est pas encore prêt. Veuillez réessayer."
       });
       return;
     }
 
-
-    activeEditor.windowManager.openUrl({
+    editorRef.windowManager.openUrl({
       url: cmsURL,
       title: 'Camer.be',
       width: x * 0.8,
       height: y * 0.8,
-
       onMessage: (api: any, message: any) => {
-        //console.log('Message received from file manager:', message);
         let currentUrl = message.content;
-
         if (currentUrl.includes('/api/storage')) {
           currentUrl = currentUrl.replace('/api/storage', '/storage');
         }
-        //console.log('Calling callback with URL:', currentUrl);
         callback(currentUrl);
-        //console.log('Closing file manager window');
         api.close();
       },
       headers: {
         Authorization: `Bearer ${token}`,
       }
     });
-    //console.log('windowManager.openUrl called');
   }
 
+
+
   initTinyMceConfig() {
-    const baseConfig = {
-      path_absolute: "/",
+    const sharedBase = {
+      path_absolute: '/',
       relative_urls: false,
       base_url: '/tinymce',
       suffix: '.min',
       height: 450,
-      setup: (editor: any) => {
-        editor.on('init', () => {
-          this.isTinyMceLoaded = true;
-          this.cdr.markForCheck(); // ✅ OPTIMISATION 3 — notifier Angular en mode OnPush
-        });
-      },
-      file_picker_callback: (callback: any, value: any, meta: any) => {
-        // Ajout d'un délai pour s'assurer que TinyMCE est complètement initialisé
-        setTimeout(() => {
-          this.filePickerHandler(callback, value, meta);
-        }, 100);
-      }
     };
+
+
     this.initImage = {
-      ...baseConfig,
+      ...sharedBase,
       menubar: false,
       plugins: ['image', 'media'],
       toolbar: 'image media',
       setup: (editor: any) => {
         editor.on('init', () => {
-          // ✅ On capture la référence exacte de CET éditeur-ci
           this.imageEditorInstance = editor;
           this.isTinyMceLoaded = true;
           this.cdr.markForCheck();
         });
       },
+      file_picker_callback: (callback: any, value: any, meta: any) => {
+        setTimeout(() => this.filePickerHandlerWithEditor(this.imageEditorInstance, callback, value, meta), 100);
+      }
     };
+
     this.init = {
-      ...baseConfig,
+      ...sharedBase,
       menubar: 'file edit view insert format tools table tc help',
       toolbar_sticky: false,
       plugins: [
@@ -432,26 +456,16 @@ export class ArticleFormComponent implements OnInit,AfterViewInit ,OnDestroy{
       ],
       toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table mergetags blockquote',
       setup: (editor: any) => {
-      editor.on('init', () => {
-        // ✅ On capture la référence exacte de CET éditeur-ci
-        this.editorInstance = editor;
-        this.isTinyMceLoaded = true;
-        this.cdr.markForCheck();
-      });
-    },
+        editor.on('init', () => {
+          this.editorInstance = editor;
+          this.isTinyMceLoaded = true;
+          this.cdr.markForCheck();
+        });
+      },
+      file_picker_callback: (callback: any, value: any, meta: any) => {
+        setTimeout(() => this.filePickerHandlerWithEditor(this.editorInstance, callback, value, meta), 100);
+      }
     };
-  };
-
-  async ngAfterViewInit(): Promise<void> {
-    try{
-      await import('tinymce');
-       this.isTinyMceLoaded = true;
-    }
-    catch (error){
-      console.error('Error loading tinymce:', error);
-      this.isTinyMceLoaded = false;
-    }
-
   }
 
   ngOnDestroy(): void {

@@ -2,20 +2,6 @@
   <!-- header -->
   <div class="mx-auto px-2 w-full">
     <app-header class="w-full"></app-header>
-
-   @defer (on viewport) {
-    <p-card>
-       <app-ad-moneytizer
-        [appId]="'9307'"
-        [zoneId]="'28'"
-      />
-    </p-card>
-
-    } @placeholder {
-      <!-- Placeholder léger pendant le chargement -->
-      <div class="h-24 bg-gray-200 animate-pulse"></div>
-    }
-
   </div>
 
   <!-- contenu principal -->
@@ -48,13 +34,19 @@
 
       <!-- ⚡ OPTIMISATION 4: @defer pour Adsense -->
       <!-- Chargé après 500ms ou quand visible -->
-      @defer (on viewport; on timer(500ms)) {
-        <app-adsense
-          [adClient]="'ca-pub-8638642715460968'"
-          [adSlot]="'6927429462'"
-          [adFormat]="'auto'"
-          [fullWidthResponsive]="true"
-        />
+      @defer (on viewport) {
+       
+            <div class="m-2 border-1 mx-auto">
+              
+              <app-adsense
+                [adClient]="'ca-pub-8638642715460968'"
+                [adSlot]="'6927429462'"
+                [adFormat]="'auto'"
+                [fullWidthResponsive]="true"
+              />
+            </div>
+         
+       
       } @placeholder {
         <!-- Placeholder pour éviter le layout shift -->
         <div class="h-32 bg-gray-100"></div>
@@ -62,7 +54,6 @@
         <!-- Loading state pour au moins 300ms -->
         <div class="h-32 bg-gray-100 animate-pulse"></div>
       }
-
       <router-outlet></router-outlet>
     </div>
   </main>

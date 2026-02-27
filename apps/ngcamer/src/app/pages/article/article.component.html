@@ -1,4 +1,4 @@
-<section class="grid grid-cols-1 md:grid-cols-12 gap-5">
+<section class="grid grid-cols-1 md:grid-cols-12 gap-5 mt-5">
   <div class="md:col-span-8">
     <article itemscope itemtype="https://schema.org/NewsArticle">
       <!-- ✅ Bloc conditionnel optimisé -->
@@ -41,11 +41,11 @@
         <meta itemprop="keywords" [attr.content]="keyWord()" />
 
         <!-- ✅ Card optimisée -->
-        <p-card class="list-camer-card">
+        <p-card>
           <ng-template pTemplate="header">
-            <a
+            <!-- <a
               [href]="articleUrl()"
-              [attr.aria-label]="currentArticle.titre">
+              [attr.aria-label]="currentArticle.titre"> -->
               <div class="relative card-image-container-article">
                 <!-- ✅ Image avec dimensions explicites -->
                 <img
@@ -75,15 +75,17 @@
                     <span class="text-base">{{ currentArticle.sousrubrique.sousrubrique }}</span>
                   </div>
                 </p-tag>
+
               </div>
-            </a>
+            <!-- </a> -->
+            <app-ad-moneytizer class="mx-auto p-2" [appId]="'9307'" [zoneId]="'28'" />
           </ng-template>
 
           <!-- ✅ Title -->
           <ng-template pTemplate="title">
             <h1
               itemprop="headline"
-              class="card-title border-l-4 border-orange-300 !text-teal-700 md:!text-3xl"
+              class="card-title border-l-4 border-emerald-500 !text-gray-900 md:!text-3xl"
             >
               {{ currentArticle.titre }}
             </h1>
@@ -95,19 +97,30 @@
               itemprop="datePublished"
               [attr.datetime]="currentArticle.dateparution"
             >
-              <div class="card-subtitle">
-                <i class="pi pi-user" aria-hidden="true"></i>
-                {{ currentArticle.auteur }}
+              <div class="card-subtitle flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
+                <a
+                  pButton
+                  [routerLink]="['/author', currentArticle.auteur]"
+                  class="p-button-link p-button-sm hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200">
+                  <i class="pi pi-user mr-2"></i>
+                  <span class="text-sm md:text-base">{{ currentArticle.auteur }}</span>
+                </a>
 
-                <i class="pi pi-calendar" aria-hidden="true"></i>
-                <span class="card-date">
-                  {{ formattedDate() }}
-                </span>
+                <div class="flex items-center gap-3 md:gap-4 text-sm md:text-base">
+                  <span class="hidden md:inline">•</span>
 
-                <span class="card-separator">•</span>
+                  <span class="flex items-center gap-2">
+                    <i class="pi pi-calendar"></i>
+                    <span>{{ formattedDate() }}</span>
+                  </span>
 
-                <i class="pi pi-eye" aria-hidden="true"></i>
-                <span class="card-author">{{ currentArticle.hit }}</span>
+                  <span class="hidden md:inline">•</span>
+
+                  <span class="flex items-center gap-2">
+                    <i class="pi pi-eye"></i>
+                    <span>{{ currentArticle.hit }}</span>
+                  </span>
+                </div>
               </div>
             </time>
           </ng-template>
@@ -118,8 +131,13 @@
             itemprop="articleBody"
             [innerHTML]="sanitizedContent()"
             class="card-content card-info article-content"
-          ></div>
-
+          >
+          </div>
+          <p class="px-4 mt-1 text-sm text-gray-400 border-t pt-2">
+              <em>Pour plus d'informations sur l'actualité, abonnez vous sur : </em>
+                  <a class="p-button-link" href="https://chat.whatsapp.com/CtYk9hlYGigJN4k0RDWfYG"><strong> notre chaîne WhatsApp </strong>
+                  </a>
+          </p>
           <!-- ✅ Ad placement -->
           <div class="py-3">
             <app-viralize-ad [zid]="'AADZ2f-Di1Vp9x2i'" />
@@ -196,4 +214,4 @@
       </div>
     }
   </aside>
-</section>"
+</section>

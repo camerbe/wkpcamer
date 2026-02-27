@@ -179,12 +179,12 @@ getSizes(): string {
     this.canonicalService.setAmpCanonicalURL(`${this.baseUrl()}/amp${this.router.url}`);
   }
   private setupMetaTags() {
-     const tmpTitre = 'Actualités Cameroun, Info & Analyse – Politique, Sport, Diaspora | Camer.be';
+    const tmpTitre = 'Actualités Cameroun, Info & Analyse – Politique, Sport, Diaspora | Camer.be';
     const dynamicDescription = `Camer.be: Info claire et nette sur le Cameroun et la Diaspora. À la une : ${this.indexArticles()[0].titre}.`;
     const finalDescription = dynamicDescription.substring(0, 155).trim();
     const logoUrl = `${this.baseUrl()}/assets/images/logo.png`;
     const currentUrl = `${this.baseUrl()}${this.router.url}`;
-    console.log('currentUrl:', currentUrl);
+    //console.log('currentUrl:', currentUrl);
 
     // Batch update pour réduire les reflows
     this.titleService.setTitle(tmpTitre);
@@ -338,6 +338,17 @@ getSizes(): string {
   protected trackByCombined(_index: number, item: CombinedViewModel): string {
     return `${item.item1.article.slug}-${item.item2.article.slug}`;
   }
+
+  private getFlag(article:ArticleDetail): string {
+    const countryCode = article.fkpays.toLowerCase();
+    switch (countryCode) {
+      case 'f': return `https://flagcdn.com/16x12/au.webp`;
+      case 'zz': return `https://flagcdn.com/16x12/un.webp`;
+      default: return `https://flagcdn.com/16x12/${countryCode}.webp`;
+    }
+    
+  }
+
   private createViewModel(
     article: ArticleDetail,
     position: number,
@@ -345,7 +356,7 @@ getSizes(): string {
   ): ArticleViewModel {
     const slugifiedRubrique = this.slugifyService.slugify(article.rubrique.rubrique);
     const slugifiedSousrubrique = this.slugifyService.slugify(article.sousrubrique.sousrubrique);
-
+    
     return {
       article,
       navigationPath: `/${slugifiedRubrique}/${slugifiedSousrubrique}/${article.slug}`,
@@ -355,7 +366,7 @@ getSizes(): string {
       imageTitle: `${article.countries.pays} :: ${article.titre}`,
       keywords: this.getKeywordsArray(article.keyword),
       wordCount: this.wordCount(article.info),
-      flagUrl: `https://flagcdn.com/16x12/${article.fkpays.toLowerCase()}.webp`,
+      flagUrl: this.getFlag(article),
       severity
     };
   }

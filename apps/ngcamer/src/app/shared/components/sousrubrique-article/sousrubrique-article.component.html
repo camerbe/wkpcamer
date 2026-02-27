@@ -73,7 +73,7 @@
                       <div class="flex items-center gap-2 px-1">
                         <img
                           [alt]="item.countries.pays"
-                          [src]="'https://flagcdn.com/16x12/' + item.fkpays.toLowerCase() + '.webp'"
+                          [src]=item.flagUrl
                         />
                         <span class="text-base">{{ item.sousrubrique.sousrubrique }}</span>
                       </div>

@@ -3,6 +3,7 @@ import { accueilResolver } from './shared/resolvers/accueil-resolver';
 import { slugResolver } from './shared/resolvers/slug-resolver';
 import { sousrubriqueRubriqueResolver } from './shared/resolvers/sousrubrique-rubrique-resolver';
 import { videoResolver } from './shared/resolvers/video-resolver';
+import { authorResolver } from './shared/resolvers/author-resolver';
 
 export const appRoutes: Route[] = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -29,6 +30,12 @@ export const appRoutes: Route[] = [
 
       },
       {
+        path: 'author/:auteur',
+        loadComponent:()=>import('./pages/author/author.component').then((m)=>m.AuthorComponent),
+        resolve: { authorArticlesList: authorResolver },
+        runGuardsAndResolvers: 'always'
+      },
+      {
         path: ':rubrique/:sousrubrique/:slug',
         loadComponent:()=>import('./pages/article/article.component').then((m)=>m.ArticleComponent),
         resolve:{articleSlug:slugResolver},
@@ -40,6 +47,7 @@ export const appRoutes: Route[] = [
         resolve: { menuList: sousrubriqueRubriqueResolver },
         runGuardsAndResolvers: 'always'
       },
+
 
 
     ]

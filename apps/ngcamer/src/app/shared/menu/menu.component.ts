@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { Router, RouterModule } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
@@ -19,7 +19,8 @@ import { isPlatformBrowser } from '@angular/common';
     InputGroupModule,
     ButtonModule,
     InputGroupAddonModule,
-    RouterModule
+    RouterModule,
+    NgOptimizedImage
   ],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],

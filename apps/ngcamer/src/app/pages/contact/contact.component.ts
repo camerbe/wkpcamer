@@ -13,10 +13,13 @@ import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { InputText } from "primeng/inputtext";
 import { TextareaModule } from 'primeng/textarea';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule,RecaptchaFormsModule  } from 'ng-recaptcha';
 import { CONFIG } from '@wkpcamer/config';
 import { SocialMedia } from "../../shared/components/social-media/social-media";
-import { RouterLink } from "@angular/router";
+import { NavigationEnd, Router, RouterLink } from "@angular/router";
+import { TaboolaService } from '../../shared/services/taboola.service';
+import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-contact',
   imports: [
@@ -32,6 +35,7 @@ import { RouterLink } from "@angular/router";
     InputText,
     TextareaModule,
     RecaptchaModule,
+    RecaptchaFormsModule ,
     SocialMedia,
     RouterLink
 ],
@@ -76,14 +80,43 @@ export class ContactComponent implements OnInit {
   ];
 
   sports=signal<SportDetail[]>([]);
-  isBrowser=signal(false);
+  private readonly isBrowser=signal(false);
 
   sportBehaviorService=inject(SportBehaviorService);
   platformId = inject(PLATFORM_ID);
+  private readonly taboolaService=inject(TaboolaService)
+  private readonly router=inject(Router);
+
+  /**
+   *
+   */
+  constructor() {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntilDestroyed()
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.taboolaService.newPageLoad();
+        this.loadTaboolaWidget(event.urlAfterRedirects);
+      });
+    
+  }
+   private loadTaboolaWidget(url: string) {
+    this.taboolaService.setPageDetails('article', url);
+    this.taboolaService.loadWidget(
+      'thumbnails-a',
+      'taboola-below-article-thumbnails',
+      'Below Article Thumbnails',
+      'mix'
+    );
+
+  }
+
   fb = inject(FormBuilder);
 
   get recaptchaReactive() {
-    return this.contactForm.get('auteur');
+    return this.contactForm.get('recaptchaReactive');
   }
 
   get nom() {

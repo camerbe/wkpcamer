@@ -1,0 +1,159 @@
+<div class="grid" itemscope itemtype="https://schema.org/CollectionPage">
+  <p-dataview #dv
+    [value]="articleViewModels()"
+    [rows]="10"
+    [paginator]="hasPaginator()"
+    [layout]="'grid'"
+    [rowsPerPageOptions]="[5,10,20]"
+    class="px-4"
+    itemprop="mainContentOfPage"
+  >
+    <ng-template #header>
+      <h2 class="md:text-2xl uppercase font-semibold text-teal-700" itemprop="name">
+        <i class="pi pi-list mr-2"></i>les articles de <span class="text-amber-400">{{ authorName() }}</span>
+      </h2>
+    </ng-template>
+
+    <ng-template #grid let-items>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for(item of items; track trackBySlug($index, item)) {
+
+
+          <!-- Article 1 -->
+          @if (item; as vm) {
+            <div class="" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <meta itemprop="position" [content]="vm.position" />
+
+              <article itemscope itemtype="https://schema.org/NewsArticle" itemprop="item">
+                <meta itemprop="mainEntityOfPage" [content]="vm.navigationPath" />
+                <meta itemprop="thumbnailUrl" [content]="vm.article.image_url" />
+                <meta itemprop="description" [content]="vm.article.chapeau" />
+                <meta itemprop="dateModified" [attr.datetime]="dateModif()" />
+                <meta itemprop="keywords" [content]="vm.keywords" />
+                <meta itemprop="articleSection"
+                      [content]="vm.article.rubrique.rubrique + ' / ' + vm.article.sousrubrique.sousrubrique" />
+                <meta itemprop="wordCount" [content]="vm.wordCount" />
+
+                <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+                  <meta itemprop="name" content="Camer.be" />
+                  <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                    <meta itemprop="url" [content]="logoUrl()" />
+                  </span>
+                </span>
+
+                <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+                  <meta itemprop="name" [content]="vm.article.auteur" />
+                </span>
+
+                <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                  <meta itemprop="url" [content]="vm.article.image_url" />
+                  <meta itemprop="width" [content]="vm.article.image_width" />
+                  <meta itemprop="height" [content]="vm.article.image_height" />
+                </span>
+
+                <p-card class="list-camer-card my-4">
+                  <ng-template pTemplate="header">
+                    <div class="card-image-container relative">
+                      @if (vm.article.image_width && vm.article.image_height) {
+                        <img
+                          [ngSrc]="vm.article.image_url"
+                          [alt]="vm.imageAlt"
+                          [title]="vm.imageTitle"
+                          fill
+                          class="object-cover relative"
+                          [priority]="vm.isPriority"
+
+                          [attr.fetchpriority]="vm.isPriority ? 'high' : 'auto'"
+                        />
+                      }
+
+                      <p-tag
+                        [severity]="vm.severity"
+                        [rounded]="true"
+                        class="bottom-3 right-3 z-5 absolute"
+                      >
+                        <div class="flex items-center gap-2 px-1">
+                          <img
+                            [alt]="vm.article.countries.pays"
+                            [src]="vm.flagUrl"
+                            width="16"
+                            height="12"
+                            loading="lazy"
+                          />
+                          <span class="text-base">{{ vm.article.sousrubrique.sousrubrique }}</span>
+                        </div>
+                      </p-tag>
+                    </div>
+                  </ng-template>
+
+                  <ng-template pTemplate="title">
+                    <a
+                      [routerLink]="vm.navigationPath"
+                      class="no-underline text-inherit"
+                      itemprop="url"
+                      [title]="vm.article.titre"
+                    >
+                      <h4 class="card-title line-clamp-2" itemprop="headline">
+                        {{ vm.article.titre }}
+                      </h4>
+                    </a>
+                  </ng-template>
+
+                  <ng-template pTemplate="subheader">
+                    <time itemprop="datePublished" [attr.datetime]="vm.article.dateparution">
+                      <div class="card-subtitle">
+                        <i class="pi pi-calendar"></i>
+                        <span class="card-date">
+                          {{ vm.article.dateparution | date: 'dd MMM yyyy HH:mm:ss' }}
+                        </span>
+                        <span class="card-separator">•</span>
+                        <i class="pi pi-eye"></i>
+                        <span
+                          class="card-author"
+                          itemprop="interactionStatistic"
+                          itemscope
+                          itemtype="https://schema.org/InteractionCounter"
+                        >
+                          <meta itemprop="interactionType" content="https://schema.org/ViewAction" />
+                          <span itemprop="userInteractionCount">{{ vm.article.hit }}</span>
+                        </span>
+                      </div>
+                    </time>
+                  </ng-template>
+
+                  <div class="card-content">
+                    <a
+                      [routerLink]="vm.navigationPath"
+                      class="no-underline text-inherit"
+                      itemprop="url"
+                      [title]="vm.article.titre"
+                    >
+                      <p itemprop="description" class="card-chapeau line-clamp-4">
+                        {{ vm.article.chapeau }}
+                      </p>
+                    </a>
+                  </div>
+
+                  <ng-template pTemplate="footer">
+                    <a
+                      pButton
+                      [routerLink]="vm.navigationPath"
+                      class="w-full"
+                      itemprop="url"
+                    >
+                      <span class="mr-1">Lire</span><i class="pi pi-eye"></i>
+                    </a>
+                  </ng-template>
+                </p-card>
+              </article>
+            </div>
+          }
+
+
+
+
+      }
+      </div>
+    </ng-template>
+  </p-dataview>
+</div>
