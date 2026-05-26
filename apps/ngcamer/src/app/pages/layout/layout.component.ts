@@ -10,7 +10,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { SportBehaviorService } from '../../shared/services/sport-behavior.service';
 import { ArticleDetail, SportDetail } from '@wkpcamer/models';
 import { HeaderCarouselComponent } from "../../shared/components/header-carousel/header-carousel.component";
-import { AdMoneytizerComponent } from "../../shared/components/ad-moneytizer/ad-moneytizer.component";
 import { AdsenseComponent } from "../../shared/components/adsense/adsense.component";
 import { AdsenseService } from '../../shared/services/adsense.service';
 import { filter, Subject, takeUntil } from 'rxjs';
@@ -28,7 +27,6 @@ import { CardModule } from "primeng/card";
     FooterComponent,
     RouterOutlet,
     HeaderCarouselComponent,
-    AdMoneytizerComponent,
     AdsenseComponent,
     RouterOutlet,
     CardModule

@@ -172,4 +172,7 @@ export class ArticleService extends DataService<Article> {
   public getArticleByPeriod(period:string){
     return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/period/${period}`);
   }
+  public search(request:string){
+    return this.httpClient.get<Article[]>(CONFIG.apiUrl+`/articles/search/title/${request}`);
+  }
 }

@@ -8,15 +8,11 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/admin",
         "browser": "apps/admin/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/admin/tsconfig.app.json",
         "assets": [
           {
@@ -27,12 +23,9 @@
             "glob": "**/*",
             "input": "node_modules/tinymce",
             "output": "/tinymce/"
-
           }
         ],
-        "styles": [
-          "apps/admin/src/styles.css"
-        ]
+        "styles": ["apps/admin/src/styles.css"]
       },
       "configurations": {
         "production": {

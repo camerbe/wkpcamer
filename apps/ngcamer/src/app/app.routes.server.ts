@@ -2,10 +2,6 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: '**',
-    renderMode: RenderMode.Server,
-  },
-  {
     path: 'video/:video',
     renderMode: RenderMode.Server,
   },
@@ -20,5 +16,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: ':rubrique/:sousrubrique',
     renderMode: RenderMode.Server,
-  }
+  },
+  {
+    path: '**',  // ← always last
+    renderMode: RenderMode.Server,
+  },
 ];

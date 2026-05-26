@@ -24,7 +24,6 @@
         "styles": [
           "apps/ngcamer/src/styles.css",
           "apps/ngcamer/src/my-styles.css"
-
         ],
         "server": "apps/ngcamer/src/main.server.ts",
         "ssr": {

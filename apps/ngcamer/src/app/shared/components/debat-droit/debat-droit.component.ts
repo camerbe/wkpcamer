@@ -16,7 +16,6 @@ import { PubSkyscraperComponent } from "../pub-skyscraper/pub-skyscraper.compone
 import { catchError, forkJoin, of, Subject, takeUntil } from 'rxjs';
 //import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SocialMedia } from "../social-media/social-media";
 import { ViralizeAdComponent } from "../viralize-ad/viralize-ad.component";
 interface SelectedVideo {
   titre: string;
@@ -43,7 +42,6 @@ interface DataLoadResult {
     DialogModule,
     PubSkyscraperComponent,
     ProgressSpinnerModule,
-    SocialMedia,
     ViralizeAdComponent
 ],
   templateUrl: './debat-droit.component.html',

@@ -4,14 +4,27 @@
       <div class="p-col-12">
         <p-toolbar>
           <ng-template #start>
-
+            <form #searchForm="ngForm" (ngSubmit)="submitSearch()" >
+              <p-inputgroup>
+                <input
+                  class="w-full"
+                  pInputText
+                  placeholder="Recherche par titre..."
+                  name="q"
+                  [(ngModel)]="searchQuery"
+                />
+                <p-inputgroup-addon>
+                  <p-button icon="pi pi-search"
+                  (click)="submitSearch()"
+                  ariaLabel="Rechercher"
+                  [text]="true"
+                  severity="success"
+                  variant="text" />
+                </p-inputgroup-addon>
+              </p-inputgroup>
+            </form>
           </ng-template>
-          <ng-template #center>
-            <p-iconfield iconPosition="left">
-                <p-inputicon class="pi pi-search" />
-                <input type="text" pInputText placeholder="Recherche" />
-            </p-iconfield>
-        </ng-template>
+
           <ng-template #end>
               <button (click)="onCreate()" pButton type="button"  icon="pi pi-plus" class="p-button-success capitalize">Nouvel article</button>
           </ng-template>
@@ -23,8 +36,8 @@
     </div>
     <div class="p-grid p-mt-2">
       <div class="p-col-12">
-        @if(articles.length>0){
-        <p-table [value]="articles" [paginator]="articles.length>0" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
+        @if(articles().length>0){
+        <p-table [value]="articles()" [paginator]="articles().length>0" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
         stripedRows
         >
           <ng-template #header>

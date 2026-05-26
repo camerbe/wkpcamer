@@ -1,0 +1,584 @@
+
+ NX   Running 'npm install --ignore-scripts' to make sure necessary packages are installed
+
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular-devkit/architect@0.2101.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular-devkit/build-angular@21.1.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular-devkit/build-webpack@0.2101.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular-devkit/core@21.1.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular-devkit/schematics@21.1.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/animations@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/build@21.1.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'vite@7.3.0',
+npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/cli@21.1.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/common@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/compiler@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/compiler-cli@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'chokidar@5.0.0',
+npm warn EBADENGINE   required: { node: '>= 20.19.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'readdirp@5.0.0',
+npm warn EBADENGINE   required: { node: '>= 20.19.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/core@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/forms@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/language-service@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/platform-browser@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/platform-browser-dynamic@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/platform-server@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@angular/router@21.1.6',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@gar/promise-retry@1.0.2',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@ngtools/webpack@21.1.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/agent@4.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/fs@5.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/git@7.0.2',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'which@6.0.1',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/installed-package-contents@4.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/node-gyp@5.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/package-json@7.0.5',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/promise-spawn@9.0.1',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'which@6.0.1',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/redact@4.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@npmcli/run-script@10.0.4',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@schematics/angular@21.1.5',
+npm warn EBADENGINE   required: {
+npm warn EBADENGINE     node: '^20.19.0 || ^22.12.0 || >=24.0.0',
+npm warn EBADENGINE     npm: '^6.11.0 || ^7.5.6 || >=8.0.0',
+npm warn EBADENGINE     yarn: '>= 1.13.0'
+npm warn EBADENGINE   },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@sigstore/bundle@4.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@sigstore/core@3.1.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@sigstore/sign@4.1.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@sigstore/tuf@4.0.1',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@sigstore/verify@3.1.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@tufjs/models@4.1.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'eslint-visitor-keys@5.0.1',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.13.0 || >=24' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'abbrev@4.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'cacache@20.0.3',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'eslint-scope@9.1.2',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.13.0 || >=24' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'hosted-git-info@9.0.2',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'ignore-walk@8.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'ini@6.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'json-parse-even-better-errors@5.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'make-fetch-happen@15.0.4',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'minipass-fetch@5.0.2',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'ng-packagr@21.1.0',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'chokidar@5.0.0',
+npm warn EBADENGINE   required: { node: '>= 20.19.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'readdirp@5.0.0',
+npm warn EBADENGINE   required: { node: '>= 20.19.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'node-gyp@12.2.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'which@6.0.1',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'nopt@9.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'npm-bundled@5.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'npm-install-checks@8.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'npm-normalize-package-bin@5.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'npm-package-arg@13.0.2',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'npm-packlist@10.0.4',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'npm-pick-manifest@11.0.3',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'npm-registry-fetch@19.1.1',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pacote@21.0.4',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'proc-log@6.1.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'rolldown@1.0.0-beta.58',
+npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'sigstore@4.1.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'ssri@13.0.1',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'tuf-js@4.1.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'undici@7.20.0',
+npm warn EBADENGINE   required: { node: '>=20.18.1' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'unique-filename@5.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'unique-slug@6.0.0',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'validate-npm-package-name@7.0.2',
+npm warn EBADENGINE   required: { node: '^20.17.0 || >=22.9.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'vite@7.3.1',
+npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'yargs@18.0.0',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=23' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'yargs-parser@22.0.0',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.12.0 || >=23' },
+npm warn EBADENGINE   current: { node: 'v20.14.0', npm: '10.9.0' }
+npm warn EBADENGINE }
+
+added 5 packages, and audited 1478 packages in 12s
+
+294 packages are looking for funding
+  run `npm fund` for details
+
+12 vulnerabilities (1 moderate, 11 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+ NX   Running migrations from 'migrations.json'
+
+Running the following migrations:
+- @angular/cdk: migration-v21 (Updates the Angular CDK to v21)
+- @angular/core: control-flow-migration (Converts the entire application to block control flow syntax)
+- @angular/core: router-current-navigation (Replaces usages of the deprecated Router.getCurrentNavigation method with the Router.currentNavigation signal)
+- @angular/core: router-last-successful-navigation (Ensures that the Router.lastSuccessfulNavigation signal is now invoked)
+- @angular/core: application-config-core (Moves imports of `ApplicationConfig` from `@angular/platform-browser` to `@angular/core`)
+- @angular/core: add-bootstrap-context-to-server-main (Adds `BootstrapContext` to `bootstrapApplication` calls in `main.server.ts` to support server rendering.)
+- @angular/core: bootstrap-options-migration (Migrates deprecated bootstrap options to providers.)
+- @nx/angular: set-tsconfig-option (Set the 'tsConfig' option to build and test targets to help with Angular migration issues.)
+- @nx/js: migrate-development-custom-condition (Migrate the legacy 'development' custom condition to a workspace-unique custom condition name.)
+- @nx/angular: update-angular-cli-version-20-2-0 (Update the @angular/cli package version to ~20.2.0.)
+- @nx/angular: remove-default-karma-configuration-files (Remove any Karma configuration files that only contain the default content. The default configuration is automatically available without a specific project configurationfile.)
+- @nx/angular: update-angular-cli-version-20-3-0 (Update the @angular/cli package version to ~20.3.0.)
+- @nx/js: remove-external-options-from-js-executors (Remove the deprecated `external` and `externalBuildTargets` options from the `@nx/js:swc` and `@nx/js:tsc` executors.)
+- nx: 22-0-0-release-version-config-changes (Updates release version config based on the breaking changes in Nx v22)
+- nx: 22-0-0-consolidate-release-tag-config (Consolidates releaseTag* options into nested releaseTag object structure)
+- nx: 22-1-0-update-nx-wrapper (Updates the nx wrapper.)
+- @nx/js: remove-redundant-ts-project-references (Removes redundant TypeScript project references from project's tsconfig.json files when runtime tsconfig files (e.g., tsconfig.lib.json, tsconfig.app.json) exist.)
+- @nx/vite: update-22-2-0 (Create AI Instructions to help migrate users workspaces past breaking changes for Vitest 4.)
+- @nx/vite: migrate-vitest-to-vitest-package (Migrate Vitest usage from @nx/vite to @nx/vitest package.)
+- @nx/angular: update-ssr-webpack-config-22-2-0 (Updates webpack-based SSR configuration to use preserve module format and bundler module resolution.)
+- @nx/angular: update-module-resolution-22-2-0 (Update 'module' to 'preserve' and 'moduleResolution' to 'bundler' in TypeScript configurations for Angular projects.)
+- @nx/angular: update-typescript-lib-22-2-0 (Updates the 'lib' property in tsconfig files to use 'es2022' or a more modern version.)
+- @nx/angular: update-unit-test-runner-option (Update 'vitest' unit test runner option to 'vitest-analog' in generator defaults.)
+- @nx/angular: set-isolated-modules-22-3-0 (Set 'isolatedModules' to 'true' in TypeScript test configurations for Angular projects.)
+- @nx/angular: update-jest-preset-angular-setup (Replace 'jest-preset-angular/setup-jest' imports with the new 'setupZoneTestEnv' function.)
+- nx: 22-6-1-add-claude-worktrees-to-git-ignore (Adds .claude/worktrees to .gitignore)
+- nx: 22-6-0-enable-analytics-prompt (Prompts to enable usage analytics)
+- nx: 22-6-0-add-claude-settings-local-to-git-ignore (Adds .claude/settings.local.json to .gitignore)
+---------------------------------------------------------
+
+Running migration @angular/cdk: migration-v21
+
+ NX   Failed to run migration-v21 from @angular/cdk. This workspace is NOT up to date!
+
+
+ NX   require() of ES Module /home/tristan/www/wkpcamer/node_modules/@angular-devkit/schematics/node_modules/ora/index.js from /home/tristan/www/wkpcamer/node_modules/@angular-devkit/schematics/tasks/package-manager/executor.js not supported.
+
+Instead change the require of index.js in /home/tristan/www/wkpcamer/node_modules/@angular-devkit/schematics/tasks/package-manager/executor.js to a dynamic import() which is available in all CommonJS modules.
+Pass --verbose to see the stacktrace.
+
+nx migrate [packageAndVersion]
+
+Creates a migrations file or runs migrations from the migrations file.
+  - Migrate packages and create migrations.json (e.g., nx migrate @nx/workspace@latest)
+  - Run migrations (e.g., nx migrate --run-migrations=migrations.json). Use flag --if-exists to run migrations only if the migrations file exists.
+
+Positionals:
+  packageAndVersion  The target package and version (e.g, @nx/workspace@16.0.0).  [string]
+
+Options:
+      --version                   Show version number  [boolean]
+      --verbose                   Prints additional information about the commands (e.g., stack traces).  [boolean]
+      --runMigrations             Execute migrations from a file (when the file isn't provided, execute migrations from migrations.json).  [string]
+      --ifExists                  Run migrations only if the migrations file exists, if not continues successfully.  [boolean] [default: false]
+      --from                      Use the provided versions for packages instead of the ones installed in node_modules (e.g., --from="@nx/react@16.0.0,@nx/js@16.0.0").  [string]
+      --to                        Use the provided versions for packages instead of the ones calculated by the migrator (e.g., --to="@nx/react@16.0.0,@nx/js@16.0.0").  [string]
+  -C, --createCommits             Automatically create a git commit after each migration runs.  [boolean] [default: false]
+      --commitPrefix              Commit prefix to apply to the commit for each migration, when --create-commits is enabled.  [string] [default: "chore: [nx migration] "]
+      --interactive               Enable prompts to confirm whether to collect optional package updates and migrations.  [boolean] [default: false]
+      --excludeAppliedMigrations  Exclude migrations that should have been applied on previous updates. To be used with --from.  [boolean] [default: false]
+
+Examples:
+  migrate latest                                                           Update all Nx plugins to "latest". This will generate migrations.json
+  migrate 9.0.0                                                            Update all Nx plugins to "9.0.0". This will generate migrations.json
+  migrate @nx/workspace@9.0.0 --from="@nx/workspace@8.0.0,@nx/node@8.0.0"  Update @nx/workspace and generate the list of migrations starting with version 8.0.0 of @nx/workspace and @nx/node, regardless of what is installed locally
+  migrate @nx/workspace@9.0.0 --to="@nx/react@9.0.1,@nx/angular@9.0.1"     Update @nx/workspace to "9.0.0". If it tries to update @nx/react or @nx/angular, use version "9.0.1"
+  migrate another-package@12.0.0                                           Update another-package to "12.0.0". This will update other packages and will generate migrations.json file
+  migrate latest --interactive                                             Collect package updates and migrations in interactive mode. In this mode, the user will be prompted whether to apply any optional package update and migration
+  migrate latest --from=nx@14.5.0 --exclude-applied-migrations             Collect package updates and migrations starting with version 14.5.0 of "nx" (and Nx first-party plugins), regardless of what is installed locally, while excluding migrations that should have been applied on previous updates
+  migrate --run-migrations=migrations.json                                 Run migrations from the provided migrations.json file. You can modify migrations.json and run this command many times
+  migrate --run-migrations --create-commits                                Create a dedicated commit for each successfully completed migration. You can customize the prefix used for each commit by additionally setting --commit-prefix="PREFIX_HERE "
+
+Find more information and examples at https://nx.dev/nx/migrate
+
+Error: Command failed: npx nx _migrate --run-migrations=migrations.json
+    at genericNodeError (node:internal/errors:984:15)
+    at wrappedFn (node:internal/errors:538:14)
+    at checkExecSyncError (node:child_process:890:11)
+    at execSync (node:child_process:962:15)
+    at runNxSync (/home/tristan/www/wkpcamer/node_modules/nx/src/utils/child-process.js:36:34)
+    at runLocalMigrate (/home/tristan/www/wkpcamer/node_modules/nx/src/command-line/migrate/migrate.js:1188:39)
+    at Object.runMigration (/home/tristan/www/wkpcamer/node_modules/nx/src/command-line/migrate/migrate.js:1212:9)
+    at Object.handler (/home/tristan/www/wkpcamer/node_modules/nx/src/command-line/migrate/command-object.js:13:74) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 2960,
+  stdout: null,
+  stderr: null
+}
+
+ NX   Command failed: npx nx migrate --run-migrations=migrations.json
+
+Pass --verbose to see the stacktrace.
+
+nx migrate [packageAndVersion]
+
+Creates a migrations file or runs migrations from the migrations file.
+  - Migrate packages and create migrations.json (e.g., nx migrate @nx/workspace@latest)
+  - Run migrations (e.g., nx migrate --run-migrations=migrations.json). Use flag --if-exists to run migrations only if the migrations file exists.
+
+Positionals:
+  packageAndVersion  The target package and version (e.g, @nx/workspace@16.0.0).  [string]
+
+Options:
+      --version                   Show version number  [boolean]
+      --verbose                   Prints additional information about the commands (e.g., stack traces).  [boolean]
+      --runMigrations             Execute migrations from a file (when the file isn't provided, execute migrations from migrations.json).  [string]
+      --ifExists                  Run migrations only if the migrations file exists, if not continues successfully.  [boolean] [default: false]
+      --from                      Use the provided versions for packages instead of the ones installed in node_modules (e.g., --from="@nx/react@16.0.0,@nx/js@16.0.0").  [string]
+      --to                        Use the provided versions for packages instead of the ones calculated by the migrator (e.g., --to="@nx/react@16.0.0,@nx/js@16.0.0").  [string]
+  -C, --createCommits             Automatically create a git commit after each migration runs.  [boolean] [default: false]
+      --commitPrefix              Commit prefix to apply to the commit for each migration, when --create-commits is enabled.  [string] [default: "chore: [nx migration] "]
+      --interactive               Enable prompts to confirm whether to collect optional package updates and migrations.  [boolean] [default: false]
+      --excludeAppliedMigrations  Exclude migrations that should have been applied on previous updates. To be used with --from.  [boolean] [default: false]
+
+Examples:
+  migrate latest                                                           Update all Nx plugins to "latest". This will generate migrations.json
+  migrate 9.0.0                                                            Update all Nx plugins to "9.0.0". This will generate migrations.json
+  migrate @nx/workspace@9.0.0 --from="@nx/workspace@8.0.0,@nx/node@8.0.0"  Update @nx/workspace and generate the list of migrations starting with version 8.0.0 of @nx/workspace and @nx/node, regardless of what is installed locally
+  migrate @nx/workspace@9.0.0 --to="@nx/react@9.0.1,@nx/angular@9.0.1"     Update @nx/workspace to "9.0.0". If it tries to update @nx/react or @nx/angular, use version "9.0.1"
+  migrate another-package@12.0.0                                           Update another-package to "12.0.0". This will update other packages and will generate migrations.json file
+  migrate latest --interactive                                             Collect package updates and migrations in interactive mode. In this mode, the user will be prompted whether to apply any optional package update and migration
+  migrate latest --from=nx@14.5.0 --exclude-applied-migrations             Collect package updates and migrations starting with version 14.5.0 of "nx" (and Nx first-party plugins), regardless of what is installed locally, while excluding migrations that should have been applied on previous updates
+  migrate --run-migrations=migrations.json                                 Run migrations from the provided migrations.json file. You can modify migrations.json and run this command many times
+  migrate --run-migrations --create-commits                                Create a dedicated commit for each successfully completed migration. You can customize the prefix used for each commit by additionally setting --commit-prefix="PREFIX_HERE "
+
+Find more information and examples at https://nx.dev/nx/migrate
+
+Error: Command failed: /tmp/tmp-2732-MCZeQf86Akuj/node_modules/.bin/nx _migrate --run-migrations=migrations.json
+    at genericNodeError (node:internal/errors:984:15)
+    at wrappedFn (node:internal/errors:538:14)
+    at checkExecSyncError (node:child_process:890:11)
+    at execSync (node:child_process:962:15)
+    at Object.runMigration (/home/tristan/www/wkpcamer/node_modules/nx/src/command-line/migrate/migrate.js:1205:42)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.handler (/home/tristan/www/wkpcamer/node_modules/nx/src/command-line/migrate/command-object.js:13:9) {
+  status: 1,
+  signal: null,
+  output: [ null, null, null ],
+  pid: 2836,
+  stdout: null,
+  stderr: null
+}
